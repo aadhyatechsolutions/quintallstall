@@ -1,0 +1,48 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Name" },
+      { "field": "slug", "headerName": "Slug" },
+      { "field": "description", "headerName": "Description" },
+      { "field": "action", "headerName": "Action" }
+    ],
+    "data": [
+      {
+        "id": 1,
+        "srNo": 1,
+        "name": "Admin",
+        "slug": "admin",
+        "description": "Has access to all features and settings",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/roles/edit/1"
+      },
+      {
+        "id": 2,
+        "srNo": 2,
+        "name": "Manager",
+        "slug": "manager",
+        "description": "Can manage users and view reports",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/roles/edit/2"
+      },
+      {
+        "id": 3,
+        "srNo": 3,
+        "name": "Employee",
+        "slug": "employee",
+        "description": "Can view own data and request leave",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/roles/edit/3"
+      },
+      {
+        "id": 4,
+        "srNo": 4,
+        "name": "Guest",
+        "slug": "guest",
+        "description": "Has limited access to the platform",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/roles/edit/4"
+      }
+    ]
+  }
+  

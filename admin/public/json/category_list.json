@@ -1,0 +1,47 @@
+{
+  "columns": [
+    { "field": "srNo", "headerName": "SR No." },
+    { "field": "name", "headerName": "Name" },
+    { "field": "image", "headerName": "Image" },
+    { "field": "description", "headerName": "Description" },
+    { "field": "action", "headerName": "Action" }
+  ],
+  "data": [
+    {
+      "id": 1,
+      "srNo": 1,
+      "name": "Product A",
+      "image": "https://via.placeholder.com/50",
+      "description": "A high-quality gadget",
+      "action": ["Edit", "Delete"],
+      "editUrl": "/products/category/edit/1"
+    },
+    {
+      "id": 2,
+      "srNo": 2,
+      "name": "Product B",
+      "image": "https://via.placeholder.com/50",
+      "description": "A comfortable chair",
+      "action": ["Edit", "Delete"],
+      "editUrl": "/products/category/edit/2"
+    },
+    {
+      "id": 3,
+      "srNo": 3,
+      "name": "Product C",
+      "image": "https://via.placeholder.com/50",
+      "description": "A durable table",
+      "action": ["Edit", "Delete"],
+      "editUrl": "/products/category/edit/3"
+    },
+    {
+      "id": 4,
+      "srNo": 4,
+      "name": "Product D",
+      "image": "https://via.placeholder.com/50",
+      "description": "A portable lamp",
+      "action": ["Edit", "Delete"],
+      "editUrl": "/products/category/edit/4"
+    }
+  ]
+}

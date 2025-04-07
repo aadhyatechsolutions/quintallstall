@@ -1,0 +1,65 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "username", "headerName": "Username" },
+      { "field": "role", "headerName": "Role" },
+      { "field": "coinPurchased", "headerName": "Coin Purchased" },
+      { "field": "amount", "headerName": "Amount" },
+      { "field": "status", "headerName": "Status" },
+      { "field": "paymentId", "headerName": "Payment ID" },
+      { "field": "dateOfPurchase", "headerName": "Date of Purchase" }
+    ],
+    "data": [
+      {
+        "srNo": 1,
+        "username": "User A",
+        "role": "Buyer",
+        "coinPurchased": 50,
+        "amount": 1000,
+        "status": "Success",
+        "paymentId": "PAY12345",
+        "dateOfPurchase": "2025-03-01"
+      },
+      {
+        "srNo": 2,
+        "username": "User B",
+        "role": "Buyer",
+        "coinPurchased": 100,
+        "amount": 2000,
+        "status": "Pending",
+        "paymentId": "PAY12346",
+        "dateOfPurchase": "2025-03-02"
+      },
+      {
+        "srNo": 3,
+        "username": "User C",
+        "role": "Buyer",
+        "coinPurchased": 75,
+        "amount": 1500,
+        "status": "Success",
+        "paymentId": "PAY12347",
+        "dateOfPurchase": "2025-03-03"
+      },
+      {
+        "srNo": 4,
+        "username": "User D",
+        "role": "Seller",
+        "coinPurchased": 200,
+        "amount": 4000,
+        "status": "Success",
+        "paymentId": "PAY12348",
+        "dateOfPurchase": "2025-03-04"
+      },
+      {
+        "srNo": 5,
+        "username": "User E",
+        "role": "Buyer",
+        "coinPurchased": 120,
+        "amount": 2400,
+        "status": "Pending",
+        "paymentId": "PAY12349",
+        "dateOfPurchase": "2025-03-05"
+      }
+    ]
+  }
+  

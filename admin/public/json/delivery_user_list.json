@@ -1,0 +1,75 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Name" },
+      { "field": "contactNumber", "headerName": "Contact Number" },
+      { "field": "email", "headerName": "Email" },
+      { "field": "profileImage", "headerName": "Profile Image" },
+      { "field": "description", "headerName": "Description" },
+      { "field": "status", "headerName": "Status" },
+      { "field": "action", "headerName": "Action" }
+    ],
+    "data": [
+      {
+        "id": 1,
+        "srNo": 1,
+        "name": "John Doe",
+        "contactNumber": "+91 9876543210",
+        "email": "john.doe@example.com",
+        "profileImage": "https://via.placeholder.com/50",
+        "description": "Customer from electronics department",
+        "status": "unblock",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/delivery/delivery-user/edit/1"
+      },
+      {
+        "id": 2,
+        "srNo": 2,
+        "name": "Jane Smith",
+        "contactNumber": "+91 9123456789",
+        "email": "jane.smith@example.com",
+        "profileImage": "https://via.placeholder.com/50",
+        "description": "Customer from furniture department",
+        "status": "block",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/delivery/delivery-user/edit/2"
+      },
+      {
+        "id": 3,
+        "srNo": 3,
+        "name": "Amit Kumar",
+        "contactNumber": "+91 8765432109",
+        "email": "amit.kumar@example.com",
+        "profileImage": "https://via.placeholder.com/50",
+        "description": "Customer from clothing department",
+        "status": "unblock",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/delivery/delivery-user/edit/3"
+      },
+      {
+        "id": 4,
+        "srNo": 4,
+        "name": "Priya Rani",
+        "contactNumber": "+91 7654321098",
+        "email": "priya.rani@example.com",
+        "profileImage": "https://via.placeholder.com/50",
+        "description": "Customer from kitchen department",
+        "status": "unblock",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/delivery/delivery-user/edit/4"
+      },
+      {
+        "id": 5,
+        "srNo": 5,
+        "name": "Ravi Patel",
+        "contactNumber": "+91 6543210987",
+        "email": "ravi.patel@example.com",
+        "profileImage": "https://via.placeholder.com/50",
+        "description": "Customer from sports department",
+        "status": "block",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/delivery/delivery-user/edit/5"
+      }
+    ]
+  }
+  

@@ -1,0 +1,46 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Name" },
+      { "field": "description", "headerName": "Description" },
+      { "field": "action", "headerName": "Action" }
+    ],
+    "data": [
+      {
+        "srNo": 1,
+        "name": "Summer Sale",
+        "description": "Get up to 50% off on all summer collections!",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/coin-type/edit/1"
+      },
+      {
+        "srNo": 2,
+        "name": "Black Friday Deal",
+        "description": "Amazing discounts on electronics and gadgets.",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/coin-type/edit/2"
+      },
+      {
+        "srNo": 3,
+        "name": "Holiday Special",
+        "description": "Exclusive offers for the holiday season.",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/coin-type/edit/3"
+      },
+      {
+        "srNo": 4,
+        "name": "New Year Sale",
+        "desciption": "Start the new year with massive discounts!",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/coin-type/edit/4"
+      },
+      {
+        "srNo": 5,
+        "name": "Winter Clearance",
+        "description": "Clearance sale on all winter items.",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/coin-type/edit/5"
+      }
+    ]
+  }
+  

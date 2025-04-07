@@ -1,0 +1,52 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Name" },
+      { "field": "value", "headerName": "Value" },
+      { "field": "status", "headerName": "Status" },
+      { "field": "action", "headerName": "Action" }
+    ],
+    "data": [
+      {
+        "srNo": 1,
+        "name": "Gold Coin",
+        "value": "100",
+        "status": "Active",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/coin-settings/edit/1"
+      },
+      {
+        "srNo": 2,
+        "name": "Silver Coin",
+        "value": "50",
+        "status": "Inactive",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/coin-settings/edit/2"
+      },
+      {
+        "srNo": 3,
+        "name": "Platinum Coin",
+        "value": "200",
+        "status": "Active",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/coin-settings/edit/3"
+      },
+      {
+        "srNo": 4,
+        "name": "Diamond Coin",
+        "value": "500",
+        "status": "Active",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/coin-settings/edit/4"
+      },
+      {
+        "srNo": 5,
+        "name": "Bronze Coin",
+        "value": "20",
+        "status": "Inactive",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/coin-settings/edit/5"
+      }
+    ]
+  }
+  

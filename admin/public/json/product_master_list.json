@@ -1,0 +1,62 @@
+{
+  "columns": [
+    { "field": "srNo", "headerName": "SR No." },
+    { "field": "name", "headerName": "Name" },
+    { "field": "category", "headerName": "Category" },
+    { "field": "description", "headerName": "Description" },
+    { "field": "image", "headerName": "Image" },
+    { "field": "action", "headerName": "Action" }
+  ],
+  "data": [
+    {
+      "id": 1,
+      "srNo": 1,
+      "name": "Product A",
+      "category": "Electronics",
+      "description": "A high-quality gadget",
+      "image": "https://via.placeholder.com/50",
+      "action": ["Edit", "Delete"],
+      "editUrl": "/products/product-master/edit/1"
+    },
+    {
+      "id": 2,
+      "srNo": 2,
+      "name": "Product B",
+      "category": "Furniture",
+      "description": "A comfortable chair",
+      "image": "https://via.placeholder.com/50",
+      "action": ["Edit", "Delete"],
+      "editUrl": "/products/product-master/edit/2"
+    },
+    {
+      "id": 3,
+      "srNo": 3,
+      "name": "Product C",
+      "category": "Clothing",
+      "description": "A stylish jacket",
+      "image": "https://via.placeholder.com/50",
+      "action": ["Edit", "Delete"],
+      "editUrl": "/products/product-master/edit/3"
+    },
+    {
+      "id": 4,
+      "srNo": 4,
+      "name": "Product D",
+      "category": "Kitchen",
+      "description": "A set of durable plates",
+      "image": "https://via.placeholder.com/50",
+      "action": ["Edit", "Delete"],
+      "editUrl": "/products/product-master/edit/4"
+    },
+    {
+      "id": 5,
+      "srNo": 5,
+      "name": "Product E",
+      "category": "Sports",
+      "description": "A professional soccer ball",
+      "image": "https://via.placeholder.com/50",
+      "action": ["Edit", "Delete"],
+      "editUrl": "/products/product-master/edit/5"
+    }
+  ]
+}

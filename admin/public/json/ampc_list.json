@@ -1,0 +1,22 @@
+{
+  "columns": [
+    { "field": "srNo", "headerName": "SR No." },
+    { "field": "name", "headerName": "Name" },
+    { "field": "location", "headerName": "Location" },
+    { "field": "area", "headerName": "Area" }
+  ],
+  "data": [
+    { "id": 1, "srNo": 1, "name": "John Doe", "location": "New York", "area": "Finance" },
+    { "id": 2, "srNo": 2, "name": "Kessy Bryan", "location": "San Francisco", "area": "Tech" },
+    { "id": 3, "srNo": 3, "name": "James Cassegne", "location": "Los Angeles", "area": "Engineering" },
+    { "id": 4, "srNo": 4, "name": "John Doe", "location": "New York", "area": "Finance" },
+    { "id": 5, "srNo": 5, "name": "Kessy Bryan", "location": "San Francisco", "area": "Tech" },
+    { "id": 6, "srNo": 6, "name": "James Cassegne", "location": "Los Angeles", "area": "Engineering" },
+    { "id": 7, "srNo": 7, "name": "John Doe", "location": "New York", "area": "Finance" },
+    { "id": 8, "srNo": 8, "name": "Kessy Bryan", "location": "San Francisco", "area": "Tech" },
+    { "id": 9, "srNo": 9, "name": "James Cassegne", "location": "Los Angeles", "area": "Engineering" },
+    { "id": 10, "srNo": 10, "name": "John Doe", "location": "New York", "area": "Finance" },
+    { "id": 11, "srNo": 11, "name": "Kessy Bryan", "location": "San Francisco", "area": "Tech" },
+    { "id": 12, "srNo": 12, "name": "James Cassegne", "location": "Los Angeles", "area": "Engineering" }
+  ]
+}

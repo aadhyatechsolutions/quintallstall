@@ -1,0 +1,23 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Blog Title" },
+      { "field": "category", "headerName": "Category" },
+      { "field": "image", "headerName": "Image" }
+    ],
+    "data": [
+      { "id": 1, "srNo": 1, "name": "How to Build a Successful Startup", "category": "Business", "image": "https://example.com/images/startup.jpg" },
+      { "id": 2, "srNo": 2, "name": "10 Tips for Effective Time Management", "category": "Productivity", "image": "https://example.com/images/time_management.jpg" },
+      { "id": 3, "srNo": 3, "name": "The Future of AI and Machine Learning", "category": "Technology", "image": "https://example.com/images/ai_future.jpg" },
+      { "id": 4, "srNo": 4, "name": "Marketing Strategies for 2025", "category": "Marketing", "image": "https://example.com/images/marketing_strategies.jpg" },
+      { "id": 5, "srNo": 5, "name": "Understanding Cryptocurrency and Blockchain", "category": "Finance", "image": "https://example.com/images/cryptocurrency.jpg" },
+      { "id": 6, "srNo": 6, "name": "The Importance of Mental Health in the Workplace", "category": "Health", "image": "https://example.com/images/mental_health.jpg" },
+      { "id": 7, "srNo": 7, "name": "Sustainable Living: Tips and Tricks", "category": "Lifestyle", "image": "https://example.com/images/sustainable_living.jpg" },
+      { "id": 8, "srNo": 8, "name": "Mastering Social Media for Business Growth", "category": "Marketing", "image": "https://example.com/images/social_media.jpg" },
+      { "id": 9, "srNo": 9, "name": "Exploring the Best Travel Destinations of 2025", "category": "Travel", "image": "https://example.com/images/travel_destinations.jpg" },
+      { "id": 10, "srNo": 10, "name": "How to Improve Your Work-Life Balance", "category": "Productivity", "image": "https://example.com/images/work_life_balance.jpg" },
+      { "id": 11, "srNo": 11, "name": "The Evolution of E-Commerce", "category": "Business", "image": "https://example.com/images/ecommerce.jpg" },
+      { "id": 12, "srNo": 12, "name": "A Beginner’s Guide to Digital Marketing", "category": "Marketing", "image": "https://example.com/images/digital_marketing.jpg" }
+    ]
+  }
+  

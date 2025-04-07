@@ -1,0 +1,47 @@
+{
+  "columns": [
+    { "field": "srNo", "headerName": "SR No." },
+    { "field": "vehicleType", "headerName": "Vehicle Type" },
+    { "field": "bFarePerKg", "headerName": "B. Fare /KG" },
+    { "field": "vFarePerKg", "headerName": "V. Fare /KG" },
+    { "field": "action", "headerName": "Action" }
+  ],
+  "data": [
+    {
+      "id": 1,
+      "srNo": 1,
+      "vehicleType": "Truck",
+      "bFarePerKg": 100,
+      "vFarePerKg": 120,
+      "action": ["Edit", "Delete"],
+      "editUrl": "/comissions/comission-master/edit/1"
+    },
+    {
+      "id": 2,
+      "srNo": 2,
+      "vehicleType": "Van",
+      "bFarePerKg": 80,
+      "vFarePerKg": 100,
+      "action": ["Edit", "Delete"],
+      "editUrl": "/comissions/comission-master/edit/2"
+    },
+    {
+      "id": 3,
+      "srNo": 3,
+      "vehicleType": "Bus",
+      "bFarePerKg": 50,
+      "vFarePerKg": 60,
+      "action": ["Edit", "Delete"],
+      "editUrl": "/comissions/comission-master/edit/3"
+    },
+    {
+      "id": 4,
+      "srNo": 4,
+      "vehicleType": "Cargo",
+      "bFarePerKg": 120,
+      "vFarePerKg": 140,
+      "action": ["Edit", "Delete"],
+      "editUrl": "/comissions/comission-master/edit/4"
+    }
+  ]
+}

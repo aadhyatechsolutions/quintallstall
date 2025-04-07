@@ -1,0 +1,51 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Category Name" },
+      { "field": "description", "headerName": "Description" },
+      { "field": "action", "headerName": "Action" }
+    ],
+    "data": [
+      {
+        "id": 1,
+        "srNo": 1,
+        "name": "Technology",
+        "description": "All about tech innovations, gadgets, and trends.",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/frontend/blog-category/edit/1"
+      },
+      {
+        "id": 2,
+        "srNo": 2,
+        "name": "Health",
+        "description": "Tips and discussions about health, fitness, and wellness.",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/frontend/blog-category/edit/2"
+      },
+      {
+        "id": 3,
+        "srNo": 3,
+        "name": "Lifestyle",
+        "description": "Everything related to lifestyle, fashion, and trends.",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/frontend/blog-category/edit/3"
+      },
+      {
+        "id": 4,
+        "srNo": 4,
+        "name": "Business",
+        "description": "Insights and articles on business, entrepreneurship, and finance.",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/frontend/blog-category/edit/4"
+      },
+      {
+        "id": 5,
+        "srNo": 5,
+        "name": "Education",
+        "description": "Educational resources and learning content.",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/frontend/blog-category/edit/5"
+      }
+    ]
+  }
+  

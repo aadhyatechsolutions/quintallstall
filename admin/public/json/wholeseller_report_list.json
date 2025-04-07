@@ -1,0 +1,47 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "wholesellerName", "headerName": "Wholeseller Name" },
+      { "field": "orderId", "headerName": "Order ID" },
+      { "field": "payment", "headerName": "Payment" },
+      { "field": "date", "headerName": "Date" }
+    ],
+    "data": [
+      {
+        "srNo": 1,
+        "wholesellerName": "Wholeseller A",
+        "orderId": "ORD123",
+        "payment": "$200",
+        "date": "2025-03-10"
+      },
+      {
+        "srNo": 2,
+        "wholesellerName": "Wholeseller B",
+        "orderId": "ORD124",
+        "payment": "$500",
+        "date": "2025-03-12"
+      },
+      {
+        "srNo": 3,
+        "wholesellerName": "Wholeseller C",
+        "orderId": "ORD125",
+        "payment": "$300",
+        "date": "2025-03-14"
+      },
+      {
+        "srNo": 4,
+        "wholesellerName": "Wholeseller D",
+        "orderId": "ORD126",
+        "payment": "$150",
+        "date": "2025-03-16"
+      },
+      {
+        "srNo": 5,
+        "wholesellerName": "Wholeseller E",
+        "orderId": "ORD127",
+        "payment": "$400",
+        "date": "2025-03-18"
+      }
+    ]
+  }
+  

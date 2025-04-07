@@ -1,0 +1,41 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "retailerName", "headerName": "Retailer Name" },
+      { "field": "shippingDetails", "headerName": "Shipping Details" },
+      { "field": "wholesellerName", "headerName": "Wholeseller Name" }
+    ],
+    "data": [
+      {
+        "srNo": 1,
+        "retailerName": "Retailer A",
+        "shippingDetails": "123 ABC Street, City, State",
+        "wholesellerName": "Wholeseller X"
+      },
+      {
+        "srNo": 2,
+        "retailerName": "Retailer B",
+        "shippingDetails": "456 DEF Road, City, State",
+        "wholesellerName": "Wholeseller Y"
+      },
+      {
+        "srNo": 3,
+        "retailerName": "Retailer C",
+        "shippingDetails": "789 GHI Avenue, City, State",
+        "wholesellerName": "Wholeseller Z"
+      },
+      {
+        "srNo": 4,
+        "retailerName": "Retailer D",
+        "shippingDetails": "101 JKL Blvd, City, State",
+        "wholesellerName": "Wholeseller W"
+      },
+      {
+        "srNo": 5,
+        "retailerName": "Retailer E",
+        "shippingDetails": "202 MNO Lane, City, State",
+        "wholesellerName": "Wholeseller V"
+      }
+    ]
+  }
+  

@@ -1,0 +1,76 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Name" },
+      { "field": "category", "headerName": "Category" },
+      { "field": "image", "headerName": "Image" },
+      { "field": "price", "headerName": "Price" },
+      { "field": "apmc", "headerName": "APMC" },
+      { "field": "date", "headerName": "Date" },
+      { "field": "vendorType", "headerName": "Vendor Type" },
+      { "field": "status", "headerName": "Status" }
+    ],
+    "data": [
+      {
+        "id": 1,
+        "srNo": 1,
+        "name": "Product X",
+        "category": "Electronics",
+        "image": "https://via.placeholder.com/50",
+        "price": "$300",
+        "apmc": "Mumbai APMC",
+        "date": "2025-03-10",
+        "vendorType": "Wholeseller",
+        "status": "Approve"
+      },
+      {
+        "id": 2,
+        "srNo": 2,
+        "name": "Product Y",
+        "category": "Furniture",
+        "image": "https://via.placeholder.com/50",
+        "price": "$150",
+        "apmc": "Delhi APMC",
+        "date": "2025-03-12",
+        "vendorType": "Retailer",
+        "status": "Disapprove"
+      },
+      {
+        "id": 3,
+        "srNo": 3,
+        "name": "Product Z",
+        "category": "Clothing",
+        "image": "https://via.placeholder.com/50",
+        "price": "$50",
+        "apmc": "Bangalore APMC",
+        "date": "2025-03-15",
+        "vendorType": "Wholeseller",
+        "status": "Approve"
+      },
+      {
+        "id": 4,
+        "srNo": 4,
+        "name": "Product A1",
+        "category": "Kitchen",
+        "image": "https://via.placeholder.com/50",
+        "price": "$30",
+        "apmc": "Chennai APMC",
+        "date": "2025-03-17",
+        "vendorType": "Retailer",
+        "status": "Approve"
+      },
+      {
+        "id": 5,
+        "srNo": 5,
+        "name": "Product B1",
+        "category": "Sports",
+        "image": "https://via.placeholder.com/50",
+        "price": "$120",
+        "apmc": "Kolkata APMC",
+        "date": "2025-03-20",
+        "vendorType": "Wholeseller",
+        "status": "Disapprove"
+      }
+    ]
+  }
+  

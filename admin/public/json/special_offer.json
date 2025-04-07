@@ -1,0 +1,37 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "title", "headerName": "Title" },
+      { "field": "secondTitle", "headerName": "Second Title" },
+      { "field": "shortDec", "headerName": "Short Description" },
+      { "field": "image", "headerName": "Image" },
+      { "field": "shopButtonText", "headerName": "Shop Button Text" },
+      { "field": "shopButtonLink", "headerName": "Shop Button Link" },
+      { "field": "action", "headerName": "Action" }
+    ],
+    "data": [
+      {
+        "srNo": 1,
+        "title": "Special Offer 1",
+        "secondTitle": "Amazing Offer",
+        "shortDec": "Get 50% off on your first order.",
+        "image": "https://via.placeholder.com/150",
+        "shopButtonText": "Shop Now",
+        "shopButtonLink": "https://example.com/shop1",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/frontend/special-offer/edit/1"
+      },
+      {
+        "srNo": 2,
+        "title": "Special Offer 2",
+        "secondTitle": "Exclusive Deal",
+        "shortDec": "Buy one get one free.",
+        "image": "https://via.placeholder.com/150",
+        "shopButtonText": "Shop Now",
+        "shopButtonLink": "https://example.com/shop2",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/frontend/special-offer/edit/2"
+      }
+    ]
+  }
+  

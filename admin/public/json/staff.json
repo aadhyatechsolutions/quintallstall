@@ -1,0 +1,58 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Name" },
+      { "field": "contactNumber", "headerName": "Contact Number" },
+      { "field": "email", "headerName": "Email" },
+      { "field": "profileImage", "headerName": "Profile Image" },
+      { "field": "status", "headerName": "Status" },
+      { "field": "action", "headerName": "Action" }
+    ],
+    "data": [
+      {
+        "id": 1,
+        "srNo": 1,
+        "name": "John Doe",
+        "contactNumber": "123-456-7890",
+        "email": "john.doe@example.com",
+        "profileImage": "https://via.placeholder.com/50",
+        "status": "Unblock",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/staff/edit/1"
+      },
+      {
+        "id": 2,
+        "srNo": 2,
+        "name": "Jane Smith",
+        "contactNumber": "987-654-3210",
+        "email": "jane.smith@example.com",
+        "profileImage": "https://via.placeholder.com/50",
+        "status": "Unblock",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/staff/edit/2"
+      },
+      {
+        "id": 3,
+        "srNo": 3,
+        "name": "Mark Johnson",
+        "contactNumber": "555-123-4567",
+        "email": "mark.johnson@example.com",
+        "profileImage": "https://via.placeholder.com/50",
+        "status": "Block",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/staff/edit/3"
+      },
+      {
+        "id": 4,
+        "srNo": 4,
+        "name": "Emily Davis",
+        "contactNumber": "444-987-6543",
+        "email": "emily.davis@example.com",
+        "profileImage": "https://via.placeholder.com/50",
+        "status": "Unblock",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/settings/staff/edit/4"
+      }
+    ]
+  }
+  

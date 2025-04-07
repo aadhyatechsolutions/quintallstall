@@ -1,0 +1,43 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Name" },
+      { "field": "loadingCapacity", "headerName": "Loading Capacity" },
+      { "field": "action", "headerName": "Action" }
+    ],
+    "data": [
+      {
+        "id": 1,
+        "srNo": 1,
+        "name": "Truck A",
+        "loadingCapacity": "15",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/comissions/vehicle-master/edit/1"
+      },
+      {
+        "id": 2,
+        "srNo": 2,
+        "name": "Van B",
+        "loadingCapacity": "5",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/comissions/vehicle-master/edit/2"
+      },
+      {
+        "id": 3,
+        "srNo": 3,
+        "name": "Bus C",
+        "loadingCapacity": "10",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/comissions/vehicle-master/edit/3"
+      },
+      {
+        "id": 4,
+        "srNo": 4,
+        "name": "Cargo D",
+        "loadingCapacity": "20",
+        "action": ["Edit", "Delete"],
+        "editUrl": "/comissions/vehicle-master/edit/4"
+      }
+    ]
+  }
+  

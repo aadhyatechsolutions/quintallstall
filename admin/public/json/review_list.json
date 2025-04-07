@@ -1,0 +1,64 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Name" },
+      { "field": "email", "headerName": "Email Id" },
+      { "field": "productName", "headerName": "Product Name" },
+      { "field": "title", "headerName": "Title" },
+      { "field": "comment", "headerName": "Comment" },
+      { "field": "date", "headerName": "Date" }
+    ],
+    "data": [
+      {
+        "id": 1,
+        "srNo": 1,
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "productName": "Product A",
+        "title": "Excellent Product",
+        "comment": "This product is amazing, really worth the price.",
+        "date": "2025-03-10"
+      },
+      {
+        "id": 2,
+        "srNo": 2,
+        "name": "Jane Smith",
+        "email": "jane.smith@example.com",
+        "productName": "Product B",
+        "title": "Good Quality",
+        "comment": "The quality is good but could use some improvements.",
+        "date": "2025-03-12"
+      },
+      {
+        "id": 3,
+        "srNo": 3,
+        "name": "Robert Brown",
+        "email": "robert.brown@example.com",
+        "productName": "Product C",
+        "title": "Not Satisfied",
+        "comment": "The product didn't meet my expectations.",
+        "date": "2025-03-15"
+      },
+      {
+        "id": 4,
+        "srNo": 4,
+        "name": "Emily Davis",
+        "email": "emily.davis@example.com",
+        "productName": "Product D",
+        "title": "Highly Recommended",
+        "comment": "I would definitely recommend this product to others.",
+        "date": "2025-03-17"
+      },
+      {
+        "id": 5,
+        "srNo": 5,
+        "name": "Michael Wilson",
+        "email": "michael.wilson@example.com",
+        "productName": "Product E",
+        "title": "Not Worth It",
+        "comment": "I am not happy with the product, it does not perform as expected.",
+        "date": "2025-03-20"
+      }
+    ]
+  }
+  

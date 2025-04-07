@@ -1,0 +1,114 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Name" },
+      { "field": "email", "headerName": "Email" },
+      { "field": "phoneNo", "headerName": "Phone No." },
+      { "field": "profileImage", "headerName": "Profile Image" },
+      { "field": "ampc", "headerName": "Ampc" },
+      { "field": "address", "headerName": "Address" }
+    ],
+    "data": [
+      {
+        "id": 1,
+        "srNo": 1,
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "phoneNo": "+1234567890",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP001",
+        "address": "123 New York, NY 10001"
+      },
+      {
+        "id": 2,
+        "srNo": 2,
+        "name": "Kessy Bryan",
+        "email": "kessy.bryan@example.com",
+        "phoneNo": "+0987654321",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP002",
+        "address": "456 San Francisco, CA 94105"
+      },
+      {
+        "id": 3,
+        "srNo": 3,
+        "name": "James Cassegne",
+        "email": "james.cassegne@example.com",
+        "phoneNo": "+1122334455",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP003",
+        "address": "789 Los Angeles, CA 90001"
+      },
+      {
+        "id": 4,
+        "srNo": 4,
+        "name": "Emma Watson",
+        "email": "emma.watson@example.com",
+        "phoneNo": "+2233445566",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP004",
+        "address": "101 London, UK WC1N 3AX"
+      },
+      {
+        "id": 5,
+        "srNo": 5,
+        "name": "Michael Jordan",
+        "email": "michael.jordan@example.com",
+        "phoneNo": "+3344556677",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP005",
+        "address": "202 Chicago, IL 60601"
+      },
+      {
+        "id": 6,
+        "srNo": 6,
+        "name": "Sarah Connor",
+        "email": "sarah.connor@example.com",
+        "phoneNo": "+4455667788",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP006",
+        "address": "303 Los Angeles, CA 90001"
+      },
+      {
+        "id": 7,
+        "srNo": 7,
+        "name": "Bruce Wayne",
+        "email": "bruce.wayne@example.com",
+        "phoneNo": "+5566778899",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP007",
+        "address": "404 Gotham City, NY 10011"
+      },
+      {
+        "id": 8,
+        "srNo": 8,
+        "name": "Clark Kent",
+        "email": "clark.kent@example.com",
+        "phoneNo": "+6677889900",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP008",
+        "address": "505 Metropolis, NY 10021"
+      },
+      {
+        "id": 9,
+        "srNo": 9,
+        "name": "Diana Prince",
+        "email": "diana.prince@example.com",
+        "phoneNo": "+7788990011",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP009",
+        "address": "606 Themyscira, Paradise Island"
+      },
+      {
+        "id": 10,
+        "srNo": 10,
+        "name": "Peter Parker",
+        "email": "peter.parker@example.com",
+        "phoneNo": "+8899001122",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP010",
+        "address": "707 New York, NY 10001"
+      }
+    ]
+  }
+  

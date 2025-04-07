@@ -1,0 +1,114 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Name" },
+      { "field": "email", "headerName": "Email" },
+      { "field": "phoneNo", "headerName": "Phone No." },
+      { "field": "profileImage", "headerName": "Profile Image" },
+      { "field": "ampc", "headerName": "Ampc" },
+      { "field": "address", "headerName": "Address" }
+    ],
+    "data": [
+      {
+        "id": 1,
+        "srNo": 1,
+        "name": "Alice Cooper",
+        "email": "alice.cooper@example.com",
+        "phoneNo": "+1234567890",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP101",
+        "address": "123 Wonderland, NY 10001"
+      },
+      {
+        "id": 2,
+        "srNo": 2,
+        "name": "Bob Marley",
+        "email": "bob.marley@example.com",
+        "phoneNo": "+2345678901",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP102",
+        "address": "456 Kingston, Jamaica"
+      },
+      {
+        "id": 3,
+        "srNo": 3,
+        "name": "Charlie Brown",
+        "email": "charlie.brown@example.com",
+        "phoneNo": "+3456789012",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP103",
+        "address": "789 Snoopy Road, Peanuts Town"
+      },
+      {
+        "id": 4,
+        "srNo": 4,
+        "name": "David Beckham",
+        "email": "david.beckham@example.com",
+        "phoneNo": "+4567890123",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP104",
+        "address": "101 London, UK WC1N 3AX"
+      },
+      {
+        "id": 5,
+        "srNo": 5,
+        "name": "Ellen DeGeneres",
+        "email": "ellen.degeneres@example.com",
+        "phoneNo": "+5678901234",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP105",
+        "address": "202 Hollywood Blvd, Los Angeles, CA 90028"
+      },
+      {
+        "id": 6,
+        "srNo": 6,
+        "name": "Frank Sinatra",
+        "email": "frank.sinatra@example.com",
+        "phoneNo": "+6789012345",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP106",
+        "address": "303 Las Vegas, NV 89101"
+      },
+      {
+        "id": 7,
+        "srNo": 7,
+        "name": "Gina Rodriguez",
+        "email": "gina.rodriguez@example.com",
+        "phoneNo": "+7890123456",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP107",
+        "address": "404 Miami, FL 33101"
+      },
+      {
+        "id": 8,
+        "srNo": 8,
+        "name": "Harry Styles",
+        "email": "harry.styles@example.com",
+        "phoneNo": "+8901234567",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP108",
+        "address": "505 London, UK W1D 4BF"
+      },
+      {
+        "id": 9,
+        "srNo": 9,
+        "name": "Isla Fisher",
+        "email": "isla.fisher@example.com",
+        "phoneNo": "+9012345678",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP109",
+        "address": "606 Melbourne, VIC 3000"
+      },
+      {
+        "id": 10,
+        "srNo": 10,
+        "name": "Jake Gyllenhaal",
+        "email": "jake.gyllenhaal@example.com",
+        "phoneNo": "+0123456789",
+        "profileImage": "https://via.placeholder.com/50",
+        "ampc": "AMP110",
+        "address": "707 New York, NY 10001"
+      }
+    ]
+  }
+  

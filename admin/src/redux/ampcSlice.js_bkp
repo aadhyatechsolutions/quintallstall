@@ -1,0 +1,82 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axiosInstance from "../utils/axiosInstance";
+
+export const fetchAmpcData = createAsyncThunk(
+  "ampc/fetchAmpcData",
+  async () => {
+    try {
+      const response = await axiosInstance.get("/apmc");
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      throw new Error("Failed to fetch AMPC data");
+    }
+  }
+);
+
+const initialState = {
+  data: [],
+  columns: [
+    { "field": "id", "headerName": "SR No." },
+    { "field": "name", "headerName": "Name" },
+    { "field": "location", "headerName": "Location" },
+    { "field": "area", "headerName": "Area" }
+  ],
+  loading: false,
+  error: null,
+};
+
+const ampcSlice = createSlice({
+  name: "ampc",
+  initialState,
+  reducers: {
+     // Set columns and data
+     setAmpc: (state, action) => {
+      state.columns = action.payload.columns || [];
+      state.data = action.payload.data || [];
+    },
+    // Set loading state
+    setLoading: (state) => {
+      state.loading = true;
+    },
+    // Set error state
+    setError: (state, action) => {
+      state.error = action.payload;
+      state.loading = false; // Stop loading on error
+    },
+    // Delete AMPC entry
+    deleteAmpc: (state, action) => {
+      state.data = state.data.filter((item) => item.id !== action.payload);
+    },
+    // Edit an AMPC entry
+    editAmpc: (state, action) => {
+      const index = state.data.findIndex((item) => item.id === action.payload.id);
+      if (index !== -1) {
+        state.data[index] = {
+          ...state.data[index],
+          ...action.payload,
+        };
+      }
+    },
+    // Add a new AMPC entry
+    addAmpc: (state, action) => {
+      state.data.push(action.payload);
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchAmpcData.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAmpcData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(fetchAmpcData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  },
+});
+export const { setAmpc, setLoading, setError, deleteAmpc, editAmpc, addAmpc } = ampcSlice.actions;
+export default ampcSlice.reducer;

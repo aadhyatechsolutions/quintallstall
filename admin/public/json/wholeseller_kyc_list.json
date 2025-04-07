@@ -1,0 +1,64 @@
+{
+    "columns": [
+      { "field": "srNo", "headerName": "SR No." },
+      { "field": "name", "headerName": "Name" },
+      { "field": "email", "headerName": "Email ID" },
+      { "field": "phoneNumber", "headerName": "Phone Number" },
+      { "field": "accountNumber", "headerName": "Account Number" },
+      { "field": "ifsc", "headerName": "IFSC" },
+      { "field": "cancelCheque", "headerName": "Cancel Cheque" }
+    ],
+    "data": [
+      {
+        "id": 1,
+        "srNo": 1,
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "phoneNumber": "+91 9876543210",
+        "accountNumber": "123456789012",
+        "ifsc": "SBIN0001234",
+        "cancelCheque": "https://via.placeholder.com/50"
+      },
+      {
+        "id": 2,
+        "srNo": 2,
+        "name": "Jane Smith",
+        "email": "jane.smith@example.com",
+        "phoneNumber": "+91 9123456789",
+        "accountNumber": "987654321098",
+        "ifsc": "HDFC0005678",
+        "cancelCheque": "https://via.placeholder.com/50"
+      },
+      {
+        "id": 3,
+        "srNo": 3,
+        "name": "Amit Kumar",
+        "email": "amit.kumar@example.com",
+        "phoneNumber": "+91 8765432109",
+        "accountNumber": "234567890123",
+        "ifsc": "ICIC0003456",
+        "cancelCheque": "https://via.placeholder.com/50"
+      },
+      {
+        "id": 4,
+        "srNo": 4,
+        "name": "Priya Rani",
+        "email": "priya.rani@example.com",
+        "phoneNumber": "+91 7654321098",
+        "accountNumber": "345678901234",
+        "ifsc": "AXIS0004321",
+        "cancelCheque": "https://via.placeholder.com/50"
+      },
+      {
+        "id": 5,
+        "srNo": 5,
+        "name": "Ravi Patel",
+        "email": "ravi.patel@example.com",
+        "phoneNumber": "+91 6543210987",
+        "accountNumber": "456789012345",
+        "ifsc": "YESB0005432",
+        "cancelCheque": "https://via.placeholder.com/50"
+      }
+    ]
+  }
+  
