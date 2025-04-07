@@ -1,0 +1,69 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/admin/node_modules
+/admin/docs/node_modules
+/admin/.pnp
+
+/storefront/node_modules
+/storefront/docs/node_modules
+/storefront/.pnp
+
+.pnp.js
+
+# testing
+/admin/coverage
+/storefront/coverage
+
+# production
+/admin/dist
+/storefront/dist
+
+
+# misc
+.eslintcache
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+
+
+#backend
+
+/backend/vendor/
+backend/node_modules/
+backend/npm-debug.log
+backend/yarn-error.log
+
+# Laravel 4 specific
+backend/bootstrap/compiled.php
+backend/app/storage/
+
+# Laravel 5 & Lumen specific
+backend/public/storage
+backend/public/hot
+
+# Laravel 5 & Lumen specific with changed public path
+backend/public_html/storage
+backend/public_html/hot
+
+backend/storage/*.key
+backend/.env
+backend/Homestead.yaml
+backend/Homestead.json
+/backend/.vagrant
+backend/.phpunit.result.cache
+
+/backend/public/build
+/backend/storage/pail
+backend/.env.backup
+backend/.env.production
+backend/.phpactor.json
+backend/auth.json
