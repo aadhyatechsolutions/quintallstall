@@ -103,7 +103,7 @@ const routes = [
       ...materialRoutes,
       // dashboard route
       {
-        path: "/dashboard/default",
+        path: "/admin/dashboard/default",
         element: <Analytics />,
         auth: authRoles.admin,
       },
