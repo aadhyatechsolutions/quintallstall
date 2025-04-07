@@ -91,8 +91,8 @@ const AppEchart = Loadable(
 const Analytics = Loadable(lazy(() => import("app/views/dashboard/Analytics")));
 
 const routes = [
-  { path: "/", element: <Home /> },
-  { path: "/admin", element: <Navigate to="/dashboard/default" /> },
+
+  { path: "/admin", element: <Navigate to="/admin/dashboard/default" /> },
   {
     element: (
       <AuthGuard>
