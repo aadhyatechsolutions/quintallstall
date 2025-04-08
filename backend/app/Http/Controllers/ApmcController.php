@@ -7,63 +7,117 @@ use Illuminate\Http\Request;
 
 class ApmcController extends Controller
 {
-    // Get all apmc records
-    public function index()
-    {
-        return response()->json(Apmc::all());
-    }
-
-    // Create a new apmc record
     public function store(Request $request)
     {
-        // Validate the incoming data
         $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'area' => 'required|string|max:255',
-            'file' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240'
+            'village' => 'required|string|max:255',
+            'taluka' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'pincode' => 'required|string|max:6',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filePath = $file->store('uploads/apmc', 'public');
-            $request->merge(['file' => $filePath]);
-        }
-        // Create and save the new record
-        $apmc = Apmc::create($request->all());
 
-        return response()->json($apmc, 201); // Return the created record
+        // Handle the image upload if provided
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            if ($image->isValid()) {
+                $imagePath = $image->store('apmcs', 'public');
+                $imageURL = asset('storage/' . $imagePath);
+            } else {
+                return response()->json(['error' => 'Invalid image file'], 400);
+            }
+        } else {
+            $imageURL = null;
+        }
+
+        // Create the new APMC
+        $apmc = Apmc::create([
+            'name' => $request->name,
+            'location' => $request->location,
+            'area' => $request->area,
+            'village' => $request->village,
+            'taluka' => $request->taluka,
+            'city' => $request->city,
+            'state' => $request->state,
+            'pincode' => $request->pincode,
+            'image' => $imageURL,
+        ]);
+
+        return response()->json(['apmc' => $apmc], 201);
     }
 
-    // Get a specific apmc record by ID
+    public function index()
+    {
+        // Fetch all APMCs
+        $apmcs = Apmc::all();
+        return response()->json(['apmcs' => $apmcs], 200);
+    }
+
     public function show($id)
     {
+        // Fetch a single APMC by its ID
         $apmc = Apmc::findOrFail($id);
-        return response()->json($apmc);
+        return response()->json(['apmc' => $apmc], 200);
     }
 
-    // Update an apmc record
     public function update(Request $request, $id)
     {
+        // Find the APMC by ID
         $apmc = Apmc::findOrFail($id);
 
-        // Validate the incoming data
         $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'area' => 'required|string|max:255',
+            'village' => 'required|string|max:255',
+            'taluka' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'pincode' => 'required|string|max:6',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        // Update the record
-        $apmc->update($request->all());
+        // Handle the image upload if provided
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            if ($image->isValid()) {
+                $imagePath = $image->store('apmcs', 'public');
+                $imageURL = asset('storage/' . $imagePath);
+            } else {
+                return response()->json(['error' => 'Invalid image file'], 400);
+            }
+        } else {
+            $imageURL = null;
+        }
 
-        return response()->json($apmc);
+        // Update the APMC with new values
+        $apmc->update([
+            'name' => $request->name,
+            'location' => $request->location,
+            'area' => $request->area,
+            'village' => $request->village,
+            'taluka' => $request->taluka,
+            'city' => $request->city,
+            'state' => $request->state,
+            'pincode' => $request->pincode,
+            'image' => $imageURL,
+        ]);
+
+        return response()->json(['apmc' => $apmc], 200);
     }
 
-    // Delete an apmc record
     public function destroy($id)
     {
+        // Find the APMC by ID
         $apmc = Apmc::findOrFail($id);
+
+        // Delete the APMC
         $apmc->delete();
-        return response()->json(null, 204); // Return no content status
+
+        return response()->json(['message' => 'APMC deleted successfully'], 200);
     }
 }

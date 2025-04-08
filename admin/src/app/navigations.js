@@ -21,24 +21,24 @@ const navigations = [
         name: "AMPC", 
         icon: "apps",
         children: [
-          { name: "Create", path: "/products/ampc/create", iconText: "A" },
-          { name: "View", path: "/products/ampc/view", iconText: "A" },
+          { name: "Create", path: "/features/apmc/create", iconText: "A" },
+          { name: "View", path: "/features/apmc/view", iconText: "A" },
         ] 
       },
       { 
         name: "Product Master", 
         icon: "apps",
         children: [
-          { name: "Create", path: "/products/product-master/create", iconText: "A" },
-          { name: "View", path: "/products/product-master/view", iconText: "A" },
+          { name: "Create", path: "/features/product/create", iconText: "A" },
+          { name: "View", path: "/features/product/view", iconText: "A" },
         ] 
       },
       { 
         name: "Category", 
         icon: "apps",
         children: [
-          { name: "Create", path: "/products/category/create", iconText: "A" },
-          { name: "View", path: "/products/category/view", iconText: "A" },
+          { name: "Create", path: "/features/category/create", iconText: "A" },
+          { name: "View", path: "/features/category/view", iconText: "A" },
         ] 
       }
     ]

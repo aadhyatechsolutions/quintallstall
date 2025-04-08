@@ -46,7 +46,7 @@ export default function EmailLogin() {
   const handleFormSubmit = async (values) => {
     try {
       await login(values.email, values.password);
-      navigate("/admin");
+      navigate("/");
     } catch (e) {
       console.error(e);
     }
