@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Box, Button, Tooltip, Menu, MenuItem, Badge } from "@mui/material";
 import { ArrowDropDown } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavLinks = ({ navItems }) => {
   const [anchorEls, setAnchorEls] = useState({});
+  const navigate = useNavigate();
 
   const handleClick = (event, itemId) => {
     setAnchorEls((prev) => ({ ...prev, [itemId]: event.currentTarget }));
@@ -85,7 +87,7 @@ const NavLinks = ({ navItems }) => {
                   key={`${subItem.label}-${subItem.path}`}
                   onClick={() => {
                     handleClose(item.id);
-                    // Add navigation logic here if needed
+                    navigate(subItem.path); // ✅ Navigate without reload
                   }}
                   sx={{ fontSize: "0.9rem" }}
                 >
@@ -97,7 +99,8 @@ const NavLinks = ({ navItems }) => {
         ) : (
           <Button
             key={`${item.label}-${item.path}`}
-            href={item.path}
+            component={Link} // ✅ Use React Router's Link
+            to={item.path}
             disabled={item.disabled}
             sx={{ "&:hover": { color: "#2b4a04 !important" } }}
           >

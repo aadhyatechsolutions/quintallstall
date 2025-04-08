@@ -6,10 +6,11 @@ import ProductsSlider from "../../Products/ProductsSlider";
 import Features from "../../Features/Features";
 import FeatureBanner from "../../Features/FeatureBanner";
 import PromoBanner from "../../Banner/PromoBanner";
-
+import Carousel from "../../Carousel/Carousel";
 function Body() {
   return (
     <>
+      <Carousel />
       <ShopByCategories />
       <APMCMarketGrid />
       <ProductsSlider />

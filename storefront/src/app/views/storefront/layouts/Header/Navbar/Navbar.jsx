@@ -22,7 +22,7 @@ const Navbar = () => {
   const open = Boolean(anchorEl);
 
   const navItems = [
-    { label: "Home", path: "/home" },
+    { label: "Home", path: "/" },
     { label: "About", path: "/about" },
     { label: "Shop", path: "/shop" },
     { label: "Products", path: "/products" },

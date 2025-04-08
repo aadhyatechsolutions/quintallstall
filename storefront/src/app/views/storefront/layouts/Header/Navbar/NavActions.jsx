@@ -33,12 +33,12 @@ const NavActions = ({ isLargeScreen }) => {
     setAnchorEl(null);
   };
   const handleLogin = () => {
-    navigate("/session/signin");
+    navigate("/admin/session/signin");
   };
   const handleRegister = () => {
-    navigate("/session/signup");
+    navigate("/admin/session/signup");
   };
-  
+
   return (
     <Box
       sx={{
@@ -126,7 +126,7 @@ const NavActions = ({ isLargeScreen }) => {
             }}
           >
             <Button
-            onClick={handleLogin}
+              onClick={handleLogin}
               fullWidth
               sx={{
                 justifyContent: "flex-start",
@@ -145,7 +145,7 @@ const NavActions = ({ isLargeScreen }) => {
             }}
           >
             <Button
-            onClick={handleRegister}
+              onClick={handleRegister}
               fullWidth
               sx={{
                 justifyContent: "flex-start",

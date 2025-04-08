@@ -1,12 +1,11 @@
 import { lazy } from "react";
-// import PrivateRoute from "app/auth/PrivateRoute";
 
-// const NotFound = lazy(() => import("./NotFound"));
-// const About = lazy(() => import("../../../About"));
+const Contact = lazy(() => import("../../../Contact/Contact"));
+const About = lazy(() => import("../../../About/Index"));
 
 const navbarRoutes = [
-  // { path: "/about", element: <About /> },
-  //   { path: "*", element: <NotFound /> },
+  { path: "/contact", element: <Contact /> },
+  { path: "/about", element: <About /> },
 ];
 
 export default navbarRoutes;

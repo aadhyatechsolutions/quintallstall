@@ -100,11 +100,11 @@ const ProductSlider = () => {
       },
       {
         breakpoint: 600,
-        settings: { slidesToShow: 1 },
+        settings: { slidesToShow: 2 },
       },
       {
         breakpoint: 400,
-        settings: { slidesToShow: 1 },
+        settings: { slidesToShow: 2 },
       },
     ],
   };
