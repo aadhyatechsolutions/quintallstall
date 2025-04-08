@@ -33,10 +33,12 @@ const NavActions = ({ isLargeScreen }) => {
     setAnchorEl(null);
   };
   const handleLogin = () => {
-    navigate("/admin/session/signin");
+    const baseUrl = window.location.origin;
+    window.location.href = `${baseUrl}/admin/session/signin`;
   };
   const handleRegister = () => {
-    navigate("/admin/session/signup");
+    const baseUrl = window.location.origin;
+    window.location.href = `${baseUrl}/admin/session/signup`;
   };
 
   return (
