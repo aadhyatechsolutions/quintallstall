@@ -14,7 +14,7 @@ export default defineConfig({
       workbox: { clientsClaim: true, skipWaiting: true }
     })
   ],
-  build: {
+  build: {  
     chunkSizeWarningLimit: 2000
   },
   resolve: {

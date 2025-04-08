@@ -7,6 +7,7 @@ use App\Http\Controllers\ApmcController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 use App\Http\Controllers\TestController;
 
@@ -29,12 +30,13 @@ Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/otpLogin', [AuthController::class, 'otpLogin']);
 Route::post('auth/generateLoginOtp', [AuthController::class, 'generateLoginOtp']);
 
-Route::post('auth/generateOtp', [AuthController::class, 'generateOtp'])->middleware(\App\Http\Middleware\CorsMiddleware::class);
-Route::post('auth/verifyOtp', [AuthController::class, 'verifyOtp'])->middleware(\App\Http\Middleware\CorsMiddleware::class);
+Route::post('auth/generateOtp', [AuthController::class, 'generateOtp']);
+Route::post('auth/verifyOtp', [AuthController::class, 'verifyOtp']);
 Route::middleware(['auth:api'])->get('auth/profile', [AuthController::class, 'profile']);
 
-Route::resource('apmc', ApmcController::class);
+Route::resource('apmcs', ApmcController::class);
 Route::resource('role', RoleController::class);
 Route::resource('products', ProductController::class);
+Route::resource('categories', CategoryController::class);
 
 Route::get('test', [TestController::class,'test']);

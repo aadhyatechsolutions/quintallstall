@@ -24,7 +24,7 @@ return new class extends Migration
             
             // Foreign key relationships
             $table->foreignId('address_id')->nullable()->constrained('addresses')->onDelete('set null');
-            $table->foreignId('apmc_id')->nullable()->constrained('apmc')->onDelete('set null');
+            $table->foreignId('apmc_id')->nullable()->constrained('apmcs')->onDelete('set null');
             $table->foreignId('role_id')->nullable()->constrained('roles')->onDelete('set null');
             $table->foreignId('bank_account_id')->nullable()->constrained('bank_accounts')->onDelete('set null');
             

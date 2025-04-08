@@ -48,7 +48,7 @@ const BankDetailsForm = ({ formData, setFormData, initialValues, setStep, profil
       if(response.success){
         resetForm()
         setFormData(initialValues);
-        navigate("/admin");
+        navigate("/");
       }
     } catch (error) {
       console.error("Registration failed:", error);
