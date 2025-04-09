@@ -1,26 +1,28 @@
 import { Box, Typography } from "@mui/material";
 
 const NavLogo = ({ logo, altText = "Quintal Stall" }) => (
-  <Box sx={{ 
-    display: "flex", 
-    alignItems: "center",
-    flexShrink: 0,
-    mr: { md: 4, lg: 6 }
-  }}>
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      flexShrink: 0,
+      mr: { md: 4, lg: 6 },
+    }}
+  >
     {logo ? (
       <Box
         component="a"
-        href="/home"
+        href="/"
         sx={{
           display: "flex",
           alignItems: "center",
           textDecoration: "none",
-          height: { xs: '40px', sm: '50px', md: '60px' },
+          height: { xs: "40px", sm: "50px", md: "60px" },
           "& img": {
             height: "100%",
             width: "auto",
-            objectFit: "contain"
-          }
+            objectFit: "contain",
+          },
         }}
       >
         <img src={logo} alt={altText} />
@@ -38,7 +40,12 @@ const NavLogo = ({ logo, altText = "Quintal Stall" }) => (
             textDecoration: "none",
             mr: 1,
             lineHeight: 1,
-            fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem', lg: '2.25rem' }
+            fontSize: {
+              xs: "1.5rem",
+              sm: "1.75rem",
+              md: "2rem",
+              lg: "2.25rem",
+            },
           }}
         >
           QUINTAL
@@ -53,7 +60,12 @@ const NavLogo = ({ logo, altText = "Quintal Stall" }) => (
             color: "inherit",
             textDecoration: "none",
             lineHeight: 1,
-            fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem', lg: '2.25rem' }
+            fontSize: {
+              xs: "1.5rem",
+              sm: "1.75rem",
+              md: "2rem",
+              lg: "2.25rem",
+            },
           }}
         >
           STALL

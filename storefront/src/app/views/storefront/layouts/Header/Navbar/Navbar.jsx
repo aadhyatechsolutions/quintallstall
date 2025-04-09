@@ -6,6 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { useLocation } from "react-router-dom"; // ✅ NEW
 import NavLogo from "./NavLogo";
 import NavLinks from "./NavLinks";
 import NavActions from "./NavActions";
@@ -21,15 +22,20 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const open = Boolean(anchorEl);
 
+  const location = useLocation(); // ✅ CURRENT PATHNAME
+  const currentPath = location.pathname;
+
   const navItems = [
-    { label: "Home", path: "/home" },
+    { label: "Home", path: "/" },
     { label: "About", path: "/about" },
     { label: "Shop", path: "/shop" },
     { label: "Products", path: "/products" },
     { label: "Blog", path: "/blog" },
     { label: "Contact", path: "/contact" },
   ];
+
   const logo = "../assets/images/logos/logo-quintal.png";
+
   return (
     <>
       <AppBar
@@ -45,7 +51,6 @@ const Navbar = () => {
         <Container maxWidth={isLargeScreen ? "xl" : "lg"}>
           <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
             <NavLogo logo={logo} />
-
             {!isMobile ? (
               <>
                 <NavLinks
@@ -54,6 +59,7 @@ const Navbar = () => {
                   open={open}
                   handleClick={(e) => setAnchorEl(e.currentTarget)}
                   handleClose={() => setAnchorEl(null)}
+                  currentPath={currentPath} // ✅ PASS CURRENT PATH
                 />
                 <NavActions isLargeScreen={isLargeScreen} />
               </>
@@ -70,12 +76,7 @@ const Navbar = () => {
         mobileOpen={mobileOpen}
         handleDrawerToggle={() => setMobileOpen(!mobileOpen)}
         navItems={navItems}
-        anchorEl={anchorEl}
-        open={open}
-        handleClick={(e) => setAnchorEl(e.currentTarget)}
-        handleClose={() => setAnchorEl(null)}
-        dropdownOpen={dropdownOpen}
-        setDropdownOpen={setDropdownOpen}
+        currentPath={currentPath} // ✅ PASS CURRENT PATH
       />
     </>
   );
