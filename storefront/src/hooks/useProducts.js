@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/api/products";
+const BASE_URL = import.meta.env.VITE_BACKEND_API_URL;
 
 /** Fetch all products */
 const fetchProducts = async () => {
