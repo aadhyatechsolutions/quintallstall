@@ -4,6 +4,7 @@ import Home from "./app/views/storefront/Home/Home";
 import Shop from "./app/views/storefront/Shop/Shop";
 import ProductList from "./app/views/storefront/Products/ProductList";
 import Blog from "./app/views/storefront/Blog/Blog";
+import ProductDetails from "./app/views/storefront/Products/ProductDetails";
 
 // Lazy load other components
 const About = lazy(() => import("./app/views/storefront/About/Index"));
@@ -22,6 +23,7 @@ const routes = [
       { path: "contact", element: <Contact /> },
       { path: "shop", element: <Shop /> },
       { path: "products", element: <ProductList /> },
+      { path: "/products/:id", element: <ProductDetails /> },
       { path: "blog", element: <Blog /> },
     ],
   },

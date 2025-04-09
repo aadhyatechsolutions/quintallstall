@@ -75,9 +75,9 @@ const Shop = () => {
         Shop Listings
       </Typography>
 
-      <Grid container spacing={2} justifyContent="center">
+      <Grid container rowSpacing={4} columnSpacing={2} justifyContent="center">
         {shops.map((shop, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
+          <Grid key={index}>
             <Box
               sx={{
                 height: "100%",

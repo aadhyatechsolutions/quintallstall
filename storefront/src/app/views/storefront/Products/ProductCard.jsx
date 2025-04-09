@@ -14,9 +14,16 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShareIcon from "@mui/icons-material/Share";
+import { useNavigate } from "react-router-dom";
+import { useCartStore } from "../../../../store/cartStore";
 
 const ProductCard = ({ product }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const addToCart = useCartStore((state) => state.addToCart);
+  const handleCardClick = () => {
+    navigate(`/products/${product.id}`);
+  };
 
   return (
     <Paper
@@ -30,6 +37,7 @@ const ProductCard = ({ product }) => {
         flexDirection: "column",
         position: "relative",
         transition: "all 0.3s ease",
+        cursor: "pointer",
         "&:hover": {
           transform: "translateY(-6px)",
           boxShadow: theme.shadows[6],
@@ -61,6 +69,7 @@ const ProductCard = ({ product }) => {
         height="175"
         image={product.image}
         alt={product.name}
+        onClick={handleCardClick}
         sx={{ objectFit: "cover" }}
       />
 
@@ -200,6 +209,7 @@ const ProductCard = ({ product }) => {
             color="error"
             size="small"
             startIcon={<ShoppingCartIcon />}
+            onClick={() => addToCart(product)}
             sx={{
               borderRadius: 2,
               px: 2,
@@ -211,7 +221,7 @@ const ProductCard = ({ product }) => {
               },
             }}
           >
-            Add
+            add to cart
           </Button>
         </Box>
       </CardContent>

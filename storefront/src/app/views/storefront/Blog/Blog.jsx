@@ -40,7 +40,7 @@ function Blog() {
 
       <Grid container spacing={4} justifyContent="center">
         {blogPosts.map((post, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index} sx={{ display: "flex" }}>
+          <Grid key={index} sx={{ display: "flex" }}>
             <BlogCard {...post} />
           </Grid>
         ))}

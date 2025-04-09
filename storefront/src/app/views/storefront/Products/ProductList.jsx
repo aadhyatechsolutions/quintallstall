@@ -1,26 +1,15 @@
 import React from "react";
-import {
-  Box,
-  Grid,
-  Typography,
-  Container,
-  Tabs,
-  Tab,
-  Button,
-} from "@mui/material";
+import { Box, Grid, Typography, Container, Button } from "@mui/material";
 import ProductCard from "./ProductCard";
-import { productsList } from "./products";
+import { useProducts } from "../../../../hooks/useProducts";
 
 const ProductList = () => {
   const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const { data: products = [], isLoading, error } = useProducts();
 
   return (
     <Container maxWidth="xl" sx={{ py: 6, px: { xs: 2, sm: 3 } }}>
-      {/* Title & Tabs */}
+      {/* Title */}
       <Box sx={{ textAlign: "center", mb: 6 }}>
         <Typography
           variant="h3"
@@ -38,23 +27,18 @@ const ProductList = () => {
       </Box>
 
       {/* Product Cards */}
-      <Grid container spacing={1}>
-        {productsList.map((product) => (
+      <Grid container rowSpacing={2} columnSpacing={1} justifyContent="center">
+        {products.map((product) => (
           <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={3}
             key={product.id}
-            sx={{ display: "flex" }}
+            sx={{ display: "flex", justifyContent: "center" }}
           >
             <ProductCard product={product} />
           </Grid>
         ))}
       </Grid>
 
-      {/* Load More */}
+      {/* Load More Button */}
       <Box sx={{ textAlign: "center", mt: 6 }}>
         <Button
           variant="outlined"

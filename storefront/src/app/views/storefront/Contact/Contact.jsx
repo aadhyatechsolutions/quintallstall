@@ -88,9 +88,9 @@ const Contact = () => {
       </Paper>
 
       {/* Contact Form & Info */}
-      <Grid container spacing={5} sx={{ mb: 10 }}>
-        {/* Form */}
-        <Grid item xs={12} md={7}>
+      <Grid container spacing={5} sx={{ mb: 10 }} columns={{ xs: 12, md: 12 }}>
+        {/* Contact Form */}
+        <Grid sx={{ gridColumn: { xs: "span 12", md: "span 6" } }}>
           <Paper
             elevation={2}
             sx={{
@@ -102,8 +102,9 @@ const Contact = () => {
               Send Us a Message
             </Typography>
             <Divider sx={{ width: 64, height: 4, bgcolor: "#b6131a", mb: 4 }} />
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
+
+            <Grid container spacing={3} columns={{ xs: 12 }}>
+              <Grid sx={{ gridColumn: "span 12" }}>
                 <TextField
                   label="Your Name"
                   fullWidth
@@ -117,7 +118,8 @@ const Contact = () => {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+
+              <Grid sx={{ gridColumn: "span 12" }}>
                 <TextField
                   label="Email Address"
                   fullWidth
@@ -131,7 +133,8 @@ const Contact = () => {
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
+
+              <Grid sx={{ gridColumn: "span 12" }}>
                 <TextField
                   label="Subject"
                   fullWidth
@@ -145,7 +148,8 @@ const Contact = () => {
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
+
+              <Grid sx={{ gridColumn: "span 12" }}>
                 <TextField
                   label="Your Message"
                   multiline
@@ -154,7 +158,8 @@ const Contact = () => {
                   variant="outlined"
                 />
               </Grid>
-              <Grid item xs={12}>
+
+              <Grid sx={{ gridColumn: "span 12" }}>
                 <Button
                   variant="contained"
                   size="large"
@@ -176,7 +181,9 @@ const Contact = () => {
         </Grid>
 
         {/* Contact Info */}
-        <Grid item xs={12} md={7} sx={{ width: "100%" }}>
+        <Grid
+          sx={{ gridColumn: { width: "100%", xs: "span 12", md: "span 6" } }}
+        >
           <Paper
             elevation={2}
             sx={{
@@ -205,18 +212,14 @@ const Contact = () => {
               }}
             />
 
-            <Grid container spacing={4} justifyContent="center">
+            <Grid container spacing={4} columns={{ xs: 12 }}>
               {/* Phone */}
-              <Grid item xs={12} md={6}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    p: 2,
-                    borderRadius: 2,
-                    height: "100%",
-                  }}
-                >
+              <Grid
+                sx={{
+                  gridColumn: { xs: "span 12", sm: "span 6", md: "span 12" },
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "flex-start", p: 2 }}>
                   <Avatar sx={{ bgcolor: "primary.main", mr: 2 }}>
                     <Phone />
                   </Avatar>
@@ -233,16 +236,12 @@ const Contact = () => {
               </Grid>
 
               {/* Email */}
-              <Grid item xs={12} md={6}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    p: 2,
-                    borderRadius: 2,
-                    height: "100%",
-                  }}
-                >
+              <Grid
+                sx={{
+                  gridColumn: { xs: "span 12", sm: "span 6", md: "span 12" },
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "flex-start", p: 2 }}>
                   <Avatar sx={{ bgcolor: "primary.main", mr: 2 }}>
                     <Email />
                   </Avatar>
@@ -259,16 +258,8 @@ const Contact = () => {
               </Grid>
 
               {/* Address */}
-              <Grid item xs={12} md={6}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    p: 2,
-                    borderRadius: 2,
-                    height: "100%",
-                  }}
-                >
+              <Grid sx={{ gridColumn: "span 12" }}>
+                <Box sx={{ display: "flex", alignItems: "flex-start", p: 2 }}>
                   <Avatar sx={{ bgcolor: "primary.main", mr: 2 }}>
                     <LocationOn />
                   </Avatar>
@@ -291,7 +282,6 @@ const Contact = () => {
         </Grid>
       </Grid>
 
-      {/* Map Section */}
       {/* Map Section */}
       <Box sx={{ mb: 10 }}>
         <Typography

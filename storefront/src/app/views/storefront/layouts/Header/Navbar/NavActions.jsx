@@ -17,13 +17,21 @@ import {
 } from "@mui/icons-material";
 
 import { useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
+import { useCartStore } from "../../../../../../store/cartStore";
 
-import { useState } from "react";
+// import CartDialog from "../../../Cart/CartDialog/CartDialog";
+import CartPopover from "../../../Cart/CartDialog/CartPopover";
 
 const NavActions = ({ isLargeScreen }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
+  const [cartDialogOpen, setCartDialogOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const cartAnchorRef = useRef(null);
   const open = Boolean(anchorEl);
+  const cart = useCartStore((state) => state.cart);
+  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   const handleHover = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,6 +40,9 @@ const NavActions = ({ isLargeScreen }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleCartHover = () => setCartDialogOpen(true);
+  const handleCartLeave = () => setCartDialogOpen(false);
+
   const handleLogin = () => {
     const baseUrl = window.location.origin;
     window.location.href = `${baseUrl}/admin/session/signin`;
@@ -64,19 +75,37 @@ const NavActions = ({ isLargeScreen }) => {
 
       <Tooltip title="Wishlist">
         <IconButton sx={{ color: "black", "&:hover": { color: "#2b4a04" } }}>
-          <Badge badgeContent={4} color="primary">
+          <Badge badgeContent={4} color="error">
             <FavoriteBorder fontSize={isLargeScreen ? "medium" : "small"} />
           </Badge>
         </IconButton>
       </Tooltip>
 
-      <Tooltip title="Cart">
-        <IconButton sx={{ color: "black", "&:hover": { color: "#2b4a04" } }}>
-          <Badge badgeContent={2} color="primary">
-            <ShoppingCart fontSize={isLargeScreen ? "medium" : "small"} />
-          </Badge>
-        </IconButton>
-      </Tooltip>
+      {/* Cart Icon + Hover Logic */}
+      <Box
+        onMouseEnter={handleCartHover}
+        onMouseLeave={handleCartLeave}
+        style={{ display: "inline-block", position: "relative" }}
+      >
+        <Tooltip>
+          <IconButton
+            ref={cartAnchorRef}
+            sx={{ color: "black", "&:hover": { color: "#2b4a04" } }}
+          >
+            <Badge badgeContent={cartCount} color="error">
+              <ShoppingCart fontSize={isLargeScreen ? "medium" : "small"} />
+            </Badge>
+          </IconButton>
+        </Tooltip>
+
+        <CartPopover
+          open={cartDialogOpen}
+          onClose={() => setCartDialogOpen(false)}
+          onMouseEnter={handleCartHover}
+          onMouseLeave={handleCartLeave}
+          anchorEl={cartAnchorRef.current}
+        />
+      </Box>
 
       <Box
         onMouseEnter={handleHover}

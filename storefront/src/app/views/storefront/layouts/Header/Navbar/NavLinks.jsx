@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Box, Button, Tooltip, Menu, MenuItem, Badge } from "@mui/material";
 import { ArrowDropDown } from "@mui/icons-material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const NavLinks = ({ navItems }) => {
   const [anchorEls, setAnchorEls] = useState({});
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClick = (event, itemId) => {
     setAnchorEls((prev) => ({ ...prev, [itemId]: event.currentTarget }));
@@ -13,6 +14,10 @@ const NavLinks = ({ navItems }) => {
 
   const handleClose = (itemId) => {
     setAnchorEls((prev) => ({ ...prev, [itemId]: null }));
+  };
+
+  const isActive = (path) => {
+    return location.pathname === path;
   };
 
   return (
@@ -26,11 +31,6 @@ const NavLinks = ({ navItems }) => {
           padding: { md: "4px 6px", lg: "6px 8px" },
           minWidth: "auto",
           borderRadius: 0,
-          color: "black",
-          "&:hover": {
-            backgroundColor: "rgba(43, 74, 4, 0.08)",
-            color: "#2b4a04",
-          },
           fontSize: { md: "0.85rem", lg: "0.9rem", xl: "0.95rem" },
         },
       }}
@@ -38,10 +38,7 @@ const NavLinks = ({ navItems }) => {
       {navItems.map((item) =>
         item.subItems ? (
           <React.Fragment key={`${item.label}-${item.path}`}>
-            <Tooltip
-              title={item.label}
-              key={`tooltip-${item.label}-${item.path}`}
-            >
+            <Tooltip title={item.label}>
               <Button
                 id={`${item.label}-${item.path}-button`}
                 aria-controls={
@@ -56,9 +53,12 @@ const NavLinks = ({ navItems }) => {
                   <ArrowDropDown sx={{ fontSize: "1rem", color: "black" }} />
                 }
                 sx={{
-                  fontWeight:
-                    item.label === "Create Account" ? "bold" : "normal",
-                  "&:hover": { color: "#2b4a04 !important" },
+                  color: isActive(item.path) ? "#b6131a" : "black",
+                  fontWeight: isActive(item.path) ? "bold" : "normal",
+                  "&:hover": {
+                    color: "#b6131a",
+                    backgroundColor: "rgba(182, 19, 26, 0.05)",
+                  },
                 }}
               >
                 {item.label}
@@ -77,7 +77,8 @@ const NavLinks = ({ navItems }) => {
                   minWidth: 160,
                   "& .MuiMenuItem-root": {
                     color: "black",
-                    "&:hover": { color: "#2b4a04" },
+                    fontSize: "0.9rem",
+                    "&:hover": { color: "#b6131a" },
                   },
                 },
               }}
@@ -87,9 +88,12 @@ const NavLinks = ({ navItems }) => {
                   key={`${subItem.label}-${subItem.path}`}
                   onClick={() => {
                     handleClose(item.id);
-                    navigate(subItem.path); // ✅ Navigate without reload
+                    navigate(subItem.path);
                   }}
-                  sx={{ fontSize: "0.9rem" }}
+                  sx={{
+                    color: isActive(subItem.path) ? "#b6131a" : "black",
+                    fontWeight: isActive(subItem.path) ? "bold" : "normal",
+                  }}
                 >
                   {subItem.label}
                 </MenuItem>
@@ -99,10 +103,17 @@ const NavLinks = ({ navItems }) => {
         ) : (
           <Button
             key={`${item.label}-${item.path}`}
-            component={Link} // ✅ Use React Router's Link
+            component={Link}
             to={item.path}
             disabled={item.disabled}
-            sx={{ "&:hover": { color: "#2b4a04 !important" } }}
+            sx={{
+              color: isActive(item.path) ? "#b6131a" : "black",
+              fontWeight: isActive(item.path) ? "normal" : "normal",
+              "&:hover": {
+                color: "#b6131a",
+                backgroundColor: "rgba(182, 19, 26, 0.05)",
+              },
+            }}
           >
             {item.label}
           </Button>
