@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApmcController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
@@ -35,7 +36,8 @@ Route::post('auth/verifyOtp', [AuthController::class, 'verifyOtp']);
 Route::middleware(['auth:api'])->get('auth/profile', [AuthController::class, 'profile']);
 
 Route::resource('apmcs', ApmcController::class);
-Route::resource('role', RoleController::class);
+Route::resource('roles', RoleController::class);
+Route::resource('users', UserController::class);
 Route::resource('products', ProductController::class);
 Route::resource('categories', CategoryController::class);
 

@@ -21,8 +21,10 @@ import CategoryCreate from "../features/category/CategoryCreate";
 import CategoryView from "../features/category/CategoryView";
 import CategoryEdit from "../features/category/CategoryEdit";
 
-import WholeSellerCreate from "./components/WholeSeller/WholeSellerUser/Create";
-import WholeSellerView from "./components/WholeSeller/WholeSellerUser/View";
+import WholeSalerCreate from "../features/wholesaler/WholesalerCreate";
+import WholeSalerView from "../features/wholesaler/WholesalerView";
+import WholeSalerEdit from "../features/wholesaler/WholesalerEdit";
+
 import WholeSellerKYCList from "./components/WholeSeller/WholeSellerKYCList";
 
 import ProductList from "./components/WholeSeller/ProductList";
@@ -109,8 +111,10 @@ const routes = [
       { path: "/features/category/create", element: <CategoryCreate /> },
       { path: "/features/category/edit/:id", element: <CategoryEdit /> },
 
-      { path: "/wholeseller/wholeseller-user/create", element: <WholeSellerCreate />, },
-      { path: "/wholeseller/wholeseller-user/view", element: <WholeSellerView />, },
+      { path: "/features/wholesaler/create", element: <WholeSalerCreate />, },
+      { path: "/features/wholesaler/view", element: <WholeSalerView />, },
+      { path: "/features/wholesaler/edit/:id", element: <WholeSalerEdit />, },
+
       { path: "/wholeseller/wholeseller-kyc", element: <WholeSellerKYCList /> },
       { path: "/wholeseller/view-products", element: <ProductList /> },
 

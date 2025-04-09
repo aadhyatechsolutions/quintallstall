@@ -45,7 +45,7 @@ export default function ContactDetailsForm({ formData, setFormData, setStep, set
   useEffect(() => {
       const fetchRoles = async () => {
         try {
-          const { data } = await axiosInstance.get("/role");
+          const { data } = await axiosInstance.get("/roles");
           setRoles(data);
         } catch (error) {
           console.error("Error fetching roles:", error);

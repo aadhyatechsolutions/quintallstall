@@ -52,8 +52,8 @@ const navigations = [
         name: "WholeSeller User", 
         icon: "apps",
         children: [
-          { name: "Create", path: "/wholeseller/wholeseller-user/create", iconText: "A" },
-          { name: "View", path: "/wholeseller/wholeseller-user/view", iconText: "A" },
+          { name: "Create", path: "/features/wholesaler/create", iconText: "A" },
+          { name: "View", path: "/features/wholesaler/view", iconText: "A" },
         ] 
       },
       { name: "View Products", path: "/wholeseller/view-products", icon: "assignment" },
