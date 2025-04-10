@@ -39,6 +39,7 @@ Route::resource('apmcs', ApmcController::class);
 Route::resource('roles', RoleController::class);
 Route::resource('users', UserController::class);
 Route::resource('products', ProductController::class);
+Route::get('products/role/{slug}', [ProductController::class, 'getProductsByRoleSlug']);
 Route::resource('categories', CategoryController::class);
 
 Route::get('test', [TestController::class,'test']);

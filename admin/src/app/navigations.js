@@ -56,7 +56,7 @@ const navigations = [
           { name: "View", path: "/features/wholesaler/view", iconText: "A" },
         ] 
       },
-      { name: "View Products", path: "/wholeseller/view-products", icon: "assignment" },
+      { name: "View Products", path: "/wholesaler/view-products", icon: "assignment" },
       { name: "WholeSeller KYC", path: "/wholeseller/wholeseller-kyc", icon: "assignment" },
     ]
   },

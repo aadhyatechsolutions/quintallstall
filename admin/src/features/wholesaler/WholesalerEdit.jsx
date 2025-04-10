@@ -73,6 +73,7 @@ export default function EditWholesaler() {
     fetchApmcs(); 
     fetchUserById(id);
   }, [fetchApmcs, fetchUserById, id]);
+  
   useEffect(() => {
     if (currentUser) {
       setFormData({

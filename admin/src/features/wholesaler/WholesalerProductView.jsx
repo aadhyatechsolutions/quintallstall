@@ -15,12 +15,12 @@ const Container = styled("div")(({ theme }) => ({
 }));
 
 export default function View() {
-  const { products, loading, error, fetchProducts, deleteProduct } = useProductStore();
+  const { products, loading, error, fetchProductsBySlug, deleteProduct } = useProductStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+    fetchProductsBySlug('wholesaler');
+  }, [fetchProductsBySlug]);
 
   const handleDelete = (id) => {
     deleteProduct(id);
@@ -31,19 +31,19 @@ export default function View() {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 100 },
-    { field: "name", headerName: "Product Name", width: 200 },
-    { field: "category", headerName: "Category", width: 150 },
+    { field: "id", headerName: "ID", width: 150 },
+    { field: "name", headerName: "Product Name", width: 300 },
+    { field: "category", headerName: "Category", width: 200 },
     { field: "description", headerName: "Description", width: 300 },
-    { field: "price", headerName: "Price", width: 100 }, 
+    
+    { field: "price", headerName: "Price", width: 150 }, 
     { field: "quantity", headerName: "Quantity", width: 100 },
     { field: "unit", headerName: "Unit", width: 100 },
-    { field: "user", headerName: "Vendor Name", width: 150 },   
-    { field: "role", headerName: "Vendor Type", width: 150 }, 
+    { field: "user", headerName: "User", width: 200 },
     {
       field: 'image',
       headerName: 'Image',
-      width: 150,
+      width: 200,
       renderCell: (params) => (
         <img src={params.value} alt="Product" style={{ width: 50, height: 50, objectFit: 'cover' }} />
       ),
@@ -84,9 +84,10 @@ export default function View() {
     price: product.price,
     quantity: product.quantity,
     unit: product.unit,    
-    user: product.user?.first_name,
-    role: product.user?.roles[0]?.name || "No role",
     image: product.image,
+    user:product.user && product.user.roles.length > 0 
+        ? product.user.roles.map(role => role.name).join(', ') 
+        : 'N/A'
   }));
 
   if (error) {
@@ -103,14 +104,14 @@ export default function View() {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            disableSelectionOnClick
-            checkboxSelection
-          />
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              disableSelectionOnClick
+              checkboxSelection
+            />
         )}
       </SimpleCard>
     </Container>

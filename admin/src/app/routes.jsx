@@ -24,6 +24,7 @@ import CategoryEdit from "../features/category/CategoryEdit";
 import WholeSalerCreate from "../features/wholesaler/WholesalerCreate";
 import WholeSalerView from "../features/wholesaler/WholesalerView";
 import WholeSalerEdit from "../features/wholesaler/WholesalerEdit";
+import WholeSalerProductView from "../features/wholesaler/WholesalerProductView";
 
 import WholeSellerKYCList from "./components/WholeSeller/WholeSellerKYCList";
 
@@ -115,8 +116,8 @@ const routes = [
       { path: "/features/wholesaler/view", element: <WholeSalerView />, },
       { path: "/features/wholesaler/edit/:id", element: <WholeSalerEdit />, },
 
+      { path: "/wholesaler/view-products", element: <WholeSalerProductView /> },
       { path: "/wholeseller/wholeseller-kyc", element: <WholeSellerKYCList /> },
-      { path: "/wholeseller/view-products", element: <ProductList /> },
 
       { path: "/retailer/retailer-user/create", element: <RetailerCreate /> },
       { path: "/retailer/retailer-user/view", element: <RetailerView /> },
