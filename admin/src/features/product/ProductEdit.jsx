@@ -17,7 +17,8 @@ import { Breadcrumb, SimpleCard } from "app/components";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useProductStore from "../../store/product/productStore";
-import useCategoryStore from "../../store/category/categoryStore"; 
+import useCategoryStore from "../../store/category/categoryStore";
+import useUserStore from "../../store/user/userStore"; // Assuming you have a store for users
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -29,10 +30,11 @@ const Container = styled("div")(({ theme }) => ({
 }));
 
 export default function EditProduct() {
-  const { id } = useParams();
+  const { id } = useParams(); // Get product ID from URL params
   const navigate = useNavigate();
-  const { products, updateProduct } = useProductStore();
-  const { fetchCategories, categories, loading, error } = useCategoryStore();
+  const { fetchProductById, updateProduct } = useProductStore(); // Use Zustand store for product
+  const { fetchCategories, categories, loading, error } = useCategoryStore(); // For category data
+  const { fetchUsers, users } = useUserStore(); // Assuming you have a user store
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -43,25 +45,47 @@ export default function EditProduct() {
     name: "",
     category: "",
     description: "",
+    price: "", // Added price to form data
     image: null,
+    user: "", // Added user to form data
+    quantity: "", // Quantity field
+    unit: "kg", // Unit field with default "kg"
+    status: "active", // Status field with default "active"
   });
 
+  // Fetch categories and users from the server
   useEffect(() => {
     fetchCategories();
-  }, [fetchCategories]);
-  // Find current product
-  const currentProduct = products.find((p) => p.id === parseInt(id));
+    fetchUsers(); // Assuming you fetch users from an API or store
+  }, [fetchCategories, fetchUsers]);
 
+  // Fetch product data using the ID
   useEffect(() => {
-    if (currentProduct) {
-      setFormData({
-        name: currentProduct.name,
-        category: currentProduct.category,
-        description: currentProduct.description,
-        image: null,
-      });
-    }
-  }, [currentProduct]);
+    const loadProduct = async () => {
+      try {
+        const product = await fetchProductById(id); // Fetch product by ID from store
+        setFormData({
+          name: product.name,
+          category: product.category.id, // Assuming category has an 'id'
+          description: product.description,
+          price: product.price, // Set the price of the product
+          image: null, // Don't pre-populate image, allow user to upload a new one
+          user: product.user.id, // Assuming user has an 'id'
+          quantity: product.quantity || "", // Assuming quantity exists on the product
+          unit: product.unit || "kg", // Set unit if available
+          status: product.status || "active", // Set status if available
+        });
+      } catch (error) {
+        setSnackbar({
+          open: true,
+          message: "Failed to load product data.",
+          severity: "error",
+        });
+      }
+    };
+
+    loadProduct();
+  }, [id, fetchProductById]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,22 +98,22 @@ export default function EditProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    var data = new FormData();
+    let data = new FormData();
+
+    // If there's an image, append it to the form data
     if (formData.image) {
       for (const key in formData) {
         if (formData.hasOwnProperty(key)) {
           data.append(key, formData[key]);
         }
       }
-      data.append('_method', 'put');
-    }else{
-      data = { ...formData, '_method' :'put' };
+      data.append("_method", "put");
+    } else {
+      data = { ...formData, _method: "put" }; // If no image, just send the form data
     }
 
     try {
-
-      await updateProduct(data, parseInt(id));
-
+      await updateProduct(data, id); // Update the product using the ID
       setSnackbar({
         open: true,
         message: "Product updated successfully!",
@@ -105,14 +129,6 @@ export default function EditProduct() {
       });
     }
   };
-
-  if (!currentProduct) {
-    return (
-      <Container>
-        <Alert severity="error">Product not found</Alert>
-      </Container>
-    );
-  }
 
   return (
     <Container>
@@ -174,6 +190,84 @@ export default function EditProduct() {
                 rows={4}
                 required
               />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Price"
+                name="price"
+                type="number"
+                value={formData.price}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Quantity"
+                name="quantity"
+                type="number"
+                value={formData.quantity}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth required>
+                <InputLabel>Unit</InputLabel>
+                <Select
+                  name="unit"
+                  value={formData.unit}
+                  onChange={handleChange}
+                  label="Unit"
+                >
+                  <MenuItem value="kg">Kg</MenuItem>
+                  <MenuItem value="gram">Gram</MenuItem>
+                  <MenuItem value="quintal">Quintal</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth required>
+                <InputLabel>Status</InputLabel>
+                <Select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  label="Status"
+                >
+                  <MenuItem value="active">Active</MenuItem>
+                  <MenuItem value="inactive">Inactive</MenuItem>
+                  <MenuItem value="pending">Pending</MenuItem> {/* Example additional status */}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth required>
+                <InputLabel>Vendor Name</InputLabel>
+                <Select
+                  name="user"
+                  value={formData.user}
+                  onChange={handleChange}
+                  label="User"
+                >
+                  {users.length === 0 ? (
+                    <MenuItem disabled>Loading...</MenuItem>
+                  ) : (
+                    users.map((user) => (
+                      <MenuItem key={user.id} value={user.id}>
+                        {user.first_name}
+                      </MenuItem>
+                    ))
+                  )}
+                </Select>
+              </FormControl>
             </Grid>
 
             <Grid item xs={12}>

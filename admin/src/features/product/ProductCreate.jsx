@@ -19,6 +19,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useProductStore from "../../store/product/productStore";
 import useCategoryStore from "../../store/category/categoryStore"; 
+import useUserStore from "../../store/user/userStore";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -33,11 +34,17 @@ export default function Create() {
   const navigate = useNavigate();
   const { addProduct } = useProductStore();
   const { fetchCategories, categories, loading, error } = useCategoryStore();
+  const { fetchUsers, users } = useUserStore();
 
   const [formData, setFormData] = useState({
     name: "",
     category: "",
     description: "",
+    price: "",  
+    quantity: "",   
+    unit: "kg",     
+    status: "active", 
+    user: "", 
     image: null,
   });
 
@@ -50,7 +57,8 @@ export default function Create() {
 
   useEffect(() => {
     fetchCategories();
-  }, [fetchCategories]);
+    fetchUsers();
+  }, [fetchCategories, fetchUsers]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -156,7 +164,79 @@ export default function Create() {
                 required
               />
             </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Price"
+                name="price"
+                type="number"
+                value={formData.price}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Quantity"
+                name="quantity"
+                type="number"
+                value={formData.quantity}
+                onChange={handleChange}
+                required
+              />
+            </Grid>
 
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth required>
+                <InputLabel>Unit</InputLabel>
+                <Select
+                  name="unit"
+                  value={formData.unit}
+                  onChange={handleChange}
+                  label="Unit"
+                >
+                  <MenuItem value="kg">Kg</MenuItem>
+                  <MenuItem value="gram">Gram</MenuItem>
+                  <MenuItem value="quintal">Quintal</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth required>
+                <InputLabel>Status</InputLabel>
+                <Select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  label="Status"
+                >
+                  <MenuItem value="active">Active</MenuItem>
+                  <MenuItem value="inactive">Inactive</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth required>
+                <InputLabel>Vendor Name</InputLabel>
+                <Select
+                  name="user"
+                  value={formData.user}
+                  onChange={handleChange}
+                  label="User"
+                >
+                  {users.length === 0 ? (
+                    <MenuItem disabled>Loading...</MenuItem>
+                  ) : (
+                    users.map((user) => (
+                      <MenuItem key={user.id} value={user.id}>
+                        {user.first_name} {user.last_name}
+                      </MenuItem>
+                    ))
+                  )}
+                </Select>
+              </FormControl>
+            </Grid>
             <Grid item xs={12}>
               <Button
                 variant="outlined"

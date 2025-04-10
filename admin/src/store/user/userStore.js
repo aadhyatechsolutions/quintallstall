@@ -1,27 +1,38 @@
 import {create} from "zustand";
-import { fetchUsersByRole, fetchUserById, createUser, updateUser, deleteUser } from "./userApi";
+import { fetchUsers, fetchUsersByRole, fetchUserById, createUser, updateUser, deleteUser } from "./userApi";
 
 const useUserStore = create((set) => ({
     users: [],
     isLoading: false,
     error: null,
     
+    fetchUsers: async () => {
+        set({ isLoading: true });
+        try {
+          const users = await fetchUsers(); 
+          set({ users }); 
+        } catch (error) {
+          set({ error: error.message });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
     fetchUserById: async (userId) => {
         set({ isLoading: true });
         try {
-            const user = await fetchUserById(userId); // Fetch user by ID
-            set({ currentUser: user }); // Set the user data in state
+            const user = await fetchUserById(userId); 
+            set({ currentUser: user }); 
         } catch (error) {
             set({ error: error.message });
         } finally {
             set({ isLoading: false });
         }
     },
-    // Fetch users by role or all users if no role is provided
+    
     fetchUsersByRole: async (role = '') => {
         set({ isLoading: true });
         try {
-            const users = await fetchUsersByRole(role); // Pass role or empty string to fetch all users
+            const users = await fetchUsersByRole(role); 
             set({ users });
         } catch (error) {
             set({ error: error.message });
@@ -30,7 +41,7 @@ const useUserStore = create((set) => ({
         }
     },
     
-    // Create a new user with a specific role
+    
     createUser: async (userData, role) => {
         set({ isLoading: true });
         try {
@@ -43,7 +54,7 @@ const useUserStore = create((set) => ({
         }
     },
     
-    // Update an existing user
+    
     updateUser: async (userId, userData, role) => {
         set({ isLoading: true });
         try {
@@ -58,7 +69,7 @@ const useUserStore = create((set) => ({
         }
     },
     
-    // Delete a user
+    
     deleteUser: async (userId) => {
         set({ isLoading: true });
         try {

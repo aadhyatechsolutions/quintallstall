@@ -1,5 +1,13 @@
 import axiosInstance from "../../utils/axiosInstance";
 
+export const fetchUsers = async () => {
+    const { data, status } = await axiosInstance.get('/users');
+    if (status !== 200) {
+        throw new Error('Failed to fetch users');
+    }
+    return data.users;
+};
+
 export const fetchUserById = async (userId) => {
     if (!userId) {
         throw new Error('User ID is required');

@@ -1,10 +1,11 @@
 import {create} from 'zustand';
-import { fetchProducts, updateProduct, deleteProduct, addProduct } from './productApi'; 
+import { fetchProducts, updateProduct, deleteProduct, addProduct, fetchProductsBySlug, fetchProductById } from './productApi'; 
 
 const useProductStore = create((set) => ({
   products: [],
   loading: false,
   error: null,
+  currentProduct: null,
 
   fetchProducts: async () => {
     set({ loading: true, error: null });
@@ -59,6 +60,28 @@ const useProductStore = create((set) => ({
       throw err; 
     }
     
+  },
+  fetchProductsBySlug: async (slug) => {
+    set({ loading: true, error: null });
+    try {
+      const products = await fetchProductsBySlug(slug);
+      set({ products });
+    } catch (err) {
+      set({ error: err.message });
+    } finally {
+      set({ loading: false });
+    }
+  },
+  fetchProductById: async (id) => {
+    set({ loading: true, error: null });
+    try {
+      const product = await fetchProductById(id);  
+      return product;
+    } catch (err) {
+      set({ error: err.message });
+    } finally {
+      set({ loading: false });
+    }
   },
 }));
 

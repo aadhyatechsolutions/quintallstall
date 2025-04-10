@@ -56,4 +56,26 @@ export const fetchProducts = async () => {
       throw new Error(error.response?.data?.message || 'Failed to delete product');
     }
   };
+  export const fetchProductsBySlug = async (slug) => {
+    try {
+      const { data, status } = await axiosInstance.get(`/products/role/${slug}`);
+      if (status !== 200) {
+        throw new Error('Failed to fetch products by slug');
+      }
+      return data.products;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch products by slug');
+    }
+  };
+  export const fetchProductById = async (id) => {
+    try {
+      const { data, status } = await axiosInstance.get(`/products/${id}`);
+      if (status !== 200) {
+        throw new Error('Failed to fetch products by id');
+      }
+      return data.product;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch products by id');
+    }
+  };
   

@@ -27,8 +27,8 @@ class UserSeeder extends Seeder
             'last_name' => 'Doe',
             'business_name' => 'Admin Business',
             'phone_number' => '1234567890',
-            'email' => 'john.doe@admin.com',
-            'password' => bcrypt('password'),
+            'email' => 'jason@ui-lib.com',
+            'password' => bcrypt('dummyPass'),
             'profile_image' => 'profile1.jpg',
             'address_id' => Address::inRandomOrder()->first()->id, // Random address ID
             'bank_account_id' => BankAccount::inRandomOrder()->first()->id, // Random bank account ID
@@ -45,8 +45,8 @@ class UserSeeder extends Seeder
             'last_name' => 'Smith',
             'business_name' => 'Wholesaler Business',
             'phone_number' => '2345678901',
-            'email' => 'jason@ui-lib.com',
-            'password' => bcrypt('dummyPass'),
+            'email' => 'alice.smith@wholesaler.com',
+            'password' => bcrypt('password'),
             'profile_image' => 'profile2.jpg',
             'address_id' => Address::inRandomOrder()->first()->id,
             'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
