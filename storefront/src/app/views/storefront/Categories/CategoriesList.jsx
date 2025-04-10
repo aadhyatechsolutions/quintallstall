@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import { useCategories } from "../../../../hooks/useCategories";
 import { Box, Typography, CircularProgress, Alert, Paper } from "@mui/material";
-
+import { apiConfig } from "../../../../config";
 const CategoriesList = () => {
   const { data: categories = [], isLoading, error } = useCategories();
 
@@ -113,7 +113,7 @@ const CategoriesList = () => {
                     mb: 2,
                     borderRadius: 1,
                     backgroundColor: "grey.100",
-                    backgroundImage: `url(${category.image})`,
+                    backgroundImage: `url(${apiConfig.MEDIA_URL}${category.image})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}

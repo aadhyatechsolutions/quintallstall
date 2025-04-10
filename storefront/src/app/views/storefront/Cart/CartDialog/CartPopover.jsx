@@ -15,7 +15,7 @@ import {
 import { Close } from "@mui/icons-material";
 import { useCartStore } from "../../../../../store/cartStore";
 import { useNavigate } from "react-router-dom";
-
+import { apiConfig } from "../../../../../config";
 const CartPopover = ({
   open,
   anchorEl,
@@ -92,7 +92,7 @@ const CartPopover = ({
                       }
                     >
                       <Avatar
-                        src={item.image}
+                        src={`${apiConfig.MEDIA_URL}${item.image}`}
                         alt={item.name}
                         variant="rounded"
                         sx={{ width: 48, height: 48, mr: 1 }}

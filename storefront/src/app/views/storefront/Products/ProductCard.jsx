@@ -1,4 +1,5 @@
 import React from "react";
+import { apiConfig } from "../../../../config";
 import {
   Paper,
   Typography,
@@ -128,7 +129,7 @@ const ProductCard = ({ product }) => {
         <CardMedia
           component="img"
           height="175"
-          image={product.image}
+          image={`${apiConfig.MEDIA_URL}${product.image}`}
           alt={product.name}
           onClick={handleCardClick}
           sx={{ objectFit: "cover" }}

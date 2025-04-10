@@ -3,6 +3,7 @@ import { Box, Typography, Card, CardMedia, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { apiConfig } from "../../../../config";
 
 const CartItem = ({ item, onRemove, onIncrease, onDecrease }) => (
   <Card
@@ -17,7 +18,7 @@ const CartItem = ({ item, onRemove, onIncrease, onDecrease }) => (
     <CardMedia
       component="img"
       sx={{ width: 70, height: 70, borderRadius: 2, mr: 2 }}
-      image={item.image}
+      image={`${apiConfig.MEDIA_URL}${item.image}`}
       alt={item.name}
     />
     <Box sx={{ flex: 1 }}>
