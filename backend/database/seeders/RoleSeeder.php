@@ -17,7 +17,21 @@ class RoleSeeder extends Seeder
             'slug' => 'admin',
             'description' => 'Administrator role',
         ]);
-
+        Role::create([
+            'name' => 'Wholesaler',
+            'slug' => 'wholesaler',
+            'description' => 'Administrator role',
+        ]);
+        Role::create([
+            'name' => 'Retailer',
+            'slug' => 'retailer',
+            'description' => 'Administrator role',
+        ]);
+        Role::create([
+            'name' => 'Delivery',
+            'slug' => 'delivery',
+            'description' => 'Administrator role',
+        ]);
         Role::create([
             'name' => 'User',
             'slug' => 'user',

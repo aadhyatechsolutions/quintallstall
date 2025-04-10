@@ -14,25 +14,6 @@ class ApmcSeeder extends Seeder
      */
     public function run()
     {
-        // Array of data you want to seed into the apmc table
-        $data = [
-            ['name' => 'John Doe', 'location' => 'New York', 'area' => 'Finance'],
-            ['name' => 'Kessy Bryan', 'location' => 'San Francisco', 'area' => 'Tech'],
-            ['name' => 'James Cassegne', 'location' => 'Los Angeles', 'area' => 'Engineering'],
-            ['name' => 'John Doe', 'location' => 'New York', 'area' => 'Finance'],
-            ['name' => 'Kessy Bryan', 'location' => 'San Francisco', 'area' => 'Tech'],
-            ['name' => 'James Cassegne', 'location' => 'Los Angeles', 'area' => 'Engineering'],
-            ['name' => 'John Doe', 'location' => 'New York', 'area' => 'Finance'],
-            ['name' => 'Kessy Bryan', 'location' => 'San Francisco', 'area' => 'Tech'],
-            ['name' => 'James Cassegne', 'location' => 'Los Angeles', 'area' => 'Engineering'],
-            ['name' => 'John Doe', 'location' => 'New York', 'area' => 'Finance'],
-            ['name' => 'Kessy Bryan', 'location' => 'San Francisco', 'area' => 'Tech'],
-            ['name' => 'James Cassegne', 'location' => 'Los Angeles', 'area' => 'Engineering'],
-        ];
-
-        // Insert the data into the apmc table
-        foreach ($data as $apmcData) {
-            Apmc::create($apmcData);
-        }
+        Apmc::factory()->count(50)->create();
     }
 }

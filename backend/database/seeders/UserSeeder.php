@@ -2,88 +2,115 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use App\Models\Role;
+use App\Models\Address;
 use App\Models\Apmc;
 use App\Models\BankAccount;
-use App\Models\Address;
-use App\Models\Role;
 use App\Models\User;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        $apmc = Apmc::create([
-            'name' => 'John Doe', 'location' => 'New York', 'area' => 'Finance'
-        ]);
-        
-        $bankAccount = BankAccount::create([
-            'account_number' => '1234567810',
-            'ifsc_code' => 'IFSC1210',
-            'account_type' => 'Saving',
-            'branch_name' => 'Branch two',
-        ]);
+        // Retrieve the roles by their slugs
+        $adminRole = Role::where('slug', 'admin')->first();
+        $wholesalerRole = Role::where('slug', 'wholesaler')->first();
+        $retailerRole = Role::where('slug', 'retailer')->first();
+        $deliveryRole = Role::where('slug', 'delivery')->first(); // Fetch the delivery role
+        $userRole = Role::where('slug', 'user')->first();
 
-        // Create some roles first
-        $adminRole = Role::create([
-            'name' => 'Admin',
-            'slug' => 'admin',
-            'description' => 'Administrator with full privileges.',
-        ]);
-
-        $userRole = Role::create([
-            'name' => 'User',
-            'slug' => 'user',
-            'description' => 'Regular user with limited privileges.',
-        ]);
-
-        // Create some addresses
-        $address = Address::create([
-            'street' => '123 Main St',
-            'city' => 'Springfield',
-            'state' => 'Illinois',
-            'postal_code' => '62701',
-        ]);
-
-        // Create users and assign them roles and addresses
-        $user1 = User::create([
+        // Create the users
+        $john = User::create([
             'first_name' => 'John',
             'last_name' => 'Doe',
-            'business_name' => 'Doe Enterprises',
+            'business_name' => 'Admin Business',
             'phone_number' => '1234567890',
-            'email' => 'johndoe@example.com',
-            'password' => Hash::make('password123'), // Use a secure password
-            'profile_image' => 'path/to/image.jpg', // Dummy image path
-            'shop_number' => 'A101',
-            'address_id' => $address->id,
-            'apmc_id' => $apmc->id, // Assuming APMC table is already populated
+            'email' => 'john.doe@admin.com',
+            'password' => bcrypt('password'),
+            'profile_image' => 'profile1.jpg',
+            'address_id' => Address::inRandomOrder()->first()->id, // Random address ID
+            'bank_account_id' => BankAccount::inRandomOrder()->first()->id, // Random bank account ID
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        // Assign role to user
-        $user1->roles()->attach($adminRole); // Admin role
+        // Assign roles and apmcs using pivot tables
+        $john->roles()->attach($adminRole->id);
+        $john->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
 
-        // Create another user
-        $user2 = User::create([
-            'first_name' => 'Jane',
+        $alice = User::create([
+            'first_name' => 'Alice',
             'last_name' => 'Smith',
-            'business_name' => 'Smith Consulting',
-            'phone_number' => '9876543210',
-            'email' => 'janesmith@example.com',
-            'password' => Hash::make('password123'),
-            'profile_image' => 'path/to/image2.jpg', // Dummy image path
-            'shop_number' => 'B102',
-            'address_id' => $address->id,
-            'apmc_id' => $apmc->id, 
-            'bank_account_id' => $bankAccount->id// Assuming APMC table is already populated
+            'business_name' => 'Wholesaler Business',
+            'phone_number' => '2345678901',
+            'email' => 'jason@ui-lib.com',
+            'password' => bcrypt('dummyPass'),
+            'profile_image' => 'profile2.jpg',
+            'address_id' => Address::inRandomOrder()->first()->id,
+            'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        // Assign role to user
-        $user2->roles()->attach($userRole); // User role
+        // Assign roles and apmcs using pivot tables
+        $alice->roles()->attach($wholesalerRole->id);
+        $alice->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
 
-        // Add more users as needed
+        $bob = User::create([
+            'first_name' => 'Bob',
+            'last_name' => 'Johnson',
+            'business_name' => 'Retailer Business',
+            'phone_number' => '3456789012',
+            'email' => 'bob.johnson@retailer.com',
+            'password' => bcrypt('password'),
+            'profile_image' => 'profile3.jpg',
+            'address_id' => Address::inRandomOrder()->first()->id,
+            'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Assign roles and apmcs using pivot tables
+        $bob->roles()->attach($retailerRole->id);
+        $bob->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
+
+        $charlie = User::create([
+            'first_name' => 'Charlie',
+            'last_name' => 'Davis',
+            'business_name' => 'User Business',
+            'phone_number' => '4567890123',
+            'email' => 'charlie.davis@user.com',
+            'password' => bcrypt('password'),
+            'profile_image' => 'profile4.jpg',
+            'address_id' => Address::inRandomOrder()->first()->id,
+            'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Assign roles and apmcs using pivot tables
+        $charlie->roles()->attach($userRole->id);
+        $charlie->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
+
+        // Create a user with the delivery role
+        $david = User::create([
+            'first_name' => 'David',
+            'last_name' => 'Lee',
+            'business_name' => 'Delivery Business',
+            'phone_number' => '5678901234',
+            'email' => 'david.lee@delivery.com',
+            'password' => bcrypt('password'),
+            'profile_image' => 'profile5.jpg',
+            'address_id' => Address::inRandomOrder()->first()->id,
+            'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Assign the delivery role to David and attach an APMC
+        $david->roles()->attach($deliveryRole->id);
+        $david->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
     }
 }
