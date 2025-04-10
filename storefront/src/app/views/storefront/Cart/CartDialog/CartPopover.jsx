@@ -27,7 +27,7 @@ const CartPopover = ({
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const navigate = useNavigate();
 
-  const handleViewCart = () => {
+  const handleCartOnClick = () => {
     onClose();
     navigate("/cart");
   };
@@ -120,7 +120,7 @@ const CartPopover = ({
                 <Button
                   variant="outlined"
                   size="small"
-                  onClick={handleViewCart}
+                  onClick={handleCartOnClick}
                   sx={{
                     flex: 1,
                     borderColor: "#a51624",
