@@ -12,13 +12,6 @@ class AddressSeeder extends Seeder
      */
     public function run()
     {
-        Address::create([
-            'street' => '123 Main Street',
-            'city' => 'Cityville',
-            'state' => 'State',
-            'postal_code' => '123456',
-        ]);
-
-        // Add more addresses as needed
+        Address::factory(10)->create();
     }
 }

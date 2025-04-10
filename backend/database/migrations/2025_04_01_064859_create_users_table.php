@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('profile_image')->nullable();
-            $table->string('shop_number')->nullable();
             
             // Foreign key relationships
             $table->foreignId('address_id')->nullable()->constrained('addresses')->onDelete('set null');
