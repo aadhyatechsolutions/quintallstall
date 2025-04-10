@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Breadcrumb, SimpleCard } from "app/components";
 import useCategoryStore from "../../store/category/categoryStore";  // Importing category store
 import { useNavigate } from "react-router-dom";
+import {apiConfig} from 'app/config';
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -39,7 +40,7 @@ export default function CategoryView() {
       headerName: 'Image',
       width: 200,
       renderCell: (params) => (
-        <img src={params.value} alt="Category" style={{ width: 50, height: 50, objectFit: 'cover' }} />
+        <img src={`${apiConfig.MEDIA_URL}${params.value}`} alt="Category" style={{ width: 50, height: 50, objectFit: 'cover' }} />
       ),
     },
     {

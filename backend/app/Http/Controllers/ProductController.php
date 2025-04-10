@@ -32,7 +32,7 @@ class ProductController extends Controller
             $image = $request->file('image');
             if ($image->isValid()) {
                 $imagePath = $image->store('products', 'public');
-                $imageURL = asset('storage/' . $imagePath);
+                $imageURL = $imagePath;
             } else {
                 return response()->json(['error' => 'Invalid image file'], 400);
             }
@@ -106,7 +106,7 @@ class ProductController extends Controller
             $image = $request->file('image');
             if ($image->isValid()) {
                 $imagePath = $image->store('products', 'public');
-                $imageURL = asset('storage/' . $imagePath);
+                $imageURL = $imagePath;
                 $product->image = $imageURL; // Only update image if new one is valid
             } else {
                 return response()->json(['error' => 'Invalid image file'], 400);
