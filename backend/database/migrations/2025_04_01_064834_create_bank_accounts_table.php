@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('ifsc_code');
             $table->string('account_type'); // e.g., savings, current
             $table->string('branch_name');
+            $table->string('cancel_cheque')->nullable();
             $table->timestamps();
         });
     }

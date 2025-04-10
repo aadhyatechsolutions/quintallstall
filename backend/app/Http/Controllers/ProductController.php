@@ -32,7 +32,7 @@ class ProductController extends Controller
             $image = $request->file('image');
             if ($image->isValid()) {
                 $imagePath = $image->store('products', 'public');
-                $imageURL = asset('storage/' . $imagePath);
+                $imageURL = $imagePath;
             } else {
                 return response()->json(['error' => 'Invalid image file'], 400);
             }
@@ -106,7 +106,7 @@ class ProductController extends Controller
             $image = $request->file('image');
             if ($image->isValid()) {
                 $imagePath = $image->store('products', 'public');
-                $imageURL = asset('storage/' . $imagePath);
+                $imageURL = $imagePath;
                 $product->image = $imageURL; // Only update image if new one is valid
             } else {
                 return response()->json(['error' => 'Invalid image file'], 400);
@@ -157,5 +157,22 @@ class ProductController extends Controller
 
         return response()->json(['products' => $products], 200);
     }
-
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:active,inactive',
+        ]);
+    
+        $product = Product::findOrFail($id);
+        $product->status = $request->status;
+        $product->save();
+    
+        // Eager load relationships for response
+        $product->load(['category', 'user.roles']);
+    
+        return response()->json([
+            'product' => $product,
+            'message' => 'Product status updated successfully.',
+        ], 200);
+    }
 }

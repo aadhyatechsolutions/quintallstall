@@ -15,6 +15,7 @@ define('LARAVEL_START', microtime(true));
 | instead of starting the framework, which could cause an exception.
 |
 */
+ini_set('memory_limit', '512M');
 
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;

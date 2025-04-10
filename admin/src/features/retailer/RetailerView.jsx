@@ -2,7 +2,7 @@ import { Box, styled, Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Breadcrumb, SimpleCard } from "app/components";
-import useCategoryStore from "../../store/category/categoryStore";  // Importing category store
+import useUserStore from "../../store/user/userStore"; 
 import { useNavigate } from "react-router-dom";
 import {apiConfig} from 'app/config';
 
@@ -15,38 +15,47 @@ const Container = styled("div")(({ theme }) => ({
   },
 }));
 
-export default function CategoryView() {
-  const { categories, loading, error, fetchCategories, deleteCategory } = useCategoryStore(); // Use category store
+export default function retailerView() {
+  const { users, loading, error, fetchUsersByRole, deleteUser } = useUserStore();
   const navigate = useNavigate();
 
+  
   useEffect(() => {
-    fetchCategories(); 
-  }, [fetchCategories]);
+    fetchUsersByRole("retailer");
+  }, [fetchUsersByRole]);
 
   const handleDelete = (id) => {
-    deleteCategory(id); 
+    
+    if (window.confirm("Are you sure you want to delete this retailer?")) {
+      deleteUser(id);
+    }
   };
 
   const handleEdit = (id) => {
-    navigate(`/features/category/edit/${id}`);
+    navigate(`/features/retailer/edit/${id}`); 
   };
 
   const columns = [
     { field: "id", headerName: "ID", width: 150 },
-    { field: "name", headerName: "Category Name", width: 300 },
-    { field: "description", headerName: "Description", width: 300 },
+    { field: "first_name", headerName: "First Name", width: 250 },
+    { field: "last_name", headerName: "Last Name", width: 250 },
+    { field: "business_name", headerName: "Business Name", width: 250 }, 
+    { field: "email", headerName: "Email", width: 300 },
+    { field: "phone_number", headerName: "Phone Number", width: 180 },
+    { field: "role", headerName: "Role", width: 150 },
     {
-      field: 'image',
-      headerName: 'Image',
+      field: 'profile_image',
+      headerName: 'Profile Image',
       width: 200,
       renderCell: (params) => (
-        <img src={`${apiConfig.MEDIA_URL}${params.value}`} alt="Category" style={{ width: 50, height: 50, objectFit: 'cover' }} />
+        <img src={`${apiConfig.MEDIA_URL}${params.value}`} alt="Profile Image" style={{ width: 50, height: 50, objectFit: 'cover' }} />
       ),
     },
+    { field: "address", headerName: "Address", width: 300 }, 
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      width: 200,
       renderCell: (params) => (
         <Box>
           <Button
@@ -71,15 +80,24 @@ export default function CategoryView() {
     },
   ];
 
-  const rows = categories.map((category) => ({
-    id: category.id,
-    name: category.name,
-    description: category.description,
-    image: category.image
+  const rows = users.map((user) => ({
+    id: user.id,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    business_name: user.business_name || "N/A", 
+    email: user.email,
+    phone_number: user.phone_number || "N/A", 
+    role: user.roles.map(role => role.name).join(", "), 
+    profile_image: user.profile_image || "No Image", 
+    address: [user.address?.street, user.address?.city, user.address?.state, user.address?.zip].filter(Boolean).join(" ") || "No Address",
   }));
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <Container>
+        <div>{error}</div>
+      </Container>
+    );
   }
 
   return (
@@ -87,13 +105,13 @@ export default function CategoryView() {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: "Category Master", path: "/categories/category-master/view" },
-            { name: "View" },
+            { name: "User Management", path: "/retailer/view" },
+            { name: "Retailer View" },
           ]}
         />
       </Box>
 
-      <SimpleCard title="Category Master List">
+      <SimpleCard title="Retailer Users">
         {loading ? (
           <div>Loading...</div>
         ) : (

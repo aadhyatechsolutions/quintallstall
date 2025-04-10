@@ -25,18 +25,20 @@ import WholeSalerCreate from "../features/wholesaler/WholesalerCreate";
 import WholeSalerView from "../features/wholesaler/WholesalerView";
 import WholeSalerEdit from "../features/wholesaler/WholesalerEdit";
 import WholeSalerProductView from "../features/wholesaler/WholesalerProductView";
-
-import WholeSellerKYCList from "./components/WholeSeller/WholeSellerKYCList";
+import WholeSalerKYC from "../features/wholesaler/WholesalerKYC";
 
 import ProductList from "./components/WholeSeller/ProductList";
 
-import RetailerCreate from "./components/Retailer/RetailerUser/Create";
-import RetailerView from "./components/Retailer/RetailerUser/View";
-import RetailerKYCList from "./components/Retailer/RetailerKYCList";
+import RetailerCreate from "../features/retailer/RetailerCreate";
+import RetailerView from "../features/retailer/RetailerView";
+import RetailerEdit from "../features/retailer/RetailerEdit";
+import RetailerProductView from "../features/retailer/RetailerProductView";
+import RetailerKYC from "../features/retailer/RetailerKYC";
 
-import DeliveryCreate from "./components/Delivery/DeliveryUser/Create";
-import DeliveryView from "./components/Delivery/DeliveryUser/View";
-import DeliveryEdit from "./components/Delivery/DeliveryUser/Edit";
+import DeliveryCreate from "../features/delivery/DeliveryCreate";
+import DeliveryView from "../features/delivery/DeliveryView";
+import DeliveryEdit from "../features/delivery/DeliveryEdit";
+import DeliveryKYC from "../features/delivery/DeliveryKYC";
 
 import Orders from "./components/Orders/Orders";
 import Reviews from "./components/Orders/Reviews";
@@ -117,15 +119,20 @@ const routes = [
       { path: "/features/wholesaler/edit/:id", element: <WholeSalerEdit />, },
 
       { path: "/wholesaler/view-products", element: <WholeSalerProductView /> },
-      { path: "/wholeseller/wholeseller-kyc", element: <WholeSellerKYCList /> },
+      { path: "/wholesaler/wholesaler-kyc", element: <WholeSalerKYC /> },
 
-      { path: "/retailer/retailer-user/create", element: <RetailerCreate /> },
-      { path: "/retailer/retailer-user/view", element: <RetailerView /> },
-      { path: "/retailer/retailer-kyc", element: <RetailerKYCList /> },
+      { path: "/features/retailer/create", element: <RetailerCreate /> },
+      { path: "/features/retailer/view", element: <RetailerView /> },
+      { path: "/features/retailer/edit/:id", element: <RetailerEdit /> },
 
-      { path: "/delivery/delivery-user/create", element: <DeliveryCreate /> },
-      { path: "/delivery/delivery-user/view", element: <DeliveryView /> },
-      { path: "/delivery/delivery-user/edit/:id", element: <DeliveryEdit /> },
+      { path: "/retailer/view-products", element: <RetailerProductView /> },
+      { path: "/retailer/retailer-kyc", element: <RetailerKYC /> },
+
+      { path: "/features/delivery/create", element: <DeliveryCreate /> },
+      { path: "/features/delivery/view", element: <DeliveryView /> },
+      { path: "/features/delivery/edit/:id", element: <DeliveryEdit /> },
+
+      { path: "/delivery/delivery-kyc", element: <DeliveryKYC /> },
 
       { path: "/orders/orders", element: <Orders /> },
       { path: "/orders/reviews", element: <Reviews /> },
