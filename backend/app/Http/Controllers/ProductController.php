@@ -157,5 +157,22 @@ class ProductController extends Controller
 
         return response()->json(['products' => $products], 200);
     }
-
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:active,inactive',
+        ]);
+    
+        $product = Product::findOrFail($id);
+        $product->status = $request->status;
+        $product->save();
+    
+        // Eager load relationships for response
+        $product->load(['category', 'user.roles']);
+    
+        return response()->json([
+            'product' => $product,
+            'message' => 'Product status updated successfully.',
+        ], 200);
+    }
 }

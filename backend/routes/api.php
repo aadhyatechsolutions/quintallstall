@@ -40,6 +40,7 @@ Route::resource('roles', RoleController::class);
 Route::resource('users', UserController::class);
 Route::resource('products', ProductController::class);
 Route::get('products/role/{slug}', [ProductController::class, 'getProductsByRoleSlug']);
+Route::put('/products/{id}/status', [ProductController::class, 'updateStatus']);
 Route::resource('categories', CategoryController::class);
 
 Route::get('test', [TestController::class,'test']);

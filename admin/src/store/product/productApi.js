@@ -78,4 +78,21 @@ export const fetchProducts = async () => {
       throw new Error(error.response?.data?.message || 'Failed to fetch products by id');
     }
   };
+  export const updateProductStatus = async (productId, newStatus) => {
+    try {
+      const { data, status } = await axiosInstance.post(`/products/${productId}/status`, {
+        status: newStatus,
+        _method: 'put',
+      });
+  
+      if (status !== 200) {
+        throw new Error('Failed to update product status');
+      }
+  
+      return data.product;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Failed to update product status');
+    }
+  };
+  
   

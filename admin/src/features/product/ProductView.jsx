@@ -15,7 +15,7 @@ const Container = styled("div")(({ theme }) => ({
 }));
 
 export default function View() {
-  const { products, loading, error, fetchProducts, deleteProduct } = useProductStore();
+  const { products, loading, error, fetchProducts, deleteProduct, updateProductStatus } = useProductStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +25,15 @@ export default function View() {
   const handleDelete = (id) => {
     deleteProduct(id);
   };
-
+  const handleToggleStatus = async (id, currentStatus) => {
+    const newStatus = currentStatus === "active" ? "inactive" : "active";
+    try {
+      await updateProductStatus(id, newStatus);
+      // fetchProducts(); 
+    } catch (err) {
+      console.error("Failed to update status:", err);
+    }
+  };
   const handleEdit = (id) => {
     navigate(`/features/product/edit/${id}`);
   };
@@ -48,6 +56,26 @@ export default function View() {
         <img src={params.value} alt="Product" style={{ width: 50, height: 50, objectFit: 'cover' }} />
       ),
     },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => handleToggleStatus(params.row.id, params.row.status)}
+          style={{
+            backgroundColor: params.value === "active" ? "green" : "red",
+            color: "white",
+            textTransform: "capitalize",
+          }}
+        >
+          {params.value}
+        </Button>
+      ),
+    },
+    
     {
       field: "actions",
       headerName: "Actions",
@@ -87,6 +115,7 @@ export default function View() {
     user: product.user?.first_name,
     role: product.user?.roles[0]?.name || "No role",
     image: product.image,
+    status: product.status,
   }));
 
   if (error) {

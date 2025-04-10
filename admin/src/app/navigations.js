@@ -57,7 +57,7 @@ const navigations = [
         ] 
       },
       { name: "View Products", path: "/wholesaler/view-products", icon: "assignment" },
-      { name: "WholeSeller KYC", path: "/wholeseller/wholeseller-kyc", icon: "assignment" },
+      { name: "WholeSeller KYC", path: "/wholesaler/wholesaler-kyc", icon: "assignment" },
     ]
   },
   {
@@ -69,8 +69,8 @@ const navigations = [
         name: "Retailer User", 
         icon: "apps",
         children: [
-          { name: "Create", path: "/retailer/retailer-user/create", iconText: "A" },
-          { name: "View", path: "/retailer/retailer-user/view", iconText: "A" },
+          { name: "Create", path: "/features/retailer/create", iconText: "A" },
+          { name: "View", path: "/features/retailer/view", iconText: "A" },
         ] 
       },
       { name: "Retailer KYC", path: "/retailer/retailer-kyc", icon: "assignment" },
@@ -85,10 +85,11 @@ const navigations = [
         name: "Delivery User", 
         icon: "apps",
         children: [
-          { name: "Create", path: "/delivery/delivery-user/create", iconText: "A" },
-          { name: "View", path: "/delivery/delivery-user/view", iconText: "A" },
+          { name: "Create", path: "/features/delivery/create", iconText: "A" },
+          { name: "View", path: "/features/delivery/view", iconText: "A" },
         ] 
       },
+      { name: "Delivery KYC", path: "/delivery/delivery-kyc", icon: "assignment" },
     ]
   },
   {
