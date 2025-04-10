@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-
-const BASE_URL = `${import.meta.env.VITE_BACKEND_API_URL}/products`;
+import axiosInstance from "../utils/axiosInstance";
 
 /** Fetch all products */
 const fetchProducts = async () => {
-  const { data } = await axios.get(BASE_URL);
+  const { data } = await axiosInstance.get("/products");
   return data.products;
 };
 
@@ -20,7 +18,7 @@ export const useProducts = () => {
 /** Fetch a single product by ID */
 const fetchProductById = async ({ queryKey }) => {
   const [, id] = queryKey;
-  const { data } = await axios.get(`${BASE_URL}/${id}`);
+  const { data } = await axiosInstance.get(`/products/${id}`);
   return data.product;
 };
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Grid, Typography, Container, Button } from "@mui/material";
 import ProductCard from "./ProductCard";
 import { useProducts } from "../../../../hooks/useProducts";
+import CategoriesList from "../Categories/CategoriesList";
 
 const ProductList = () => {
   const [value, setValue] = React.useState(0);
@@ -25,6 +26,8 @@ const ProductList = () => {
           Our Products
         </Typography>
       </Box>
+      {/* categories List*/}
+      <CategoriesList />
 
       {/* Product Cards */}
       <Grid container rowSpacing={2} columnSpacing={1} justifyContent="center">
