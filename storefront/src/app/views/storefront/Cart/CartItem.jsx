@@ -49,7 +49,7 @@ const CartItem = ({ item, onRemove, onIncrease, onDecrease }) => (
     </Box>
 
     <Typography fontWeight={600} mr={2}>
-      ${(item.price * item.quantity).toFixed(2)}
+      RS:{(item.price * item.quantity).toFixed(2)}
     </Typography>
 
     <IconButton onClick={onRemove}>

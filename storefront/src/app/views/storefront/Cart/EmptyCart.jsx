@@ -28,12 +28,12 @@ const EmptyCart = () => {
         onClick={() => navigate("/products")}
         sx={{
           textTransform: "none",
-          backgroundColor: "black",
-          color: "white",
+          backgroundColor: "#2b4a04",
+          color: "#fff",
           px: 4,
           py: 1.5,
           "&:hover": {
-            backgroundColor: "#333",
+            backgroundColor: "#3f6313",
           },
         }}
       >

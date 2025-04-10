@@ -74,8 +74,7 @@ const Cart = () => {
         </Box>
 
         {/* Right - Summary */}
-        {/* <CartSummary total={getTotalPrice()} /> */}
-        <CartSummary />
+        <CartSummary total={getTotalPrice()} />
       </Box>
     </Box>
   );

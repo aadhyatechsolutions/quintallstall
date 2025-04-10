@@ -23,7 +23,14 @@ const CartSummary = ({ total }) => (
     </Typography>
     <Stack direction="row" spacing={1} mb={2}>
       <TextField fullWidth size="small" placeholder="Type here..." />
-      <Button variant="contained" sx={{ textTransform: "none" }}>
+      <Button
+        variant="contained"
+        sx={{
+          textTransform: "none",
+          background: "#2b4a04",
+          "&:hover": { background: "#3f6313" },
+        }}
+      >
         Apply
       </Button>
     </Stack>
@@ -32,12 +39,12 @@ const CartSummary = ({ total }) => (
 
     <Stack spacing={1} mb={2}>
       <Typography>
-        Discount: <strong>-$0.00</strong>
+        Discount: <strong>Rs: 0.00</strong>
       </Typography>
       <Typography variant="h6">
         Total:{" "}
         <Box component="span" fontWeight="bold">
-          {/* RS:{total.toFixed(2)} */}
+          RS:{total.toFixed(2)}
         </Box>
       </Typography>
     </Stack>
@@ -46,11 +53,11 @@ const CartSummary = ({ total }) => (
       fullWidth
       variant="contained"
       sx={{
-        background: "black",
-        color: "white",
+        background: "#2b4a04",
+        color: "#fff",
         textTransform: "none",
         mt: 2,
-        "&:hover": { background: "#333" },
+        "&:hover": { background: "#3f6313" },
       }}
     >
       Continue to checkout

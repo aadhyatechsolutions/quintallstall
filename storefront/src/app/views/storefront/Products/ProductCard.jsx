@@ -10,19 +10,59 @@ import {
   Rating,
   Button,
   useTheme,
+  Tooltip,
+  Badge,
 } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ShareIcon from "@mui/icons-material/Share";
+import {
+  ShoppingCart,
+  FavoriteBorder,
+  Share,
+  CheckCircle,
+  Error as ErrorIcon,
+  Warning,
+  Bolt,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../../../../store/cartStore";
+
+// Stock configuration utility
+const getStockConfig = (stockLevel, theme) => {
+  const config = {
+    in_stock: {
+      text: "In Stock",
+      color: theme.palette.success.main,
+      icon: <CheckCircle fontSize="small" />,
+      buttonText: "Add to Cart",
+      disabled: false,
+    },
+    out_of_stock: {
+      text: "Out of Stock",
+      color: theme.palette.error.main,
+      icon: <ErrorIcon fontSize="small" />,
+      buttonText: "Sold Out",
+      disabled: true,
+    },
+    low_stock: {
+      text: "Low Stock",
+      color: theme.palette.warning.main,
+      icon: <Warning fontSize="small" />,
+      buttonText: "Add to Cart",
+      disabled: false,
+    },
+  };
+  return config[stockLevel] || config.in_stock;
+};
 
 const ProductCard = ({ product }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const addToCart = useCartStore((state) => state.addToCart);
-  const handleCardClick = () => {
-    navigate(`/products/${product.id}`);
+  const stockConfig = getStockConfig(product.stock_level, theme);
+
+  const handleCardClick = () => navigate(`/products/${product.id}`);
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    addToCart(product);
   };
 
   return (
@@ -41,9 +81,7 @@ const ProductCard = ({ product }) => {
         "&:hover": {
           transform: "translateY(-6px)",
           boxShadow: theme.shadows[6],
-          "& .product-actions": {
-            opacity: 1,
-          },
+          "& .product-actions": { opacity: 1 },
         },
       }}
     >
@@ -63,15 +101,39 @@ const ProductCard = ({ product }) => {
         />
       )}
 
-      {/* Product Image */}
-      <CardMedia
-        component="img"
-        height="175"
-        image={product.image}
-        alt={product.name}
-        onClick={handleCardClick}
-        sx={{ objectFit: "cover" }}
-      />
+      {/* Stock Status Badge */}
+      <Badge
+        overlap="rectangular"
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        badgeContent={
+          <Chip
+            size="small"
+            icon={stockConfig.icon}
+            label={stockConfig.text}
+            sx={{
+              backgroundColor: stockConfig.color,
+              color: theme.palette.getContrastText(stockConfig.color),
+              fontWeight: "bold",
+            }}
+          />
+        }
+        sx={{
+          "& .MuiBadge-badge": {
+            top: 12,
+            right: 12,
+            transform: "none",
+          },
+        }}
+      >
+        <CardMedia
+          component="img"
+          height="175"
+          image={product.image}
+          alt={product.name}
+          onClick={handleCardClick}
+          sx={{ objectFit: "cover" }}
+        />
+      </Badge>
 
       {/* Hover Actions */}
       <Box
@@ -85,6 +147,7 @@ const ProductCard = ({ product }) => {
           gap: 1,
           opacity: 0,
           transition: "opacity 0.3s ease",
+          zIndex: 1,
         }}
       >
         <IconButton
@@ -94,7 +157,7 @@ const ProductCard = ({ product }) => {
             "&:hover": { bgcolor: "rgba(182, 19, 26, 0.1)" },
           }}
         >
-          <FavoriteBorderIcon fontSize="small" />
+          <FavoriteBorder fontSize="small" />
         </IconButton>
         <IconButton
           size="small"
@@ -103,7 +166,7 @@ const ProductCard = ({ product }) => {
             "&:hover": { bgcolor: "rgba(182, 19, 26, 0.1)" },
           }}
         >
-          <ShareIcon fontSize="small" />
+          <Share fontSize="small" />
         </IconButton>
       </Box>
 
@@ -204,25 +267,47 @@ const ProductCard = ({ product }) => {
             </Typography>
           </Box>
 
-          <Button
-            variant="contained"
-            color="error"
-            size="small"
-            startIcon={<ShoppingCartIcon />}
-            onClick={() => addToCart(product)}
-            sx={{
-              borderRadius: 2,
-              px: 2,
-              py: 1,
-              textTransform: "none",
-              bgcolor: theme.palette.error.main,
-              "&:hover": {
-                bgcolor: theme.palette.error.dark,
-              },
-            }}
+          {/* Enhanced Add to Cart Button */}
+          <Tooltip
+            title={
+              stockConfig.disabled
+                ? "This product is currently unavailable"
+                : ""
+            }
           >
-            add to cart
-          </Button>
+            <span>
+              <Button
+                variant="contained"
+                color={stockConfig.text === "Low Stock" ? "warning" : "error"}
+                size="small"
+                startIcon={<ShoppingCart />}
+                endIcon={stockConfig.text === "Low Stock" ? "" : null}
+                onClick={handleAddToCart}
+                disabled={stockConfig.disabled}
+                sx={{
+                  borderRadius: 2,
+                  px: 2,
+                  py: 1,
+                  textTransform: "none",
+                  bgcolor: stockConfig.disabled
+                    ? theme.palette.grey[800]
+                    : stockConfig.text === "Low Stock"
+                    ? theme.palette.warning.main
+                    : theme.palette.error.main,
+                  "&:hover": {
+                    bgcolor: stockConfig.disabled
+                      ? theme.palette.grey[400]
+                      : stockConfig.text === "Low Stock"
+                      ? theme.palette.warning.dark
+                      : theme.palette.error.dark,
+                  },
+                }}
+              >
+                {stockConfig.buttonText}
+                {stockConfig.text === "Low Stock"}
+              </Button>
+            </span>
+          </Tooltip>
         </Box>
       </CardContent>
     </Paper>
