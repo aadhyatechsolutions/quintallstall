@@ -10,6 +10,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VehicleController;
+
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\ShippingDetailController;
+use App\Http\Controllers\PaymentController;
+
 use App\Http\Controllers\TestController;
 
 /*
@@ -44,5 +50,10 @@ Route::resource('categories', CategoryController::class);
 Route::get('products/role/{slug}', [ProductController::class, 'getProductsByRoleSlug']);
 Route::put('/products/{id}/status', [ProductController::class, 'updateStatus']);
 Route::get('/vehicle/types', [VehicleController::class, 'getVehicleTypes']);
+
+Route::resource('orders', OrderController::class);
+Route::resource('order-items', OrderItemController::class);
+Route::resource('shipping-details', ShippingDetailController::class);
+Route::resource('payments', PaymentController::class);
 
 Route::get('test', [TestController::class,'test']);
