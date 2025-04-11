@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -45,8 +46,9 @@ class UserController extends Controller
                 'account_type' => 'required|string',
                 'branch_name' => 'required|string',
                 'role' => 'required|exists:roles,slug',
-                'apmcs' => 'required|array',
+                'apmcs' => 'nullable|array',
                 'apmcs.*' => 'integer|exists:apmcs,id',
+                'vehicle' => 'nullable|array',
             ]);
 
             if ($request->hasFile('profile_image')) {
@@ -88,7 +90,18 @@ class UserController extends Controller
         $role = Role::where('slug', $validated['role'])->firstOrFail();
         $user->roles()->attach($role);
 
-        $user->apmcs()->sync($validated['apmcs']);
+        if (in_array($validated['role'], ['wholesaler', 'retailer'])) {
+            $user->apmcs()->sync($validated['apmcs'] ?? []);
+        }
+        
+        if ($validated['role'] === 'delivery') {
+            $user->vehicles()->create([
+                'vehicle_type' => $validated['vehicle']['vehicle_type'] ?? '',
+                'vehicle_no' => $validated['vehicle']['vehicle_no'] ?? '',
+                'permit_number' => $validated['vehicle']['permit_number'] ?? '',
+                'insurance_number' => $validated['vehicle']['insurance_number'] ?? '',
+            ]);            
+        }        
 
         DB::commit();
 
@@ -98,17 +111,26 @@ class UserController extends Controller
             'user' => $user->load('roles')->load('apmcs')->makeHidden(['password', 'bank_account_number', 'routing_number']),
         ], 201);
 
-    } catch (\Throwable $th) {
-        DB::rollBack();
+        } 
+        catch (ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => $e->getMessage(),
+                'errors' => $e->errors(),
+                'error' => true,
+            ], 422);
+        }
+        catch (\Throwable $th) {
+            DB::rollBack();
 
-        Log::error('Store user error: ' . $th->getMessage());
+            Log::error('Store user error: ' . $th->getMessage());
 
-        return response()->json([
-            'message' => 'User creation failed: ' . $th->getMessage(),
-            'error' => true
-        ], 500);
+            return response()->json([
+                'message' => 'User creation failed: ' . $th->getMessage(),
+                'error' => true
+            ], 500);
+        }
     }
-}
     /**
      * Fetch all users.
      */
@@ -137,7 +159,7 @@ class UserController extends Controller
         $role = $user->roles->first()->slug;
 
         if ($role === 'delivery') {            
-            $user->load('vehicle');
+            $user->load('vehicles');
         }
 
         if (in_array($role, ['wholeseller', 'retailer'])) {    
@@ -156,31 +178,29 @@ class UserController extends Controller
 
         DB::beginTransaction();
         try {
-            $validated = $request->validate([
-                'first_name' => 'required|string',
-                'last_name' => 'required|string',
-                'business_name' => 'required|string',
-                'phone_number' => 'required|string|unique:users,phone_number,' . $id,
-                'email' => 'required|email|unique:users,email,' . $id,
-                'password' => 'nullable|min:6|confirmed',  // Optional for update
-                'street' => 'required|string',
-                'city' => 'required|string',
-                'state' => 'required|string',
-                'postal_code' => 'required|string',
-                'shop_number' => 'required|string',
-                'bank_account_number' => 'required|string', 
-                'routing_number' => 'required|string', 
-                'ifsc_code' => 'required|string',
-                'account_type' => 'required|string',
-                'branch_name' => 'required|string',
-                'role' => 'required|exists:roles,slug',
-                'apmcs' => 'required|array',
-                'apmcs.*' => 'integer|exists:apmcs,id',
-            ]);
+                $validated = $request->validate([
+                    'first_name' => 'required|string',
+                    'last_name' => 'required|string',
+                    'business_name' => 'required|string',
+                    'phone_number' => 'required|string|unique:users,phone_number,' . $id,
+                    'email' => 'required|email|unique:users,email,' . $id,
+                    'password' => 'nullable|min:6|confirmed',
+                    'street' => 'required|string',
+                    'city' => 'required|string',
+                    'state' => 'required|string',
+                    'postal_code' => 'required|string',
+                    'shop_number' => 'required|string',
+                    'bank_account_number' => 'required|string', 
+                    'routing_number' => 'required|string', 
+                    'ifsc_code' => 'required|string',
+                    'account_type' => 'required|string',
+                    'branch_name' => 'required|string',
+                    'role' => 'required|exists:roles,slug',
+                    'vehicle' => 'nullable|array',
+                    'apmcs' => 'nullable|array',
+                    'apmcs.*' => 'integer|exists:apmcs,id',
+                ]);
 
-           
-
-            // Retrieve the user
             $user = User::findOrFail($id);
 
             if ($request->hasFile('profile_image')) {
@@ -189,9 +209,8 @@ class UserController extends Controller
                 }
                 $profileImagePath = $request->file('profile_image')->store('profile_images', 'public');
             }
-            // Update the address
-            $address = $user->address;
-            $address->update([
+
+            $user->address->update([
                 'street' => $validated['street'],
                 'city' => $validated['city'],
                 'state' => $validated['state'],
@@ -199,9 +218,7 @@ class UserController extends Controller
                 'shop_number' => $validated['shop_number'],
             ]);
 
-            // Update the bank account
-            $bankAccount = $user->bankAccount;
-            $bankAccount->update([
+            $user->bankAccount->update([
                 'account_number' => Crypt::encryptString($validated['bank_account_number']),
                 'routing_number' => Crypt::encryptString($validated['routing_number']),
                 'ifsc_code' => $validated['ifsc_code'],
@@ -209,7 +226,6 @@ class UserController extends Controller
                 'branch_name' => $validated['branch_name'],
             ]);
 
-            // Update the user details
             $user->update([
                 'first_name' => $validated['first_name'],
                 'last_name' => $validated['last_name'],
@@ -220,24 +236,48 @@ class UserController extends Controller
                 'profile_image' => $profileImagePath ?: $user->profile_image,
             ]);
 
-            // Update the user's role
             $role = Role::where('slug', $validated['role'])->firstOrFail();
             $user->roles()->sync([$role->id]);
 
-            // Update the apmcs relationship
-            $user->apmcs()->sync($validated['apmcs']);
+            if (in_array($validated['role'], ['wholesaler', 'retailer'])) {
+                $user->apmcs()->sync($validated['apmcs'] ?? []);
+            } else {
+                $user->apmcs()->sync([]);
+            }
+
+            if ($validated['role'] === 'delivery' && isset($validated['vehicle'])) {
+                $user->vehicles()->updateOrCreate([], [
+                    'vehicle_type' => $validated['vehicle']['vehicle_type'] ?? '',
+                    'vehicle_no' => $validated['vehicle']['vehicle_no'] ?? '',
+                    'permit_number' => $validated['vehicle']['permit_number'] ?? '',
+                    'insurance_number' => $validated['vehicle']['insurance_number'] ?? '',
+                ]);
+            }
 
             DB::commit();
 
             return response()->json([
                 'message' => 'User updated successfully',
                 'success' => true,
-                'user' => $user->load('roles')->load('apmcs')->makeHidden(['password', 'bank_account_number', 'routing_number']),
+                'user' => $user->load(['roles', 'apmcs', 'vehicle'])->makeHidden([
+                    'password',
+                    'bank_account_number',
+                    'routing_number',
+                ]),
             ], 200);
 
-        } catch (\Throwable $th) {
+        } 
+        catch (ValidationException $e) {
             DB::rollBack();
 
+            return response()->json([
+                'message' => $e->getMessage(),
+                'errors' => $e->errors(),
+                'error' => true,
+            ], 422);
+        }
+        catch (\Throwable $th) {
+            DB::rollBack();
             Log::error('Update user error: ' . $th->getMessage());
 
             return response()->json([
@@ -246,8 +286,6 @@ class UserController extends Controller
             ], 500);
         }
     }
-
-
     /**
      * Delete a user by ID.
      */

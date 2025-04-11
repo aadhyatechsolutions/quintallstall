@@ -48,9 +48,13 @@ const useUserStore = create((set) => ({
             const newUser = await createUser(userData, role);
             set((state) => ({ users: [...state.users, newUser] }));
         } catch (error) {
-            set({ error: error.message });
+            if(error.status == 422){
+                set({ error: error.response.data.message });
+            }else{
+                set({ error: error.message });
+            }
         } finally {
-            set({ isLoading: false });
+            set({ isLoading: false, error: null });
         }
     },
     
@@ -63,9 +67,13 @@ const useUserStore = create((set) => ({
                 users: state.users.map((user) => user.id === userId ? updatedUser : user)
             }));
         } catch (error) {
-            set({ error: error.message });
+            if(error.status == 422){
+                set({ error: error.response.data.message });
+            }else{
+                set({ error: error.message });
+            }
         } finally {
-            set({ isLoading: false });
+            set({ isLoading: false, error: null });
         }
     },
     

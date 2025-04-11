@@ -79,9 +79,9 @@ import CoinDetails from "./components/Settings/CoinDetails";
 import WalletSettings from "./components/Settings/WalletSettings";
 import TaxSlabCreate from "./components/Settings/TaxSlabCreate";
 
-import RoleCreate from "./components/Settings/Roles/Create";
-import RoleEdit from "./components/Settings/Roles/Edit";
-import RoleView from "./components/Settings/Roles/View";
+import RoleCreate from "../features/role/RoleCreate";
+import RoleEdit from "../features/role/RoleEdit";
+import RoleView from "../features/role/RoleView";
 
 import StaffCreate from "./components/Settings/Staff/Create";
 import StaffEdit from "./components/Settings/Staff/Edit";
@@ -173,9 +173,9 @@ const routes = [
       { path: "/settings/wallet-settings", element: <WalletSettings /> },
       { path: "/settings/tax-slab", element: <TaxSlabCreate /> },
 
-      { path: "/settings/roles/create", element: <RoleCreate /> },
-      { path: "/settings/roles/view", element: <RoleView /> },
-      { path: "/settings/roles/edit/:id", element: <RoleEdit /> },
+      { path: "/settings/role/create", element: <RoleCreate /> },
+      { path: "/settings/role/view", element: <RoleView /> },
+      { path: "/settings/role/edit/:id", element: <RoleEdit /> },
 
       { path: "/settings/staff/create", element: <StaffCreate /> },
       { path: "/settings/staff/view", element: <StaffView /> },
