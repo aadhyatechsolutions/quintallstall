@@ -25,7 +25,7 @@ const CategoriesList = () => {
     className: "center",
     infinite: false,
     swipeToSlide: true,
-    centerPadding: "20px",
+    centerPadding: "10px",
     slidesToShow: 12,
     arrows: false,
     responsive: [

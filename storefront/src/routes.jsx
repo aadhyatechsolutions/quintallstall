@@ -6,6 +6,7 @@ import ProductList from "./app/views/storefront/Products/ProductList";
 import Blog from "./app/views/storefront/Blog/Blog";
 import ProductDetails from "./app/views/storefront/Products/ProductDetails";
 import Cart from "./app/views/storefront/Cart/Cart";
+import Checkout from "./app/views/storefront/Checkout/Checkout";
 
 // Lazy load other components
 const About = lazy(() => import("./app/views/storefront/About/Index"));
@@ -25,6 +26,7 @@ const routes = [
       { path: "shop", element: <Shop /> },
       { path: "products", element: <ProductList /> },
       { path: "products/:id", element: <ProductDetails /> },
+      { path: "checkout", element: <Checkout /> },
       { path: "cart", element: <Cart /> },
       { path: "blog", element: <Blog /> },
     ],
