@@ -6,21 +6,24 @@ export const useCartStore = create(
     (set, get) => ({
       cart: [],
 
-      addToCart: (product) => {
-        const existing = get().cart.find((item) => item.id === product.id);
+      addToCart: (product, quantity = 1, overrideQuantity = false) => {
+        const cart = get().cart;
+        const existingIndex = cart.findIndex((item) => item.id === product.id);
 
-        if (existing) {
-          set({
-            cart: get().cart.map((item) =>
-              item.id === product.id
-                ? { ...item, quantity: item.quantity + 1 }
-                : item
-            ),
-          });
+        if (existingIndex !== -1) {
+          const updatedCart = [...cart];
+          const existingItem = updatedCart[existingIndex];
+
+          updatedCart[existingIndex] = {
+            ...existingItem,
+            quantity: overrideQuantity
+              ? quantity // ✅ override from Product Detail
+              : existingItem.quantity + quantity, // ✅ increment from Card
+          };
+
+          set({ cart: updatedCart });
         } else {
-          set({
-            cart: [...get().cart, { ...product, quantity: 1 }],
-          });
+          set({ cart: [...cart, { ...product, quantity }] });
         }
       },
 
@@ -57,6 +60,13 @@ export const useCartStore = create(
           (total, item) => total + item.price * item.quantity,
           0
         ),
+
+      updateQuantity: (id, quantity) =>
+        set((state) => ({
+          cart: state.cart.map((item) =>
+            item.id === id ? { ...item, quantity } : item
+          ),
+        })),
     }),
     {
       name: "cart-storage",

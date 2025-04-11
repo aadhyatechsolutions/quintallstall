@@ -1,4 +1,5 @@
 import React from "react";
+import { apiConfig } from "../../../../config";
 import {
   Box,
   Typography,
@@ -9,6 +10,7 @@ import {
   Button,
   Stack,
   Chip,
+  CircularProgress,
 } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -17,8 +19,9 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
-import { products } from "./products";
-// Custom Arrow Components
+import { useProducts } from "../../../../hooks/useProducts";
+import { useCartStore } from "../../../../store/cartStore";
+
 const NextArrow = (props) => {
   const { onClick } = props;
   return (
@@ -70,9 +73,10 @@ const PrevArrow = (props) => {
 };
 
 const ProductSlider = () => {
+  const { data: products = [], isLoading, isError } = useProducts();
+  const addToCart = useCartStore((state) => state.addToCart);
   const handleAddToCart = (product) => {
-    console.log("Added to cart:", product);
-    // Add your cart logic here
+    addToCart(product);
   };
 
   const settings = {
@@ -86,28 +90,29 @@ const ProductSlider = () => {
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     responsive: [
-      {
-        breakpoint: 1536,
-        settings: { slidesToShow: 6 },
-      },
-      {
-        breakpoint: 1200,
-        settings: { slidesToShow: 4 },
-      },
-      {
-        breakpoint: 900,
-        settings: { slidesToShow: 3 },
-      },
-      {
-        breakpoint: 600,
-        settings: { slidesToShow: 2 },
-      },
-      {
-        breakpoint: 400,
-        settings: { slidesToShow: 2 },
-      },
+      { breakpoint: 1536, settings: { slidesToShow: 6 } },
+      { breakpoint: 1200, settings: { slidesToShow: 4 } },
+      { breakpoint: 900, settings: { slidesToShow: 3 } },
+      { breakpoint: 600, settings: { slidesToShow: 2 } },
+      { breakpoint: 400, settings: { slidesToShow: 2 } },
     ],
   };
+
+  if (isLoading) {
+    return (
+      <Box textAlign="center" py={6}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Box textAlign="center" py={6}>
+        <Typography color="error">Failed to load products</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -127,7 +132,6 @@ const ProductSlider = () => {
     >
       <Typography
         variant="h4"
-        component="h2"
         align="center"
         gutterBottom
         sx={{
@@ -160,8 +164,8 @@ const ProductSlider = () => {
         }}
       >
         <Slider {...settings} aria-label="Product carousel">
-          {products.map((product, index) => (
-            <Box key={index}>
+          {products.map((product) => (
+            <Box key={product.id}>
               <Card
                 sx={{
                   height: "100%",
@@ -179,7 +183,6 @@ const ProductSlider = () => {
                   overflow: "hidden",
                 }}
               >
-                {/* Product Badges */}
                 {product.discount && (
                   <Chip
                     label={product.discount}
@@ -188,7 +191,6 @@ const ProductSlider = () => {
                       position: "absolute",
                       top: 12,
                       left: 12,
-                      zIndex: 1,
                       backgroundColor: "#a81724",
                       color: "#fff",
                       fontWeight: "bold",
@@ -204,7 +206,6 @@ const ProductSlider = () => {
                       position: "absolute",
                       top: product.discount ? 48 : 12,
                       left: 12,
-                      zIndex: 1,
                       backgroundColor: "#333",
                       color: "#fff",
                       fontWeight: "bold",
@@ -216,7 +217,7 @@ const ProductSlider = () => {
                 <CardMedia
                   component="img"
                   height="160"
-                  image={product.image}
+                  image={`${apiConfig.MEDIA_URL}${product.image}`}
                   alt={product.name}
                   sx={{
                     objectFit: "cover",
@@ -255,7 +256,7 @@ const ProductSlider = () => {
                         fontSize: "1.1rem",
                       }}
                     >
-                      {product.price}
+                      ₹{product.price}
                     </Typography>
                     <Button
                       variant="contained"

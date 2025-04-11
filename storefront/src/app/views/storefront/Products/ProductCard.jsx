@@ -141,6 +141,7 @@ const ProductCard = ({ product }) => {
         className="product-actions"
         sx={{
           position: "absolute",
+          marginTop: "28px",
           top: 12,
           right: 12,
           display: "flex",

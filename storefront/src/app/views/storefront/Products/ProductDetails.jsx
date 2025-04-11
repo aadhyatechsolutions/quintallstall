@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { apiConfig } from "../../../../config";
 import {
   Box,
   Typography,
   Container,
-  Card,
   CardMedia,
   Grid,
   Button,
@@ -21,9 +21,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   CircularProgress,
 } from "@mui/material";
 import {
@@ -32,10 +29,8 @@ import {
   Share,
   LocalShipping,
   Verified,
-  ArrowForward,
-  ExpandMore,
 } from "@mui/icons-material";
-import { useParams } from "react-router-dom";
+import { useParams, Link as RouterLink } from "react-router-dom";
 import { useProduct } from "../../../../hooks/useProducts";
 import { useCartStore } from "../../../../store/cartStore";
 
@@ -43,14 +38,37 @@ const ProductDetails = () => {
   const theme = useTheme();
   const { id } = useParams();
   const { data: product, isLoading } = useProduct(id);
+  const cart = useCartStore((state) => state.cart);
   const addToCart = useCartStore((state) => state.addToCart);
-  const [value, setValue] = React.useState(0);
+  //const updateQuantity = useCartStore((state) => state.updateQuantity);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const [value, setValue] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+
+  const handleChange = (event, newValue) => setValue(newValue);
+
+  useEffect(() => {
+    if (product) {
+      const itemInCart = cart.find((item) => item.id === product.id);
+      if (itemInCart) {
+        setQuantity(itemInCart.quantity);
+      }
+    }
+  }, [product, cart]);
+
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      const newQty = quantity - 1;
+      setQuantity(newQty);
+    }
   };
 
-  if (isLoading) {
+  const increaseQuantity = () => {
+    const newQty = quantity + 1;
+    setQuantity(newQty);
+  };
+
+  if (isLoading || !product) {
     return (
       <Box display="flex" justifyContent="center" py={10}>
         <CircularProgress size={60} />
@@ -59,14 +77,19 @@ const ProductDetails = () => {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4, alignItems: "center" }}>
-      {/* Breadcrumbs */}
-      <Breadcrumbs sx={{ mb: 3 }}></Breadcrumbs>
+    <Container maxWidth="xl" sx={{ py: 6 }}>
+      {/* Breadcrumbs
+      <Breadcrumbs sx={{ mb: 3 }}>
+        <Link component={RouterLink} to="/" underline="hover" color="inherit">
+          Home
+        </Link>
+        <Typography color="text.primary">{product?.name}</Typography>
+      </Breadcrumbs> */}
 
       <Paper elevation={0} sx={{ p: 3, mb: 3 }}>
-        <Grid container spacing={4}>
-          {/* Left Column - Product Images */}
-          <Grid item xs={12} md={5}>
+        <Grid container spacing={4} justifyContent="space-evenly">
+          {/* Product Images */}
+          <Grid>
             <Box
               sx={{
                 border: "1px solid #f0f0f0",
@@ -77,11 +100,12 @@ const ProductDetails = () => {
             >
               <CardMedia
                 component="img"
-                image={product?.image || "/placeholder.jpg"}
+                image={`${apiConfig.MEDIA_URL}${
+                  product?.image || "placeholder.jpg"
+                }`}
                 alt={product?.name}
                 sx={{
                   width: "100%",
-                  height: "auto",
                   maxHeight: 400,
                   objectFit: "contain",
                 }}
@@ -103,7 +127,9 @@ const ProductDetails = () => {
                   }}
                 >
                   <img
-                    src={product?.image || "/placeholder.jpg"}
+                    src={`${apiConfig.MEDIA_URL}${
+                      product?.image || "placeholder.jpg"
+                    }`}
                     alt={`Thumbnail ${item}`}
                     style={{
                       width: "100%",
@@ -116,21 +142,21 @@ const ProductDetails = () => {
             </Stack>
           </Grid>
 
-          {/* Middle Column - Product Info */}
-          <Grid item xs={12} md={4}>
+          {/* Product Info */}
+          <Grid>
             <Typography variant="h5" fontWeight={600} gutterBottom>
               {product?.name}
             </Typography>
 
-            <Stack direction="row" alignItems="center" spacing={1} mb={2}>
+            <Stack direction="row" spacing={1} alignItems="center" mb={2}>
               <Rating
                 value={product?.rating || 4.2}
                 precision={0.1}
                 readOnly
                 size="small"
               />
-              <Typography color="text.secondary" variant="body2">
-                {product?.reviews || 1245} Ratings & Reviews
+              <Typography variant="body2" color="text.secondary">
+                {product?.reviews || 0} Ratings & Reviews
               </Typography>
               <Chip
                 label="Verified"
@@ -154,7 +180,7 @@ const ProductDetails = () => {
                     fontSize: "1rem",
                   }}
                 >
-                  ₹{product?.originalPrice}
+                  ₹{product.originalPrice}
                 </Typography>
               )}
               {product?.discount && (
@@ -163,7 +189,7 @@ const ProductDetails = () => {
                   color="success.main"
                   sx={{ ml: 1, fontSize: "1rem" }}
                 >
-                  {product?.discount}% off
+                  {product.discount}% off
                 </Typography>
               )}
             </Typography>
@@ -171,56 +197,14 @@ const ProductDetails = () => {
             <Typography color="success.main" fontWeight={500} mb={2}>
               Special price
             </Typography>
-
-            <Box mb={3}>
-              <Typography variant="subtitle2" gutterBottom>
-                Offers
-              </Typography>
-              <List dense>
-                <ListItem sx={{ px: 0 }}>
-                  <Typography variant="body2">
-                    <strong>Bank Offer</strong> 10% off on SBI Credit Cards
-                  </Typography>
-                </ListItem>
-                <ListItem sx={{ px: 0 }}>
-                  <Typography variant="body2">
-                    <strong>Partner Offer</strong> Sign up for Pay Later and get
-                    Gift Card worth ₹100
-                  </Typography>
-                </ListItem>
-              </List>
-            </Box>
-
-            <Divider sx={{ my: 2 }} />
-
-            <Box mb={3}>
-              <Typography variant="subtitle2" gutterBottom>
-                Available offers
-              </Typography>
-              <List dense>
-                <ListItem sx={{ px: 0 }}>
-                  <Typography variant="body2">
-                    <strong>Special Price</strong> Get extra 5% off (price
-                    inclusive of discount)
-                  </Typography>
-                </ListItem>
-                <ListItem sx={{ px: 0 }}>
-                  <Typography variant="body2">
-                    <strong>Partner Offer</strong> Purchase now & get a surprise
-                    cashback coupon
-                  </Typography>
-                </ListItem>
-              </List>
-            </Box>
           </Grid>
 
-          {/* Right Column - Delivery & Actions */}
-          <Grid item xs={12} md={3}>
+          {/* Actions */}
+          <Grid>
             <Paper elevation={0} sx={{ p: 2, border: "1px solid #f0f0f0" }}>
               <Typography variant="subtitle1" fontWeight={600} gutterBottom>
                 Delivery Options
               </Typography>
-
               <Box display="flex" alignItems="center" mb={2}>
                 <LocalShipping color="primary" sx={{ mr: 1 }} />
                 <Box>
@@ -247,25 +231,68 @@ const ProductDetails = () => {
 
               <Divider sx={{ my: 2 }} />
 
-              <Button
-                fullWidth
-                variant="contained"
-                color="warning"
-                size="large"
-                startIcon={<ShoppingCart />}
-                sx={{ mb: 2, py: 1.5, fontWeight: 600 }}
+              {/* Quantity Selector */}
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1}
+                sx={{
+                  border: "1px solid",
+                  borderColor: "grey.300",
+                  borderRadius: 2,
+                  px: 1.5,
+                  py: 0.5,
+                  backgroundColor: "background.paper",
+                  boxShadow: 1,
+                  width: "fit-content",
+                }}
               >
-                ADD TO CART
-              </Button>
+                <Button
+                  variant="text"
+                  size="small"
+                  onClick={decreaseQuantity}
+                  disabled={quantity <= 1}
+                  sx={{
+                    minWidth: 32,
+                    fontWeight: "bold",
+                    color: "text.primary",
+                    "&:hover": { backgroundColor: "grey.100" },
+                  }}
+                >
+                  −
+                </Button>
+                <Typography
+                  sx={{ minWidth: 28, textAlign: "center", fontWeight: 500 }}
+                >
+                  {quantity}
+                </Typography>
+                <Button
+                  variant="text"
+                  size="small"
+                  onClick={increaseQuantity}
+                  sx={{
+                    minWidth: 32,
+                    fontWeight: "bold",
+                    color: "text.primary",
+                    "&:hover": { backgroundColor: "grey.100" },
+                  }}
+                >
+                  +
+                </Button>
+              </Stack>
+
+              <Divider sx={{ my: 2 }} />
 
               <Button
                 fullWidth
                 variant="contained"
-                color="success"
+                color="error"
                 size="large"
-                sx={{ py: 1.5, fontWeight: 600 }}
+                startIcon={<ShoppingCart />}
+                onClick={() => addToCart(product, quantity, true)}
+                sx={{ mb: 2, py: 1.5, fontWeight: 600 }}
               >
-                BUY NOW
+                ADD TO CART
               </Button>
 
               <Stack direction="row" spacing={1} mt={2}>
@@ -281,16 +308,12 @@ const ProductDetails = () => {
         </Grid>
       </Paper>
 
-      {/* Product Details Tabs */}
-      <Paper elevation={0} sx={{ p: 3, mb: 3 }}>
+      {/* Product Tabs */}
+      <Paper elevation={0} sx={{ p: 3 }}>
         <Tabs
           value={value}
           onChange={handleChange}
-          sx={{
-            borderBottom: 1,
-            borderColor: "divider",
-            mb: 3,
-          }}
+          sx={{ borderBottom: 1, mb: 3 }}
         >
           <Tab label="Product Details" />
           <Tab label="Specifications" />
@@ -308,7 +331,6 @@ const ProductDetails = () => {
             </Typography>
           </Box>
         )}
-
         {value === 1 && (
           <Box>
             <Typography variant="h6" gutterBottom>
@@ -336,7 +358,6 @@ const ProductDetails = () => {
             </List>
           </Box>
         )}
-
         {value === 2 && (
           <Box>
             <Typography variant="h6" gutterBottom>
@@ -347,42 +368,6 @@ const ProductDetails = () => {
             </Typography>
           </Box>
         )}
-      </Paper>
-
-      {/* Similar Products */}
-      <Paper elevation={0} sx={{ p: 3 }}>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mb={3}
-        >
-          <Typography variant="h6">Similar Products</Typography>
-          <Button endIcon={<ArrowForward />}>View All</Button>
-        </Box>
-        <Grid container spacing={3}>
-          {[1, 2, 3, 4].map((item) => (
-            <Grid item xs={6} sm={4} md={3} key={item}>
-              <Card elevation={0} sx={{ p: 2, cursor: "pointer" }}>
-                <CardMedia
-                  component="img"
-                  image="/placeholder.jpg"
-                  alt="Similar product"
-                  sx={{ height: 140, objectFit: "contain" }}
-                />
-                <Typography variant="subtitle2" noWrap>
-                  Similar Product {item}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Category
-                </Typography>
-                <Typography variant="subtitle1" fontWeight={600}>
-                  ₹{Math.round(Math.random() * 10000)}
-                </Typography>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
       </Paper>
     </Container>
   );

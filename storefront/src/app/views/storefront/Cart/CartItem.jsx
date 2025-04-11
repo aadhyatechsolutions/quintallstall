@@ -13,6 +13,7 @@ const CartItem = ({ item, onRemove, onIncrease, onDecrease }) => (
       p: 2,
       borderRadius: 2,
       boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
+      overflow: "auto",
     }}
   >
     <CardMedia
