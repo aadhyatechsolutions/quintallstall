@@ -21,6 +21,8 @@ import {
   import useUserStore from "../../store/user/userStore";
   import useRoleStore from "../../store/role/roleStore";
   import useApmcStore from "../../store/apmc/apmcStore";
+  import useVehicleStore from "../../store/vehicle/vehicleStore";
+
   
   const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -33,9 +35,10 @@ import {
   
   export default function CreateDelivery() {
     const navigate = useNavigate();
-    const { createUser, error:userError } = useUserStore();
+    const { createUser, error:userError} = useUserStore();
     const { fetchRoles, roles, loading: roleLoading, error: roleError } = useRoleStore();
     const { apmcs, fetchApmcs, loading: apmcLoading, error: apmcError } = useApmcStore();
+    const { fetchVehicleTypes, vehicleTypes, vehicleTypesLoading } = useVehicleStore();
   
     const [formData, setFormData] = useState({
       first_name: "",
@@ -71,8 +74,9 @@ import {
   
     // Fetch APMC options on component mount
     useEffect(() => {
-      fetchApmcs(); // Fetch APMC options
-    }, [fetchApmcs]);
+      fetchApmcs();
+      fetchVehicleTypes();
+    }, [fetchApmcs, fetchVehicleTypes]);
   
     const handleChange = (e) => {
       const { name, value } = e.target;
@@ -352,14 +356,26 @@ import {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Vehicle Type"
-                  name="vehicle_type"
-                  value={formData.vehicle_type}
-                  onChange={handleChange}
-                  required
-                />
+                <FormControl fullWidth required>
+                  <InputLabel id="vehicle-type-label">Vehicle Type</InputLabel>
+                  <Select
+                    labelId="vehicle-type-label"
+                    name="vehicle_type"
+                    value={formData.vehicle_type}
+                    onChange={handleChange}
+                    label="Vehicle Type"
+                  >
+                    {vehicleTypesLoading ? (
+                      <MenuItem disabled>Loading...</MenuItem>
+                    ) : (
+                      vehicleTypes.map((type, index) => (
+                        <MenuItem key={type.value} value={type.value}>
+                          {type.label}
+                        </MenuItem>
+                      ))
+                    )}
+                  </Select>
+                </FormControl>
               </Grid>
 
               <Grid item xs={12} md={6}>

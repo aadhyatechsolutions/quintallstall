@@ -9,7 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
-
+use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\TestController;
 
 /*
@@ -39,8 +39,10 @@ Route::resource('apmcs', ApmcController::class);
 Route::resource('roles', RoleController::class);
 Route::resource('users', UserController::class);
 Route::resource('products', ProductController::class);
+Route::resource('categories', CategoryController::class);
+
 Route::get('products/role/{slug}', [ProductController::class, 'getProductsByRoleSlug']);
 Route::put('/products/{id}/status', [ProductController::class, 'updateStatus']);
-Route::resource('categories', CategoryController::class);
+Route::get('/vehicle/types', [VehicleController::class, 'getVehicleTypes']);
 
 Route::get('test', [TestController::class,'test']);
