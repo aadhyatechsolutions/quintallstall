@@ -99,7 +99,7 @@ const CategoriesList = () => {
                 <Paper
                   elevation={2}
                   sx={cardStyle}
-                  onClick={() => navigate(`/category/${category.slug}`)}
+                  // onClick={() => navigate(`/category/${category.slug}`)}
                   role="button"
                   aria-label={`View category: ${category.name}`}
                 >
