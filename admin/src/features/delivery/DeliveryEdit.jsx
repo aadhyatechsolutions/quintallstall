@@ -21,6 +21,8 @@ import {
   import useUserStore from "../../store/user/userStore"; 
   import useRoleStore from "../../store/role/roleStore"; 
   import useApmcStore from "../../store/apmc/apmcStore"; 
+  import useVehicleStore from "../../store/vehicle/vehicleStore";
+
   
   const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -36,8 +38,8 @@ import {
     const { id } = useParams();
   
     const { fetchUserById, updateUser, currentUser, isLoading, error } = useUserStore();
-    // const { fetchRoles, roles, loading: roleLoading, error: roleError } = useRoleStore(); 
     const { apmcs, fetchApmcs, loading: apmcLoading, error: apmcError } = useApmcStore();
+    const { fetchVehicleTypes, vehicleTypes, vehicleTypesLoading } = useVehicleStore();
   
     const [formData, setFormData] = useState({
       first_name: "",
@@ -59,7 +61,10 @@ import {
       branch_name: "",
       role: "delivery", 
       profile_image: null,
-      apmcs: [],
+      vehicle_type: "",
+      vehicle_no: "",
+      permit_number: "",
+      insurance_number: "",
     });
   
     const [snackbar, setSnackbar] = useState({
@@ -72,7 +77,8 @@ import {
     useEffect(() => {
       fetchApmcs(); 
       fetchUserById(id);
-    }, [fetchApmcs, fetchUserById, id]);
+      fetchVehicleTypes();
+    }, [fetchApmcs, fetchUserById, fetchVehicleTypes, id]);
     
     useEffect(() => {
       if (currentUser) {
@@ -99,7 +105,11 @@ import {
   
           profile_image: currentUser.profile_image || null,
   
-          apmcs:[],
+          vehicle_type: currentUser?.vehicles[0]?.vehicle_type || "",
+          vehicle_no: currentUser?.vehicles[0]?.vehicle_no || "",
+          permit_number: currentUser?.vehicles[0]?.permit_number || "",
+          insurance_number: currentUser?.vehicles[0]?.insurance_number || "",
+
         });
       }
     }, [currentUser]);
@@ -124,16 +134,17 @@ import {
       e.preventDefault();
       let data = new FormData();
       for (const key in formData) {
-        if (formData.hasOwnProperty(key)) {        
-          if (key === "apmcs" && formData.apmcs.length > 0) {
-            formData.apmcs.forEach((apmcId) => {
-              data.append("apmcs[]", apmcId); 
-            });
+        if (formData.hasOwnProperty(key)) {
+          if (
+            ["vehicle_type", "vehicle_no", "permit_number", "insurance_number"].includes(key)
+          ) {
+            data.append(`vehicle[${key}]`, formData[key]);
           } else if (key !== "profile_image") {
             data.append(key, formData[key]);
           }
         }
       }
+
   
       if (formData.profile_image) {
         data.append("profile_image", formData.profile_image);
@@ -375,28 +386,59 @@ import {
                 />
               </Grid>
   
-              {/* APMC Multi-Select Dropdown */}
               <Grid item xs={12} md={6}>
                 <FormControl fullWidth required>
-                  <InputLabel id="apmc-label">Select APMC</InputLabel>
+                  <InputLabel id="vehicle-type-label">Vehicle Type</InputLabel>
                   <Select
-                    labelId="apmc-label"
-                    id="apmcs"
-                    name="apmcs"
-                    multiple
-                    value={formData.apmcs}
+                    labelId="vehicle-type-label"
+                    name="vehicle_type"
+                    value={formData.vehicle_type}
                     onChange={handleChange}
-                    renderValue={(selected) => selected.join(", ")}
+                    label="Vehicle Type"
                   >
-                    {apmcs?.map((apmc) => (
-                      <MenuItem key={apmc.id} value={apmc.id}>
-                        <Checkbox checked={formData.apmcs.indexOf(apmc.id) > -1} />
-                        {apmc.name}
-                      </MenuItem>
-                    ))}
+                    {vehicleTypesLoading ? (
+                      <MenuItem disabled>Loading...</MenuItem>
+                    ) : (
+                      vehicleTypes.map((type) => (
+                        <MenuItem key={type.value} value={type.value}>
+                          {type.label}
+                        </MenuItem>
+                      ))
+                    )}
                   </Select>
                 </FormControl>
               </Grid>
+
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Vehicle Number"
+                  name="vehicle_no"
+                  value={formData.vehicle_no}
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Permit Number"
+                  name="permit_number"
+                  value={formData.permit_number}
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Insurance Number"
+                  name="insurance_number"
+                  value={formData.insurance_number}
+                  onChange={handleChange}
+                />
+              </Grid>
+
   
               {/* Profile Image Upload */}
               <Grid item xs={12}>

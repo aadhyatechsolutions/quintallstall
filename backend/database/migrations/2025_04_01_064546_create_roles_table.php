@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Role name, e.g., Admin, User
-            $table->string('slug')->unique(); // Unique identifier (slug) for the role
+            $table->string('name');
+            $table->string('slug')->unique(); 
+            $table->json('permissions')->nullable();
             $table->timestamps();
         });
     }

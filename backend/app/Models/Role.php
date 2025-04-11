@@ -14,6 +14,7 @@ class Role extends Model
         'name',
         'slug',
         'description',
+        'permissions'
     ];
 
     // Define the relationship

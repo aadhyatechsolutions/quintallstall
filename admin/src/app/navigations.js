@@ -201,8 +201,8 @@ const navigations = [
         name: "Roles", 
         icon: "apps",
         children: [
-          { name: "Create", path: "/settings/roles/create", iconText: "A" },
-          { name: "View", path: "/settings/roles/view", iconText: "A" },
+          { name: "Create", path: "/settings/role/create", iconText: "A" },
+          { name: "View", path: "/settings/role/view", iconText: "A" },
         ] 
       },
       { 
