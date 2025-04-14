@@ -56,5 +56,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(BankAccount::class);
     }
+    public function cart()
+    {
+        return $this->hasOne(Cart::class, 'buyer_id');
+    }
+
 
 }
