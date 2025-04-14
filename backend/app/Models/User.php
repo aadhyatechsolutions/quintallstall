@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+// use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
     use HasFactory, HasApiTokens;
     use Notifiable;
@@ -56,5 +56,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(BankAccount::class);
     }
+    public function cart()
+    {
+        return $this->hasOne(Cart::class, 'buyer_id');
+    }
+
 
 }

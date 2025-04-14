@@ -2,8 +2,9 @@ import { Box, styled, Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid"; 
 import { Breadcrumb, SimpleCard } from "app/components";
-import useProductStore from "../../store/product/productStore";
+import useCoinStore from "../../store/coin/coinStore";  // Updated to coin store
 import { useNavigate } from "react-router-dom"; 
+import { apiConfig } from 'app/config';  // Assuming your API config is set for media
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -14,48 +15,38 @@ const Container = styled("div")(({ theme }) => ({
   }
 }));
 
-export default function View() {
-  const { products, loading, error, fetchProductsBySlug, deleteProduct, updateProductStatus } = useProductStore();
+export default function CoinView() {
+  const { coins, loading, error, fetchCoins, deleteCoin, updateCoinStatus } = useCoinStore();  // Using coin store
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProductsBySlug('wholesaler');
-  }, [fetchProductsBySlug]);
+    fetchCoins();
+  }, [fetchCoins]);
 
   const handleDelete = (id) => {
-    deleteProduct(id);
+    deleteCoin(id);
   };
+
   const handleToggleStatus = async (id, currentStatus) => {
     const newStatus = currentStatus === "active" ? "inactive" : "active";
     try {
-      await updateProductStatus(id, newStatus);
-      // fetchProducts(); 
+      await updateCoinStatus(id, newStatus);
+      // fetchCoins(); // Optional, you could refetch after updating
     } catch (err) {
       console.error("Failed to update status:", err);
     }
   };
+
   const handleEdit = (id) => {
-    navigate(`/features/product/edit/${id}`);
+    navigate(`/settings/coin-settings/edit/${id}`);  // Route for coin editing
   };
 
   const columns = [
     { field: "id", headerName: "ID", width: 100 },
-    { field: "name", headerName: "Product Name", width: 200 },
-    { field: "category", headerName: "Category", width: 150 },
+    { field: "name", headerName: "Coin Name", width: 200 },
+    { field: "slug", headerName: "Slug", width: 150 },
     { field: "description", headerName: "Description", width: 300 },
-    { field: "price", headerName: "Price", width: 100 }, 
-    { field: "quantity", headerName: "Quantity", width: 100 },
-    { field: "unit", headerName: "Unit", width: 100 },
-    { field: "seller", headerName: "Vendor Name", width: 150 },   
-    { field: "role", headerName: "Vendor Type", width: 150 }, 
-    {
-      field: 'image',
-      headerName: 'Image',
-      width: 150,
-      renderCell: (params) => (
-        <img src={params.value} alt="Product" style={{ width: 50, height: 50, objectFit: 'cover' }} />
-      ),
-    },
+    { field: "value", headerName: "Value", width: 150 },
     {
       field: "status",
       headerName: "Status",
@@ -75,7 +66,6 @@ export default function View() {
         </Button>
       ),
     },
-    
     {
       field: "actions",
       headerName: "Actions",
@@ -104,18 +94,13 @@ export default function View() {
     },
   ];
 
-  const rows = products.map((product) => ({
-    id: product.id,
-    name: product.name,
-    category: product.category.name,
-    description: product.description,
-    price: product.price,
-    quantity: product.quantity,
-    unit: product.unit,    
-    seller: product.seller?.first_name,
-    role: product.seller?.roles[0]?.name || "No role",
-    image: product.image,
-    status: product.status,
+  const rows = coins.map((coin) => ({
+    id: coin.id,
+    name: coin.name,
+    slug: coin.slug,
+    description: coin.description,
+    value: coin.value,
+    status: coin.status,
   }));
 
   if (error) {
@@ -125,10 +110,10 @@ export default function View() {
   return (
     <Container>
       <Box className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: "Product Master", path: "/products/product-master/view" }, { name: "View" }]} />
+        <Breadcrumb routeSegments={[{ name: "Coin Master", path: "/coins/coin-master/view" }, { name: "View" }]} />
       </Box>
 
-      <SimpleCard title="Product Master List">
+      <SimpleCard title="Coin Master List">
         {loading ? (
           <div>Loading...</div>
         ) : (

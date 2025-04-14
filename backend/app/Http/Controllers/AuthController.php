@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Tymon\JWTAuth\Facades\JWTAuth;
+// use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -110,7 +110,8 @@ class AuthController extends Controller
 
             // Commit transaction if everything succeeds
             DB::commit();
-            $token = JWTAuth::fromUser($user, ['id' => $user->id]);
+            $token = $user->createToken('api-token')->plainTextToken;
+            // $token = JWTAuth::fromUser($user, ['id' => $user->id]);
 
             return response()->json([
                 'message' => 'User registered successfully',
@@ -143,7 +144,8 @@ class AuthController extends Controller
     
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = JWTAuth::fromUser($user, ['id' => $user->id]);
+            $token = $user->createToken('api-token')->plainTextToken;
+            // $token = JWTAuth::fromUser($user, ['id' => $user->id]);
             return response()->json([
                 'message' => 'Login successful',
                 'accessToken' => $token,
@@ -176,7 +178,8 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json(['error' => 'User not found.'], 404);
         }
-        $token = JWTAuth::fromUser($user, ['id' => $user->id]);
+        $token = $user->createToken('api-token')->plainTextToken;
+        // $token = JWTAuth::fromUser($user, ['id' => $user->id]);
         return response()->json([
             'message' => 'OTP verified successfully. Login successful.',
             'accessToken' => $token,  

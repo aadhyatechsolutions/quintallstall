@@ -186,14 +186,14 @@ const navigations = [
           { name: "View", path: "/settings/coin-settings/view", iconText: "A" },
         ] 
       },
-      { 
-        name: "Coin Type", 
-        icon: "apps",
-        children: [
-          { name: "Create", path: "/settings/coin-type/create", iconText: "A" },
-          { name: "View", path: "/settings/coin-type/view", iconText: "A" },
-        ] 
-      },
+      // { 
+      //   name: "Coin Type", 
+      //   icon: "apps",
+      //   children: [
+      //     { name: "Create", path: "/settings/coin-type/create", iconText: "A" },
+      //     { name: "View", path: "/settings/coin-type/view", iconText: "A" },
+      //   ] 
+      // },
       { name: "Coin Details", path: "/settings/coin-details", iconText: "A" },
       { name: "Wallet Settings", path: "/settings/wallet-settings", iconText: "A" },
       { name: "Tax Slab", path: "/settings/tax-slab", iconText: "A" },
