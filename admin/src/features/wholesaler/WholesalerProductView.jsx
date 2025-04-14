@@ -46,7 +46,7 @@ export default function View() {
     { field: "price", headerName: "Price", width: 100 }, 
     { field: "quantity", headerName: "Quantity", width: 100 },
     { field: "unit", headerName: "Unit", width: 100 },
-    { field: "user", headerName: "Vendor Name", width: 150 },   
+    { field: "seller", headerName: "Vendor Name", width: 150 },   
     { field: "role", headerName: "Vendor Type", width: 150 }, 
     {
       field: 'image',
@@ -112,8 +112,8 @@ export default function View() {
     price: product.price,
     quantity: product.quantity,
     unit: product.unit,    
-    user: product.user?.first_name,
-    role: product.user?.roles[0]?.name || "No role",
+    seller: product.seller?.first_name,
+    role: product.seller?.roles[0]?.name || "No role",
     image: product.image,
     status: product.status,
   }));
