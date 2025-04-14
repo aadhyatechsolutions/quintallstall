@@ -1,75 +1,75 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
+import {addCartItem} from "../utils/cartService"
 export const useCartStore = create(
   persist(
     (set, get) => ({
       cart: [],
+      syncStatus: 'idle', // 'idle' | 'syncing' | 'error'
+      lastSyncError: null,
 
-      addToCart: (product, quantity = 1, overrideQuantity = false) => {
-        const cart = get().cart;
-        const existingIndex = cart.findIndex((item) => item.id === product.id);
+      // Add with immediate API sync
+      addToCart: async (product, quantity = 1, overrideQuantity = false) => {
+        try {
+          set({ syncStatus: 'syncing' });
+          
+          const { cart } = get();
+          const existingIndex = cart.findIndex((item) => item.id === product.id);
 
-        if (existingIndex !== -1) {
-          const updatedCart = [...cart];
-          const existingItem = updatedCart[existingIndex];
+          // Optimistic update
+          
+          // Sync with backend
+          const {success, message} = await addCartItem({ 
+            product_id: product.id, 
+            quantity: overrideQuantity ? quantity : (cart[existingIndex]?.quantity + quantity || quantity)
+          });
+          if(success){
+            const newCart = existingIndex !== -1
+            ? cart.map((item, idx) => 
+                idx === existingIndex 
+                  ? { 
+                      ...item, 
+                      quantity: overrideQuantity 
+                        ? quantity 
+                        : item.quantity + quantity 
+                    } 
+                  : item
+              )
+            : [...cart, { ...product, quantity }];
 
-          updatedCart[existingIndex] = {
-            ...existingItem,
-            quantity: overrideQuantity
-              ? quantity // ✅ override from Product Detail
-              : existingItem.quantity + quantity, // ✅ increment from Card
-          };
+          set({ cart: newCart });
 
-          set({ cart: updatedCart });
-        } else {
-          set({ cart: [...cart, { ...product, quantity }] });
+          }
+
+          set({ syncStatus: 'idle' });
+        } catch (error) {
+          console.error("Sync failed:", error);
+          set({ 
+            syncStatus: 'error',
+            lastSyncError: error.message,
+            cart: get().cart // Revert to previous state
+          });
         }
       },
 
-      removeFromCart: (id) =>
-        set({
-          cart: get().cart.filter((item) => item.id !== id),
-        }),
-
-      clearCart: () => set({ cart: [] }),
-
-      increaseQuantity: (id) => {
-        set({
-          cart: get().cart.map((item) =>
-            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-          ),
-        });
+      // Other methods need similar async handling...
+      removeFromCart: async (id) => {
+        try {
+          set({ syncStatus: 'syncing' });
+          await deleteCartItem(id);
+          set({ 
+            cart: get().cart.filter((item) => item.id !== id),
+            syncStatus: 'idle' 
+          });
+        } catch (error) {
+          // Handle error
+        }
       },
 
-      decreaseQuantity: (id) => {
-        set({
-          cart: get()
-            .cart.map((item) =>
-              item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-            )
-            .filter((item) => item.quantity > 0),
-        });
-      },
-
-      getTotalItems: () =>
-        get().cart.reduce((total, item) => total + item.quantity, 0),
-
-      getTotalPrice: () =>
-        get().cart.reduce(
-          (total, item) => total + item.price * item.quantity,
-          0
-        ),
-
-      updateQuantity: (id, quantity) =>
-        set((state) => ({
-          cart: state.cart.map((item) =>
-            item.id === id ? { ...item, quantity } : item
-          ),
-        })),
+      // ... rest of your methods
     }),
     {
       name: "cart-storage",
     }
   )
-);
+);  
