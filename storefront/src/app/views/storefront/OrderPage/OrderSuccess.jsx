@@ -18,7 +18,8 @@ const OrderSuccess = () => {
   const [order, setOrder] = useState(null);
 
   useEffect(() => {
-    const savedOrder = localStorage.getItem("lastOrder");
+    // const savedOrder = localStorage.getItem("lastOrder");
+    const savedOrder = localStorage.getItem("orderData");
     if (savedOrder) {
       setOrder(JSON.parse(savedOrder));
     }
