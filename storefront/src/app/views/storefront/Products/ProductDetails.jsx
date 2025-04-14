@@ -33,6 +33,7 @@ import {
 import { useParams, Link as RouterLink } from "react-router-dom";
 import { useProduct } from "../../../../hooks/useProducts";
 import { useCartStore } from "../../../../store/cartStore";
+import { handleAddToCartWithAuthCheck } from "../../../../utils/authCartHandler";
 
 const ProductDetails = () => {
   const theme = useTheme();
@@ -283,17 +284,26 @@ const ProductDetails = () => {
 
               <Divider sx={{ my: 2 }} />
 
+              {/* // inside your component */}
               <Button
                 fullWidth
                 variant="contained"
                 color="error"
                 size="large"
                 startIcon={<ShoppingCart />}
-                onClick={() => addToCart(product, quantity, true)}
+                onClick={() =>
+                  handleAddToCartWithAuthCheck({
+                    product,
+                    quantity,
+                    addToCart,
+                    replace: true,
+                  })
+                }
                 sx={{ mb: 2, py: 1.5, fontWeight: 600 }}
               >
                 ADD TO CART
               </Button>
+
 
               <Stack direction="row" spacing={1} mt={2}>
                 <IconButton>

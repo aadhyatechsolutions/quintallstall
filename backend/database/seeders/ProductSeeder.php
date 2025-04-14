@@ -47,7 +47,8 @@ class ProductSeeder extends Seeder
                 $ch = curl_init($imageUrl);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  // Return the content as a string
                 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);  // Follow redirects
-                curl_setopt($ch, CURLOPT_TIMEOUT, 30);  // Set a timeout (30 seconds)
+                curl_setopt($ch, CURLOPT_TIMEOUT, 30);  
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Execute cURL session and get the image content
                 $imageContent = curl_exec($ch);

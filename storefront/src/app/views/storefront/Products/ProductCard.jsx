@@ -13,6 +13,8 @@ import {
   useTheme,
   Tooltip,
   Badge,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import {
   ShoppingCart,
@@ -25,7 +27,7 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../../../../store/cartStore";
-
+import { handleAddToCartWithAuthCheck } from "../../../../utils/authCartHandler";
 // Stock configuration utility
 const getStockConfig = (stockLevel, theme) => {
   const config = {
@@ -63,7 +65,10 @@ const ProductCard = ({ product }) => {
   const handleCardClick = () => navigate(`/products/${product.id}`);
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    addToCart(product);
+    handleAddToCartWithAuthCheck({
+      product,
+      addToCart,
+    });
   };
 
   return (
@@ -79,7 +84,7 @@ const ProductCard = ({ product }) => {
         position: "relative",
         transition: "all 0.3s ease",
         cursor: "pointer",
-        "&:hover": {
+        "&:hover": {  
           transform: "translateY(-6px)",
           boxShadow: theme.shadows[6],
           "& .product-actions": { opacity: 1 },

@@ -36,7 +36,8 @@ class CategorySeeder extends Seeder
             $ch = curl_init($imageUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the content as a string
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
-            curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Set timeout
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30); 
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
             // Execute the cURL session
             $imageContent = curl_exec($ch);

@@ -39,20 +39,44 @@ const CategoriesList = () => {
   }, []);
 
   const sliderSettings = {
-    className: "center",
     infinite: false,
     swipeToSlide: true,
-    slidesToShow: 12,
     arrows: false,
+    slidesToShow: 10,
     responsive: [
-      { breakpoint: 1200, settings: { slidesToShow: 8.5 } },
-      { breakpoint: 992, settings: { slidesToShow: 7.5 } },
-      { breakpoint: 768, settings: { slidesToShow: 6.5 } },
-      { breakpoint: 600, settings: { slidesToShow: 4.5 } },
-      { breakpoint: 480, settings: { slidesToShow: 3.3 } },
-      { breakpoint: 400, settings: { slidesToShow: 2.8 } },
+      {
+        breakpoint: 1400,
+        settings: { slidesToShow: 8 },
+      },
+      {
+        breakpoint: 1200,
+        settings: { slidesToShow: 6 },
+      },
+      {
+        breakpoint: 992,
+        settings: { slidesToShow: 5 },
+      },
+      {
+        breakpoint: 768,
+        settings: { slidesToShow: 4 },
+      },
+      {
+        breakpoint: 600,
+        settings: { slidesToShow: 3 },
+      },
+      {
+        breakpoint: 480,
+        settings: { slidesToShow: 2 },
+      },
+      {
+        breakpoint: 360,
+        settings: { slidesToShow: 1.5 },
+      },
     ],
   };
+  
+  
+  
 
   return (
     <Box sx={{ px: 2, py: 2 }}>
@@ -84,14 +108,18 @@ const CategoriesList = () => {
         </Typography>
       ) : (
         <Box
-          sx={{
-            "& .slick-list": { mb: 5 },
-            "& .slick-slide": {
-              pb: 2,
-              display: "flex !important",
-              justifyContent: "center",
-            },
-          }}
+        sx={{
+          "& .slick-list": {
+            px: { xs: 0, sm: 1 },
+            mb: { xs: 2, sm: 3 },
+          },
+          "& .slick-slide": {
+            px: 0.5,
+            pb:2,
+            display: "flex !important",
+            justifyContent: "center",
+          },
+        }}
         >
           <Slider {...sliderSettings} ref={sliderRef}>
             {categories.map((category) => (

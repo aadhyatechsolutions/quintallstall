@@ -21,7 +21,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 import { useProducts } from "../../../../hooks/useProducts";
 import { useCartStore } from "../../../../store/cartStore";
-
+import { handleAddToCartWithAuthCheck } from "../../../../utils/authCartHandler";
 const NextArrow = (props) => {
   const { onClick } = props;
   return (
@@ -76,7 +76,12 @@ const ProductSlider = () => {
   const { data: products = [], isLoading, isError } = useProducts();
   const addToCart = useCartStore((state) => state.addToCart);
   const handleAddToCart = (product) => {
-    addToCart(product);
+    handleAddToCartWithAuthCheck({
+      product,
+      quantity: 1,
+      addToCart,
+      replace: false,
+    });
   };
 
   const settings = {
