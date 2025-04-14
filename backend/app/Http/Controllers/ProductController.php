@@ -22,7 +22,7 @@ class ProductController extends Controller
             'unit' => 'required|in:kg,gram,quintal',
             'status' => 'required|string|in:active,inactive',
             'category' => 'required|exists:categories,id',
-            'user' => 'required|exists:users,id',
+            'seller' => 'required|exists:users,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -46,11 +46,11 @@ class ProductController extends Controller
             'unit' => $request->unit,
             'status' => $request->status,
             'category_id' => $request->category,
-            'user_id' => $request->user,
+            'seller_id' => $request->seller,
             'image' => $imageURL,
         ]);
 
-        $product->load(['category', 'user.roles']);
+        $product->load(['category', 'seller.roles']);
 
         return response()->json(['product' => $product], 201);
     }
@@ -60,10 +60,10 @@ class ProductController extends Controller
     {
         $products = Product::with([
             'category',
-            'user' => function($query) {
+            'seller' => function($query) {
                 $query->select('id', 'first_name');
             },
-            'user.roles' => function($query) {
+            'seller.roles' => function($query) {
                 $query->select('roles.name', 'roles.slug');
             }
         ])->get();
@@ -74,10 +74,10 @@ class ProductController extends Controller
     {
         $product = Product::with([
             'category',
-            'user' => function($query) {
+            'seller' => function($query) {
                 $query->select('id', 'first_name');
             },
-            'user.roles' => function($query) {
+            'seller.roles' => function($query) {
                 $query->select('roles.name', 'roles.slug');
             }
         ])->findOrFail($id);
@@ -97,7 +97,7 @@ class ProductController extends Controller
             'unit' => 'required|in:kg,gram,quintal',
             'status' => 'required|string|in:active,inactive',
             'category' => 'required|exists:categories,id',
-            'user' => 'required|exists:users,id',
+            'seller' => 'required|exists:users,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -121,11 +121,11 @@ class ProductController extends Controller
             'unit' => $request->unit,
             'status' => $request->status,
             'category_id' => $request->category,
-            'user_id' => $request->user,
+            'seller_id' => $request->seller,
             'image' => $product->image, // Keep existing image if not updated
         ]);
 
-        $product->load(['category', 'user.roles']);
+        $product->load(['category', 'seller.roles']);
 
         return response()->json(['product' => $product], 200);
     }
@@ -141,15 +141,15 @@ class ProductController extends Controller
 
     public function getProductsByRoleSlug($slug)
     {
-        $products = Product::whereHas('user.roles', function ($query) use ($slug) {
+        $products = Product::whereHas('seller.roles', function ($query) use ($slug) {
             $query->where('slug', $slug);
         })
         ->with([
             'category',
-            'user' => function($query) {
+            'seller' => function($query) {
                 $query->select('id', 'first_name');
             },
-            'user.roles' => function($query) {
+            'seller.roles' => function($query) {
                 $query->select('roles.name', 'roles.slug');
             }
         ])

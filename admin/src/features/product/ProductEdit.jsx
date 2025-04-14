@@ -34,7 +34,7 @@ export default function EditProduct() {
   const navigate = useNavigate();
   const { fetchProductById, updateProduct } = useProductStore(); // Use Zustand store for product
   const { fetchCategories, categories, loading, error } = useCategoryStore(); // For category data
-  const { fetchUsers, users } = useUserStore(); // Assuming you have a user store
+  const { fetchUsers, users:sellers } = useUserStore(); // Assuming you have a user store
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -47,7 +47,7 @@ export default function EditProduct() {
     description: "",
     price: "", // Added price to form data
     image: null,
-    user: "", // Added user to form data
+    seller: "", // Added user to form data
     quantity: "", // Quantity field
     unit: "kg", // Unit field with default "kg"
     status: "active", // Status field with default "active"
@@ -70,7 +70,7 @@ export default function EditProduct() {
           description: product.description,
           price: product.price, // Set the price of the product
           image: null, // Don't pre-populate image, allow user to upload a new one
-          user: product.user.id, // Assuming user has an 'id'
+          seller: product.seller.id, // Assuming user has an 'id'
           quantity: product.quantity || "", // Assuming quantity exists on the product
           unit: product.unit || "kg", // Set unit if available
           status: product.status || "active", // Set status if available
@@ -257,12 +257,12 @@ export default function EditProduct() {
                   onChange={handleChange}
                   label="User"
                 >
-                  {users.length === 0 ? (
+                  {sellers.length === 0 ? (
                     <MenuItem disabled>Loading...</MenuItem>
                   ) : (
-                    users.map((user) => (
-                      <MenuItem key={user.id} value={user.id}>
-                        {user.first_name}
+                    sellers.map((seller) => (
+                      <MenuItem key={seller.id} value={seller.id}>
+                        {seller.first_name}
                       </MenuItem>
                     ))
                   )}

@@ -14,7 +14,7 @@ class Product extends Model
         'description',
         'price',
         'category_id',
-        'user_id',
+        'seller_id',
         'image',
         'status',
     ];
@@ -23,7 +23,7 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
-    public function user()
+    public function seller()
     {
         return $this->belongsTo(User::class);
     }

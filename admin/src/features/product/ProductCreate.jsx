@@ -34,7 +34,7 @@ export default function Create() {
   const navigate = useNavigate();
   const { addProduct } = useProductStore();
   const { fetchCategories, categories, loading, error } = useCategoryStore();
-  const { fetchUsers, users } = useUserStore();
+  const { fetchUsers, users:sellers } = useUserStore();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -44,7 +44,7 @@ export default function Create() {
     quantity: "",   
     unit: "kg",     
     status: "active", 
-    user: "", 
+    seller: "", 
     image: null,
   });
 
@@ -220,17 +220,17 @@ export default function Create() {
               <FormControl fullWidth required>
                 <InputLabel>Vendor Name</InputLabel>
                 <Select
-                  name="user"
-                  value={formData.user}
+                  name="seller"
+                  value={formData.seller}
                   onChange={handleChange}
-                  label="User"
+                  label="Seller"
                 >
-                  {users.length === 0 ? (
+                  {sellers.length === 0 ? (
                     <MenuItem disabled>Loading...</MenuItem>
                   ) : (
-                    users.map((user) => (
-                      <MenuItem key={user.id} value={user.id}>
-                        {user.first_name} {user.last_name}
+                    sellers.map((seller) => (
+                      <MenuItem key={seller.id} value={seller.id}>
+                        {seller.first_name} {seller.last_name}
                       </MenuItem>
                     ))
                   )}
