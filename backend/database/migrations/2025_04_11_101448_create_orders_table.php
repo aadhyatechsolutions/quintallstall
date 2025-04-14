@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // FK to users table
+            $table->unsignedBigInteger('buyer_id');
+            $table->foreign('buyer_id')->references('id')->on('users')->onDelete('cascade');
             $table->enum('order_status', ['pending', 'completed', 'cancelled', 'failed']);
             $table->decimal('total_amount', 10, 2);
             $table->text('shipping_address');

@@ -18,7 +18,7 @@ class OrderSeeder extends Seeder
         foreach (range(1, 10) as $index) {
             // Create an order
             $order = Order::create([
-                'user_id' => 1, // Assuming user exists
+                'buyer_id' => 1, // Assuming user exists
                 'order_status' => $faker->randomElement(['pending', 'completed', 'cancelled', 'failed']),
                 'total_amount' => 0, // Placeholder, will be updated later
                 'shipping_address' => $faker->address,
