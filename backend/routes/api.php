@@ -16,6 +16,9 @@ use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\ShippingDetailController;
 use App\Http\Controllers\PaymentController;
 
+use App\Http\Controllers\CartController;
+
+
 use App\Http\Controllers\TestController;
 
 /*
@@ -33,13 +36,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('auth/register', [AuthController::class, 'register']);
-Route::post('auth/login', [AuthController::class, 'login']);
+Route::post('auth/login', [AuthController::class, 'login'])->name('login');
 Route::post('auth/otpLogin', [AuthController::class, 'otpLogin']);
 Route::post('auth/generateLoginOtp', [AuthController::class, 'generateLoginOtp']);
 
 Route::post('auth/generateOtp', [AuthController::class, 'generateOtp']);
 Route::post('auth/verifyOtp', [AuthController::class, 'verifyOtp']);
-Route::middleware(['auth:api'])->get('auth/profile', [AuthController::class, 'profile']);
+Route::middleware('auth:sanctum')->get('auth/profile', [AuthController::class, 'profile']);
 
 Route::resource('apmcs', ApmcController::class);
 Route::resource('roles', RoleController::class);
@@ -55,5 +58,14 @@ Route::resource('orders', OrderController::class);
 Route::resource('order-items', OrderItemController::class);
 Route::resource('shipping-details', ShippingDetailController::class);
 Route::resource('payments', PaymentController::class);
+
+
+Route::middleware('auth:sanctum')->controller(CartController::class)->prefix('cart')->group(function () {
+    Route::post('/add', 'addToCart');
+    Route::get('/', 'viewCart');
+    Route::patch('/item/{id}', 'updateCartItem');
+    Route::delete('/item/{id}', 'removeCartItem');
+});
+
 
 Route::get('test', [TestController::class,'test']);
