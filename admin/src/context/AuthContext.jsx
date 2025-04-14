@@ -14,22 +14,23 @@ const isValidToken = (accessToken) => {
   if (!accessToken) {
     return false;
   }
+  return true;
 
-  try {
-    const decodedToken = jwtDecode(accessToken);
-    if (!decodedToken?.sub) {
-      return false;
-    }
-    const currentTime = Date.now() / 1000;
-    if (decodedToken.exp < currentTime) {
-      return false;
-    }
+  // try {
+  //   const decodedToken = jwtDecode(accessToken);
+  //   if (!decodedToken?.sub) {
+  //     return false;
+  //   }
+  //   const currentTime = Date.now() / 1000;
+  //   if (decodedToken.exp < currentTime) {
+  //     return false;
+  //   }
 
-    return true; 
-  } catch (error) {
-    console.error("Token decoding error:", error);
-    return false;
-  }
+  //   return true; 
+  // } catch (error) {
+  //   console.error("Token decoding error:", error);
+  //   return false;
+  // }
 };
 
 const setSession = (accessToken) => {

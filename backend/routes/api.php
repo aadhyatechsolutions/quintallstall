@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\CoinController;
 
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
@@ -58,6 +59,7 @@ Route::resource('orders', OrderController::class);
 Route::resource('order-items', OrderItemController::class);
 Route::resource('shipping-details', ShippingDetailController::class);
 Route::resource('payments', PaymentController::class);
+Route::resource('coins', CoinController::class);
 
 
 Route::middleware('auth:sanctum')->controller(CartController::class)->prefix('cart')->group(function () {

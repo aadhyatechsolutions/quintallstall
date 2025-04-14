@@ -67,13 +67,13 @@ import SpecialOfferCreate from "./components/Frontend/SpecialOffer/Create";
 import SpecialOfferView from "./components/Frontend/SpecialOffer/View";
 import SpecialOfferEdit from "./components/Frontend/SpecialOffer/Edit";
 
-import CoinSettingsCreate from "./components/Settings/CoinSettings/Create";
-import CoinSettingsView from "./components/Settings/CoinSettings/View";
-import CoinSettingsEdit from "./components/Settings/CoinSettings/Edit";
+import CoinCreate from "../features/coin/CoinCreate";
+import CoinView from "../features/coin/CoinView";
+import CoinEdit from "../features/coin/CoinEdit";
 
-import CoinTypeCreate from "./components/Settings/CoinType/Create";
-import CoinTypeView from "./components/Settings/CoinType/View";
-import CoinTypeEdit from "./components/Settings/CoinType/Edit";
+// import CoinTypeCreate from "./components/Settings/CoinType/Create";
+// import CoinTypeView from "./components/Settings/CoinType/View";
+// import CoinTypeEdit from "./components/Settings/CoinType/Edit";
 
 import CoinDetails from "./components/Settings/CoinDetails";
 import WalletSettings from "./components/Settings/WalletSettings";
@@ -161,13 +161,13 @@ const routes = [
       { path: "/frontend/special-offer/view", element: <SpecialOfferView /> },
       { path: "/frontend/special-offer/edit/:id", element: <SpecialOfferEdit />, },
 
-      { path: "/settings/coin-settings/create", element: <CoinSettingsCreate />, },
-      { path: "/settings/coin-settings/view", element: <CoinSettingsView /> },
-      { path: "/settings/coin-settings/edit/:id", element: <CoinSettingsEdit />, },
+      { path: "/settings/coin-settings/create", element: <CoinCreate />, },
+      { path: "/settings/coin-settings/view", element: <CoinView /> },
+      { path: "/settings/coin-settings/edit/:id", element: <CoinEdit />, },
 
-      { path: "/settings/coin-type/create", element: <CoinTypeCreate /> },
-      { path: "/settings/coin-type/view", element: <CoinTypeView /> },
-      { path: "/settings/coin-type/edit/:id", element: <CoinTypeEdit /> },
+      // { path: "/settings/coin-type/create", element: <CoinTypeCreate /> },
+      // { path: "/settings/coin-type/view", element: <CoinTypeView /> },
+      // { path: "/settings/coin-type/edit/:id", element: <CoinTypeEdit /> },
 
       { path: "/settings/coin-details", element: <CoinDetails /> },
       { path: "/settings/wallet-settings", element: <WalletSettings /> },
