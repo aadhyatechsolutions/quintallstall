@@ -26,7 +26,7 @@ const CartSummary = ({ total }) => {
         boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
       }}
     >
-      <Typography fontWeight={600} mb={2}>
+      {/* <Typography fontWeight={600} mb={2}>
         Promo code
       </Typography>
       <Stack direction="row" spacing={1} mb={2}>
@@ -41,14 +41,14 @@ const CartSummary = ({ total }) => {
         >
           Apply
         </Button>
-      </Stack>
+      </Stack> */}
 
       <Divider sx={{ my: 2 }} />
 
       <Stack spacing={1} mb={2}>
-        <Typography>
+        {/* <Typography>
           Discount: <strong>Rs: 0.00</strong>
-        </Typography>
+        </Typography> */}
         <Typography variant="h6">
           Total:{" "}
           <Box component="span" fontWeight="bold">

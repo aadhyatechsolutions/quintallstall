@@ -14,12 +14,11 @@ import {
   FavoriteBorder,
   ShoppingCart,
   Phone,
+  Logout,
 } from "@mui/icons-material";
-
 import { useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useCartStore } from "../../../../../../store/cartStore";
-
 import CartPopover from "../../../Cart/CartDialog/CartPopover";
 
 const NavActions = ({ isLargeScreen }) => {
@@ -27,9 +26,16 @@ const NavActions = ({ isLargeScreen }) => {
   const navigate = useNavigate();
   const [cartDialogOpen, setCartDialogOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const cartAnchorRef = useRef(null);
   const open = Boolean(anchorEl);
-  const { cart } = useCartStore();  // Destructuring cart from store
+  const { cart } = useCartStore();
+
+  // Check login status on component mount and when token might change
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token);
+  }, []);
 
   // Ensure cart is an array, and safely access cart items
   const cartItems = Array.isArray(cart?.items) ? cart.items : [];
@@ -54,6 +60,13 @@ const NavActions = ({ isLargeScreen }) => {
   const handleRegister = () => {
     const baseUrl = window.location.origin;
     window.location.href = `${baseUrl}/admin/session/signup`;
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    setIsLoggedIn(false);
+    // You might want to redirect or refresh the page
+    window.location.reload();
   };
 
   return (
@@ -148,48 +161,70 @@ const NavActions = ({ isLargeScreen }) => {
               overflow: "hidden",
             },
           }}
-          transformOrigin={{ horizontal: "right", vertical: "top" }}
-          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem
-            onClick={handleClose}
-            sx={{
-              borderBottom: "1px solid rgba(0,0,0,0.1)",
-              "&:hover": { backgroundColor: "#f5f5f5" },
-            }}
-          >
-            <Button
-              onClick={handleLogin}
-              fullWidth
+          {isLoggedIn ? (
+            <MenuItem
+              onClick={handleLogout}
               sx={{
-                justifyContent: "flex-start",
-                textTransform: "none",
-                color: "black",
-                fontWeight: "500",
+                "&:hover": { backgroundColor: "#f5f5f5" },
               }}
             >
-              Login
-            </Button>
-          </MenuItem>
-          <MenuItem
-            onClick={handleClose}
-            sx={{
-              "&:hover": { backgroundColor: "#f5f5f5" },
-            }}
-          >
-            <Button
-              onClick={handleRegister}
-              fullWidth
+              <Button
+                fullWidth
+                startIcon={<Logout fontSize="small" />}
+                sx={{
+                  justifyContent: "flex-start",
+                  textTransform: "none",
+                  color: "black",
+                  fontWeight: "500",
+                }}
+              >
+                Logout
+              </Button>
+            </MenuItem>
+          ) : [
+            <MenuItem
+              key="login"
+              onClick={handleClose}
               sx={{
-                justifyContent: "flex-start",
-                textTransform: "none",
-                color: "black",
-                fontWeight: "500",
+                borderBottom: "1px solid rgba(0,0,0,0.1)",
+                "&:hover": { backgroundColor: "#f5f5f5" },
               }}
             >
-              Register
-            </Button>
-          </MenuItem>
+              <Button
+                onClick={handleLogin}
+                fullWidth
+                sx={{
+                  justifyContent: "flex-start",
+                  textTransform: "none",
+                  color: "black",
+                  fontWeight: "500",
+                }}
+              >
+                Login
+              </Button>
+            </MenuItem>,
+            <MenuItem
+              key="register"
+              onClick={handleClose}
+              sx={{
+                "&:hover": { backgroundColor: "#f5f5f5" },
+              }}
+            >
+              <Button
+                onClick={handleRegister}
+                fullWidth
+                sx={{
+                  justifyContent: "flex-start",
+                  textTransform: "none",
+                  color: "black",
+                  fontWeight: "500",
+                }}
+              >
+                Register
+              </Button>
+            </MenuItem>
+          ]}
         </Menu>
       </Box>
     </Box>

@@ -3,11 +3,10 @@ import {
   Box, 
   Container, 
   Typography, 
-  Link, 
-  Divider,
   IconButton,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  Divider
 } from '@mui/material';
 import { 
   Facebook, 
@@ -18,6 +17,7 @@ import {
   Android,
   Payment 
 } from '@mui/icons-material';
+import { NavLink } from 'react-router-dom';
 
 const Footer = () => {
   const theme = useTheme();
@@ -41,6 +41,19 @@ const Footer = () => {
       isContact: true
     }
   ];
+
+  const customPaths = {
+    'Home': '/',
+    'About Us': '/about',
+    'Shop': '/shop',
+    'Blog': '/blog',
+    'Contact Us': '/contact',
+    'Products': '/products'
+  };
+
+  const enabledLinks = Object.keys(customPaths);
+
+  const isLinkEnabled = (item) => enabledLinks.includes(item);
 
   return (
     <Box
@@ -103,18 +116,38 @@ const Footer = () => {
                 </Box>
               ) : (
                 <Box>
-                  {column.items.map((item) => (
-                    <Link
-                      key={item}
-                      href="#"
-                      color="text.secondary"
-                      underline="hover"
-                      display="block"
-                      sx={{ mb: 1 }}
-                    >
-                      {item}
-                    </Link>
-                  ))}
+                  {column.items.map((item) => {
+                    const enabled = isLinkEnabled(item);
+                    const path = customPaths[item] || '#';
+
+                    return enabled ? (
+                      <NavLink
+                        key={item}
+                        to={path}
+                        style={({ isActive }) => ({
+                          textDecoration: 'none',
+                          display: 'block',
+                          marginBottom: '8px',
+                          color: isActive ? '#1976d2' : 'gray',
+                          fontWeight: isActive ? 'bold' : 'normal',
+                        })}
+                      >
+                        {item}
+                      </NavLink>
+                    ) : (
+                      <Typography
+                        key={item}
+                        sx={{
+                          color: 'lightgray',
+                          display: 'block',
+                          marginBottom: '8px',
+                          cursor: 'not-allowed'
+                        }}
+                      >
+                        {item}
+                      </Typography>
+                    );
+                  })}
                 </Box>
               )}
             </Box>
