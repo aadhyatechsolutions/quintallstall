@@ -31,7 +31,6 @@ const navigations = [
         children: [
           { name: "Create", path: "/features/product/create", iconText: "A" },
           { name: "View", path: "/features/product/view", iconText: "A" },
-          { name: "Reviews", path: "/features/product/reviews", icon: "assignment"},
         ] 
       },
       { 
@@ -41,7 +40,8 @@ const navigations = [
           { name: "Create", path: "/features/category/create", iconText: "A" },
           { name: "View", path: "/features/category/view", iconText: "A" },
         ] 
-      }
+      },
+      { name: "Product Reviews", path: "/features/product/reviews", icon: "assignment"},
     ]
   },
   {
