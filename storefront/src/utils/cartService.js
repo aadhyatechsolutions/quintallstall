@@ -58,3 +58,29 @@ export const deleteCartItem = async (id) => {
     throw errorDetails;
   }
 };
+
+// Clear the entire cart
+export const clearCartOnServer = async () => {
+  try {
+    const { data } = await axiosInstance.post("/cart/clear", {}, getAuthHeader());
+
+    if (data.success) {
+      console.log(data.message);
+      return true;
+    } else {
+      console.error("Failed to clear cart:", data.message);
+      return false;
+    }
+  } catch (error) {
+    const errorDetails = {
+      message: error.response?.data?.message || error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+    };
+    console.error("Clear cart failed:", errorDetails);
+    return false;
+  }
+};
+
+
+

@@ -1,4 +1,4 @@
-import { useCartStore } from "../store/cartStore"; // Add this import
+import { useCartStore } from "../store/cartStore";
 
 export const handleAddToCartWithAuthCheck = ({
   product,

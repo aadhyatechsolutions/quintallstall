@@ -6,7 +6,7 @@ import {
   addCartItem,
   deleteCartItem,
   updateCartItem,
-  // clearCartOnServer, 
+  clearCartOnServer, 
 } from "../utils/cartService";
 
 export const useCartStore = create(
@@ -86,21 +86,17 @@ export const useCartStore = create(
       },
 
       clearCart: async () => {
-        const cart = get().cart || { items: [] };
-        set({ cart: { ...cart, items: [] } });
-
-        // Optional: Uncomment this if server supports clearing cart
-        // try {
-        //   set({ syncStatus: "syncing" });
-        //   await clearCartOnServer();
-        //   set({ syncStatus: "idle" });
-        // } catch (error) {
-        //   console.error("Clear cart failed:", error);
-        //   set({
-        //     syncStatus: "error",
-        //     lastSyncError: error.message,
-        //   });
-        // }
+        try {
+          const success = await clearCartOnServer();
+          if (success) {
+            const cart = get().cart || { items: [] };
+            set({ cart: { ...cart, items: [] } });
+          } else {
+            console.error("Failed to clear cart on server");
+          }
+        } catch (error) {
+          console.error("Error clearing cart:", error);
+        }
       },
 
       increaseQuantity: async (id) => {
