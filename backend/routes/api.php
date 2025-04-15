@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\CoinController;
+use App\Http\Controllers\ReviewController;
 
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
@@ -50,6 +51,7 @@ Route::resource('roles', RoleController::class);
 Route::resource('users', UserController::class);
 Route::resource('products', ProductController::class);
 Route::resource('categories', CategoryController::class);
+Route::resource('reviews', ReviewController::class);
 
 Route::get('products/role/{slug}', [ProductController::class, 'getProductsByRoleSlug']);
 Route::put('/products/{id}/status', [ProductController::class, 'updateStatus']);
@@ -67,6 +69,7 @@ Route::middleware('auth:sanctum')->controller(CartController::class)->prefix('ca
     Route::get('/', 'viewCart');
     Route::patch('/item/{id}', 'updateCartItem');
     Route::delete('/item/{id}', 'removeCartItem');
+    Route::post('/clear', 'clearCart');
 });
 
 

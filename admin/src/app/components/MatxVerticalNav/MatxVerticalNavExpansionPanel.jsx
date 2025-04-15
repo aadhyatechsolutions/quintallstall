@@ -78,7 +78,7 @@ const BadgeValue = styled("div")(() => ({
   borderRadius: "300px"
 }));
 
-export default function MatxVerticalNavExpansionPanel({ item, children, mode }) {
+export default function MatxVerticalNavExpansionPanel({ item, children, mode, level }) {
   const [collapsed, setCollapsed] = useState(true);
   const elementRef = useRef(null);
   const componentHeight = useRef(0);
@@ -124,7 +124,11 @@ export default function MatxVerticalNavExpansionPanel({ item, children, mode }) 
           compactNavItem: mode === "compact",
           open: !collapsed
         })}
-        onClick={handleClick}>
+        onClick={handleClick}
+        sx={{
+          width: "100%",
+          pl: item.indentLevel ? item.indentLevel * 2 : level === 2 ? 3 : 2
+        }}>
         <Box display="flex" alignItems="center">
           {icon && <Icon className="icon">{icon}</Icon>}
           {iconText && <BulletIcon />}

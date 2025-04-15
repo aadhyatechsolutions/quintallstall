@@ -35,4 +35,8 @@ class Order extends Model
     {
         return $this->hasOne(Payment::class); 
     }
+    public function buyer()
+    {
+        return $this->belongsTo(User::class); 
+    }
 }

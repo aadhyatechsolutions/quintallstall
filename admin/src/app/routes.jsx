@@ -16,6 +16,7 @@ import AMPCEdit from "../features/apmc/ApmcEdit";
 import ProductView from "../features/product/ProductView";
 import ProductCreate from "../features/product/ProductCreate";
 import ProductEdit from "../features/product/ProductEdit";
+import ProductReview from "../features/product/ProductReview";
 
 import CategoryCreate from "../features/category/CategoryCreate";
 import CategoryView from "../features/category/CategoryView";
@@ -40,7 +41,7 @@ import DeliveryView from "../features/delivery/DeliveryView";
 import DeliveryEdit from "../features/delivery/DeliveryEdit";
 import DeliveryKYC from "../features/delivery/DeliveryKYC";
 
-import Orders from "./components/Orders/Orders";
+import OrderView from "../features/order/OrderView";
 import Reviews from "./components/Orders/Reviews";
 
 import WholeSellerReport from "./components/Report/WholeSellerReport";
@@ -109,6 +110,7 @@ const routes = [
       { path: "/features/product/view", element: <ProductView /> },
       { path: "/features/product/create", element: <ProductCreate />, },
       { path: "/features/product/edit/:id", element: <ProductEdit />,},
+      { path: "/features/product/reviews", element: <ProductReview />,},
 
       { path: "/features/category/view", element: <CategoryView /> },
       { path: "/features/category/create", element: <CategoryCreate /> },
@@ -134,8 +136,8 @@ const routes = [
 
       { path: "/delivery/delivery-kyc", element: <DeliveryKYC /> },
 
-      { path: "/orders/orders", element: <Orders /> },
-      { path: "/orders/reviews", element: <Reviews /> },
+      { path: "/orders/orders", element: <OrderView /> },
+      // { path: "/orders/reviews", element: <Reviews /> },
 
       { path: "/report/wholeseller-report", element: <WholeSellerReport /> },
 

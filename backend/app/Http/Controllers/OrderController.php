@@ -13,8 +13,9 @@ class OrderController extends Controller
     // Display a listing of orders
     public function index()
     {
-        $orders = Order::with(['orderItems', 'shippingDetails', 'payment'])->get();
-        return response()->json($orders);
+        $orders = Order::with(['orderItems.product.seller', 'shippingDetails', 'payment', 'buyer'])->get();
+        
+        return response()->json(['orders' => $orders],200);
     }
 
     // Show the form for creating a new order
