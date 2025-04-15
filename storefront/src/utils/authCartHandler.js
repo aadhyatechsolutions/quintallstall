@@ -6,11 +6,8 @@ export const handleAddToCartWithAuthCheck = ({
   addToCart,
   replace = false,
 }) => {
-<<<<<<< HEAD
-  // Access the cart from the Zustand store
-  const cart = useCartStore.getState().cart.items;
-=======
-  const token = localStorage.getItem("accessToken") || '1|nI8V80JN8feEETkzdZjlT9qySr1mn3nBOTmCJj9k38c1a453';
+  const cart = useCartStore.getState().cart;
+  const token = localStorage.getItem("accessToken");
   
   if (!token) {
     alert("Please login to add items to your cart.");
@@ -18,9 +15,8 @@ export const handleAddToCartWithAuthCheck = ({
     window.location.href = `${baseUrl}/admin/session/signin`;
     return false;
   }
->>>>>>> 7f3099552e8e71105ad22694576f348bdaf8fb82
 
-  const itemInCart = cart.find((item) => item.product.id === product.id);
+  const itemInCart = cart.items?.find((item) => item.product.id === product.id);
 
   if (itemInCart) {
     // If the product is already in the cart, either update the quantity or replace

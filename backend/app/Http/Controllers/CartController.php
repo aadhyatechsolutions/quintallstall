@@ -40,7 +40,7 @@ class CartController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Product added to cart',
-            'item' => $item,
+            'item' => $cart->items()->where('product_id', $product->id)->first(),
         ]);
     }
 
@@ -75,7 +75,11 @@ class CartController extends Controller
         $item->quantity = $validated['quantity'];
         $item->save();
 
-        return response()->json(['message' => 'Cart item updated']);
+        return response()->json([
+            'message' => 'Cart item updated',
+            'success' => true,
+            'item' => $item
+        ]);
     }
 
     public function removeCartItem($id)
@@ -88,7 +92,10 @@ class CartController extends Controller
 
         $item->delete();
 
-        return response()->json(['message' => 'Item removed from cart']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Item removed from cart'
+        ]);
     }
     public function clearCart()
     {

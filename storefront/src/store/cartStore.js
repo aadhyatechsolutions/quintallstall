@@ -29,7 +29,7 @@ export const useCartStore = create(
               ? quantity
               : items[existingIndex].quantity + quantity;
 
-          const { success, message } = await addCartItem({
+          const { success, message, item } = await addCartItem({
             product_id: product.id,
             quantity: newQuantity,
           });
@@ -39,7 +39,7 @@ export const useCartStore = create(
           if (existingIndex !== -1) {
             items[existingIndex].quantity = newQuantity;
           } else {
-            items.push({product, quantity: newQuantity });
+            items.push({id:item.id, price:item.price, product, quantity: newQuantity });
           }
 
           set({ cart: { ...cart, items }, syncStatus: "idle" });
@@ -59,8 +59,7 @@ export const useCartStore = create(
           const cart = get().cart || { items: [] };
           const items = Array.isArray(cart.items) ? cart.items : [];
 
-          const updatedItems = items.filter((item) => item.id !== id);
-          set({ cart: { ...cart, items: updatedItems } });
+          
 
           const response = await deleteCartItem(id);
           if (!response.success) {
@@ -71,6 +70,8 @@ export const useCartStore = create(
             });
             return false;
           }
+          const updatedItems = items.filter((item) => item.id !== id);
+          set({ cart: { ...cart, items: updatedItems } });
 
           set({ syncStatus: "idle" });
           return true;
