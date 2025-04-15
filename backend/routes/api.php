@@ -67,6 +67,7 @@ Route::middleware('auth:sanctum')->controller(CartController::class)->prefix('ca
     Route::get('/', 'viewCart');
     Route::patch('/item/{id}', 'updateCartItem');
     Route::delete('/item/{id}', 'removeCartItem');
+    Route::post('/clear', 'clearCart');
 });
 
 
