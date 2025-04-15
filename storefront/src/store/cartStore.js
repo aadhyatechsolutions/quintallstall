@@ -1,75 +1,128 @@
+// src/store/useCartStore.js
+
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import {addCartItem} from "../utils/cartService"
+import { addCartItem, deleteCartItem } from "../utils/cartService";
+
 export const useCartStore = create(
   persist(
     (set, get) => ({
       cart: [],
-      syncStatus: 'idle', // 'idle' | 'syncing' | 'error'
+      syncStatus: "idle", // 'idle' | 'syncing' | 'error'
       lastSyncError: null,
 
-      // Add with immediate API sync
+      // Add item to cart with backend sync
       addToCart: async (product, quantity = 1, overrideQuantity = false) => {
         try {
-          set({ syncStatus: 'syncing' });
-          
-          const { cart } = get();
+          set({ syncStatus: "syncing" });
+          const cart = get().cart;
           const existingIndex = cart.findIndex((item) => item.id === product.id);
+          const newQuantity =
+            overrideQuantity || existingIndex === -1
+              ? quantity
+              : cart[existingIndex].quantity + quantity;
 
-          // Optimistic update
-          
-          // Sync with backend
-          const {success, message} = await addCartItem({ 
-            product_id: product.id, 
-            quantity: overrideQuantity ? quantity : (cart[existingIndex]?.quantity + quantity || quantity)
+          // Backend API sync
+          const { success, message } = await addCartItem({
+            product_id: product.id,
+            quantity: newQuantity,
           });
-          if(success){
-            const newCart = existingIndex !== -1
-            ? cart.map((item, idx) => 
-                idx === existingIndex 
-                  ? { 
-                      ...item, 
-                      quantity: overrideQuantity 
-                        ? quantity 
-                        : item.quantity + quantity 
-                    } 
-                  : item
-              )
-            : [...cart, { ...product, quantity }];
 
-          set({ cart: newCart });
+          if (!success) throw new Error(message || "Failed to add item");
 
-          }
+          // Local state update
+          const updatedCart =
+            existingIndex !== -1
+              ? cart.map((item, idx) =>
+                  idx === existingIndex
+                    ? { ...item, quantity: newQuantity }
+                    : item
+                )
+              : [...cart, { ...product, quantity }];
 
-          set({ syncStatus: 'idle' });
+          set({ cart: updatedCart, syncStatus: "idle" });
         } catch (error) {
           console.error("Sync failed:", error);
-          set({ 
-            syncStatus: 'error',
+          set({
+            syncStatus: "error",
             lastSyncError: error.message,
-            cart: get().cart // Revert to previous state
           });
         }
       },
 
-      // Other methods need similar async handling...
+      // Remove item from cart and backend
       removeFromCart: async (id) => {
         try {
-          set({ syncStatus: 'syncing' });
-          await deleteCartItem(id);
-          set({ 
+          set({ syncStatus: "syncing", lastSyncError: null });
+          
+          // Wait for API confirmation before updating local state
+          const response = await deleteCartItem(id);
+          
+          if (!response.success) {
+            throw new Error(response.message || "Failed to delete item");
+          }
+      
+          set({
             cart: get().cart.filter((item) => item.id !== id),
-            syncStatus: 'idle' 
+            syncStatus: "idle",
           });
+          
+          return true; // Indicate success
         } catch (error) {
-          // Handle error
+          console.error("Remove failed:", error);
+          set({
+            syncStatus: "error",
+            lastSyncError: error.message || "Failed to remove item from server",
+          });
+          return false; // Indicate failure
         }
       },
 
-      // ... rest of your methods
+      // Clear all items (local only)
+      clearCart: () => set({ cart: [] }),
+
+      // Increase item quantity (local)
+      increaseQuantity: (id) => {
+        set({
+          cart: get().cart.map((item) =>
+            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+          ),
+        });
+      },
+
+      // Decrease item quantity (local)
+      decreaseQuantity: (id) => {
+        set({
+          cart: get()
+            .cart.map((item) =>
+              item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+            )
+            .filter((item) => item.quantity > 0),
+        });
+      },
+
+      // Update item quantity directly
+      updateQuantity: (id, quantity) => {
+        set({
+          cart: get().cart.map((item) =>
+            item.id === id ? { ...item, quantity } : item
+          ),
+        });
+      },
+
+      // Get total item count
+      getTotalItems: () =>
+        get().cart.reduce((total, item) => total + item.quantity, 0),
+
+      // Get total price
+      getTotalPrice: () =>
+        get().cart.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        ),
     }),
     {
       name: "cart-storage",
     }
   )
-);  
+);
