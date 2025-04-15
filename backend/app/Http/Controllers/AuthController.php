@@ -144,6 +144,7 @@ class AuthController extends Controller
     
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+            $user->load('roles');
             $token = $user->createToken('api-token')->plainTextToken;
             // $token = JWTAuth::fromUser($user, ['id' => $user->id]);
             return response()->json([
@@ -178,6 +179,7 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json(['error' => 'User not found.'], 404);
         }
+        $user->load('roles');
         $token = $user->createToken('api-token')->plainTextToken;
         // $token = JWTAuth::fromUser($user, ['id' => $user->id]);
         return response()->json([
@@ -287,7 +289,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         return response()->json([
-            'user' => $user,
+            'user' => $user->load('roles'),
         ]);
     }
 }
