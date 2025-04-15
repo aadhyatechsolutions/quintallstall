@@ -20,7 +20,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import { useCartStore } from "../../../../../../store/cartStore";
 
-// import CartDialog from "../../../Cart/CartDialog/CartDialog";
 import CartPopover from "../../../Cart/CartDialog/CartPopover";
 
 const NavActions = ({ isLargeScreen }) => {
@@ -30,8 +29,11 @@ const NavActions = ({ isLargeScreen }) => {
   const [cartOpen, setCartOpen] = useState(false);
   const cartAnchorRef = useRef(null);
   const open = Boolean(anchorEl);
-  const cart = useCartStore((state) => state.cart);
-  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const { cart } = useCartStore();  // Destructuring cart from store
+
+  // Ensure cart is an array, and safely access cart items
+  const cartItems = Array.isArray(cart?.items) ? cart.items : [];
+  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   const handleHover = (event) => {
     setAnchorEl(event.currentTarget);
@@ -40,6 +42,7 @@ const NavActions = ({ isLargeScreen }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const handleCartHover = () => setCartDialogOpen(true);
   const handleCartLeave = () => setCartDialogOpen(false);
 
@@ -47,6 +50,7 @@ const NavActions = ({ isLargeScreen }) => {
     const baseUrl = window.location.origin;
     window.location.href = `${baseUrl}/admin/session/signin`;
   };
+
   const handleRegister = () => {
     const baseUrl = window.location.origin;
     window.location.href = `${baseUrl}/admin/session/signup`;
@@ -113,9 +117,7 @@ const NavActions = ({ isLargeScreen }) => {
         sx={{ position: "relative" }}
       >
         <Button
-          startIcon={
-            <PersonOutline fontSize={isLargeScreen ? "medium" : "small"} />
-          }
+          startIcon={<PersonOutline fontSize={isLargeScreen ? "medium" : "small"} />}
           sx={{
             color: "black",
             textTransform: "none",

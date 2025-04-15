@@ -13,14 +13,7 @@ import {
   Stack,
   IconButton,
   useTheme,
-  Breadcrumbs,
-  Link,
-  Tabs,
-  Tab,
   Paper,
-  List,
-  ListItem,
-  ListItemText,
   CircularProgress,
 } from "@mui/material";
 import {
@@ -30,7 +23,7 @@ import {
   LocalShipping,
   Verified,
 } from "@mui/icons-material";
-import { useParams, Link as RouterLink } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useProduct } from "../../../../hooks/useProducts";
 import { useCartStore } from "../../../../store/cartStore";
 import { handleAddToCartWithAuthCheck } from "../../../../utils/authCartHandler";
@@ -39,34 +32,53 @@ const ProductDetails = () => {
   const theme = useTheme();
   const { id } = useParams();
   const { data: product, isLoading } = useProduct(id);
-  const cart = useCartStore((state) => state.cart);
+
+  const cart = useCartStore((state) => state.cart) || [];
   const addToCart = useCartStore((state) => state.addToCart);
-  //const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
 
   const [value, setValue] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
   const handleChange = (event, newValue) => setValue(newValue);
 
-  useEffect(() => {
-    if (product) {
-      const itemInCart = cart.find((item) => item.id === product.id);
-      if (itemInCart) {
-        setQuantity(itemInCart.quantity);
-      }
-    }
-  }, [product, cart]);
+  // useEffect(() => {
+  //   if (product) {
+  //     // Check if the product is already in the cart
+  //     const itemInCart = Array.isArray(cart) && cart.items.find((item) => item.product_id === product.id);
+  //     if (itemInCart) {
+  //       // If the item exists in the cart, set the quantity to the cart value
+  //       setQuantity(itemInCart.quantity);
+  //     } else {
+  //       // Otherwise, set the default quantity to 1
+  //       setQuantity(1);
+  //     }
+  //   }
+  // }, [product, cart]);
 
+  // Decrease quantity handler
   const decreaseQuantity = () => {
     if (quantity > 1) {
       const newQty = quantity - 1;
       setQuantity(newQty);
+      updateCartItemQuantity(product.id, newQty); // Update cart when decreasing quantity
     }
   };
 
+  // Increase quantity handler
   const increaseQuantity = () => {
     const newQty = quantity + 1;
     setQuantity(newQty);
+    updateCartItemQuantity(product.id, newQty); // Update cart when increasing quantity
+  };
+
+  // Function to update the quantity in the cart store
+  const updateCartItemQuantity = (productId, newQuantity) => {
+    const cart = useCartStore((state) => Array.isArray(state.cart) ? state.cart : []);
+    if (existingItem) {
+      // If item exists in the cart, update the quantity
+      addToCart(existingItem.product, newQuantity, true);
+    }
   };
 
   if (isLoading || !product) {
@@ -79,14 +91,6 @@ const ProductDetails = () => {
 
   return (
     <Container maxWidth="xl" sx={{ py: 6 }}>
-      {/* Breadcrumbs
-      <Breadcrumbs sx={{ mb: 3 }}>
-        <Link component={RouterLink} to="/" underline="hover" color="inherit">
-          Home
-        </Link>
-        <Typography color="text.primary">{product?.name}</Typography>
-      </Breadcrumbs> */}
-
       <Paper elevation={0} sx={{ p: 3, mb: 3 }}>
         <Grid container spacing={4} justifyContent="space-evenly">
           {/* Product Images */}
@@ -101,9 +105,7 @@ const ProductDetails = () => {
             >
               <CardMedia
                 component="img"
-                image={`${apiConfig.MEDIA_URL}${
-                  product?.image || "placeholder.jpg"
-                }`}
+                image={`${apiConfig.MEDIA_URL}${product?.image || "placeholder.jpg"}`}
                 alt={product?.name}
                 sx={{
                   width: "100%",
@@ -128,9 +130,7 @@ const ProductDetails = () => {
                   }}
                 >
                   <img
-                    src={`${apiConfig.MEDIA_URL}${
-                      product?.image || "placeholder.jpg"
-                    }`}
+                    src={`${apiConfig.MEDIA_URL}${product?.image || "placeholder.jpg"}`}
                     alt={`Thumbnail ${item}`}
                     style={{
                       width: "100%",
@@ -150,12 +150,7 @@ const ProductDetails = () => {
             </Typography>
 
             <Stack direction="row" spacing={1} alignItems="center" mb={2}>
-              <Rating
-                value={product?.rating || 4.2}
-                precision={0.1}
-                readOnly
-                size="small"
-              />
+              <Rating value={product?.rating || 4.2} precision={0.1} readOnly size="small" />
               <Typography variant="body2" color="text.secondary">
                 {product?.reviews || 0} Ratings & Reviews
               </Typography>
@@ -262,9 +257,7 @@ const ProductDetails = () => {
                 >
                   −
                 </Button>
-                <Typography
-                  sx={{ minWidth: 28, textAlign: "center", fontWeight: 500 }}
-                >
+                <Typography sx={{ minWidth: 28, textAlign: "center", fontWeight: 500 }}>
                   {quantity}
                 </Typography>
                 <Button
@@ -284,7 +277,7 @@ const ProductDetails = () => {
 
               <Divider sx={{ my: 2 }} />
 
-              {/* // inside your component */}
+              {/* Add to Cart Button */}
               <Button
                 fullWidth
                 variant="contained"
@@ -304,7 +297,6 @@ const ProductDetails = () => {
                 ADD TO CART
               </Button>
 
-
               <Stack direction="row" spacing={1} mt={2}>
                 <IconButton>
                   <FavoriteBorder />
@@ -316,68 +308,6 @@ const ProductDetails = () => {
             </Paper>
           </Grid>
         </Grid>
-      </Paper>
-
-      {/* Product Tabs */}
-      <Paper elevation={0} sx={{ p: 3 }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          sx={{ borderBottom: 1, mb: 3 }}
-        >
-          <Tab label="Product Details" />
-          <Tab label="Specifications" />
-          <Tab label="Reviews" />
-        </Tabs>
-
-        {value === 0 && (
-          <Box>
-            <Typography variant="h6" gutterBottom>
-              About this item
-            </Typography>
-            <Typography variant="body1" paragraph>
-              {product?.description ||
-                "No description available for this product."}
-            </Typography>
-          </Box>
-        )}
-        {value === 1 && (
-          <Box>
-            <Typography variant="h6" gutterBottom>
-              Specifications
-            </Typography>
-            <List>
-              <ListItem>
-                <ListItemText
-                  primary="Brand"
-                  secondary={product?.brand || "Not specified"}
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary="Model"
-                  secondary={product?.model || "Not specified"}
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary="Color"
-                  secondary={product?.color || "Not specified"}
-                />
-              </ListItem>
-            </List>
-          </Box>
-        )}
-        {value === 2 && (
-          <Box>
-            <Typography variant="h6" gutterBottom>
-              Customer Reviews
-            </Typography>
-            <Typography color="text.secondary">
-              No reviews yet. Be the first to review!
-            </Typography>
-          </Box>
-        )}
       </Paper>
     </Container>
   );
