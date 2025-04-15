@@ -9,7 +9,9 @@ import { useCartStore } from "../../../../../../store/cartStore";
 import { useNavigate } from "react-router-dom";
 const MobileButton = ({ handleDrawerToggle }) => {
   const cart = useCartStore((state) => state.cart);
-  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+   // Ensure cart is an array, and safely access cart items
+   const cartItems = Array.isArray(cart?.items) ? cart.items : [];
+   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const navigate = useNavigate();
   const handleCartOnClick = () => {
     navigate("/cart");

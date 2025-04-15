@@ -1,28 +1,34 @@
-// src/store/useCartStore.js
-
+// src/store/cartStore.js
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { addCartItem, deleteCartItem } from "../utils/cartService";
+import {
+  fetchCartItems,
+  addCartItem,
+  deleteCartItem,
+  updateCartItem,
+  // clearCartOnServer, 
+} from "../utils/cartService";
 
 export const useCartStore = create(
   persist(
     (set, get) => ({
-      cart: [],
-      syncStatus: "idle", // 'idle' | 'syncing' | 'error'
+      cart: { items: [] },
+      syncStatus: "idle",
       lastSyncError: null,
 
-      // Add item to cart with backend sync
       addToCart: async (product, quantity = 1, overrideQuantity = false) => {
         try {
           set({ syncStatus: "syncing" });
-          const cart = get().cart;
-          const existingIndex = cart.findIndex((item) => item.id === product.id);
+
+          const cart = get().cart || { items: [] };
+          const items = Array.isArray(cart.items) ? [...cart.items] : [];
+
+          const existingIndex = items.findIndex((item) => item.product.id === product.id);
           const newQuantity =
             overrideQuantity || existingIndex === -1
               ? quantity
-              : cart[existingIndex].quantity + quantity;
+              : items[existingIndex].quantity + quantity;
 
-          // Backend API sync
           const { success, message } = await addCartItem({
             product_id: product.id,
             quantity: newQuantity,
@@ -30,19 +36,15 @@ export const useCartStore = create(
 
           if (!success) throw new Error(message || "Failed to add item");
 
-          // Local state update
-          const updatedCart =
-            existingIndex !== -1
-              ? cart.map((item, idx) =>
-                  idx === existingIndex
-                    ? { ...item, quantity: newQuantity }
-                    : item
-                )
-              : [...cart, { ...product, quantity }];
+          if (existingIndex !== -1) {
+            items[existingIndex].quantity = newQuantity;
+          } else {
+            items.push({product, quantity: newQuantity });
+          }
 
-          set({ cart: updatedCart, syncStatus: "idle" });
+          set({ cart: { ...cart, items }, syncStatus: "idle" });
         } catch (error) {
-          console.error("Sync failed:", error);
+          console.error("Add to cart failed:", error);
           set({
             syncStatus: "error",
             lastSyncError: error.message,
@@ -50,76 +52,155 @@ export const useCartStore = create(
         }
       },
 
-      // Remove item from cart and backend
       removeFromCart: async (id) => {
         try {
           set({ syncStatus: "syncing", lastSyncError: null });
-          
-          // Wait for API confirmation before updating local state
+
+          const cart = get().cart || { items: [] };
+          const items = Array.isArray(cart.items) ? cart.items : [];
+
+          const updatedItems = items.filter((item) => item.id !== id);
+          set({ cart: { ...cart, items: updatedItems } });
+
           const response = await deleteCartItem(id);
-          
           if (!response.success) {
-            throw new Error(response.message || "Failed to delete item");
+            set({
+              cart: { ...cart, items },
+              syncStatus: "error",
+              lastSyncError: response.message,
+            });
+            return false;
           }
-      
-          set({
-            cart: get().cart.filter((item) => item.id !== id),
-            syncStatus: "idle",
-          });
-          
-          return true; // Indicate success
+
+          set({ syncStatus: "idle" });
+          return true;
         } catch (error) {
-          console.error("Remove failed:", error);
+          console.error("Remove from cart failed:", error);
           set({
             syncStatus: "error",
-            lastSyncError: error.message || "Failed to remove item from server",
+            lastSyncError: error.message,
           });
-          return false; // Indicate failure
+          return false;
         }
       },
 
-      // Clear all items (local only)
-      clearCart: () => set({ cart: [] }),
+      clearCart: async () => {
+        const cart = get().cart || { items: [] };
+        set({ cart: { ...cart, items: [] } });
 
-      // Increase item quantity (local)
-      increaseQuantity: (id) => {
-        set({
-          cart: get().cart.map((item) =>
-            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-          ),
-        });
+        // Optional: Uncomment this if server supports clearing cart
+        // try {
+        //   set({ syncStatus: "syncing" });
+        //   await clearCartOnServer();
+        //   set({ syncStatus: "idle" });
+        // } catch (error) {
+        //   console.error("Clear cart failed:", error);
+        //   set({
+        //     syncStatus: "error",
+        //     lastSyncError: error.message,
+        //   });
+        // }
       },
 
-      // Decrease item quantity (local)
-      decreaseQuantity: (id) => {
+      increaseQuantity: async (id) => {
+        const cart = get().cart || { items: [] };
+        const items = [...cart.items];
+        const item = items.find((item) => item.id === id);
+        if (!item) return;
+      
+        const newQuantity = item.quantity + 1;
         set({
-          cart: get()
-            .cart.map((item) =>
-              item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-            )
-            .filter((item) => item.quantity > 0),
+          cart: {
+            ...cart,
+            items: items.map((i) =>
+              i.id === id ? { ...i, quantity: newQuantity } : i
+            ),
+          },
         });
+      
+        try {
+          await updateCartItem({ id, quantity: newQuantity });
+        } catch (error) {
+          console.error("Update quantity failed:", error);
+        }
+      },
+      
+      decreaseQuantity: async (id) => {
+        const cart = get().cart || { items: [] };
+        const items = [...cart.items];
+        const item = items.find((item) => item.id === id);
+        if (!item || item.quantity <= 1) return;
+      
+        const newQuantity = item.quantity - 1;
+        set({
+          cart: {
+            ...cart,
+            items: items.map((i) =>
+              i.id === id ? { ...i, quantity: newQuantity } : i
+            ),
+          },
+        });
+      
+        try {
+          await updateCartItem({ id, quantity: newQuantity }); // Pass both id and newQuantity
+        } catch (error) {
+          console.error("Update quantity failed:", error);
+        }
+      },
+      
+
+      updateQuantity: async (id, quantity) => {
+        const cart = get().cart || { items: [] };
+        const items = [...cart.items];
+
+        set({
+          cart: {
+            ...cart,
+            items: items.map((item) =>
+              item.id === id ? { ...item, quantity } : item
+            ),
+          },
+        });
+
+        try {
+          await updateCartItem(id, quantity);
+        } catch (error) {
+          console.error("Update quantity failed:", error);
+        }
       },
 
-      // Update item quantity directly
-      updateQuantity: (id, quantity) => {
-        set({
-          cart: get().cart.map((item) =>
-            item.id === id ? { ...item, quantity } : item
-          ),
-        });
+      getTotalItems: () => {
+        const cart = get().cart || { items: [] };
+        return cart.items.reduce((total, item) => total + item.quantity, 0);
       },
 
-      // Get total item count
-      getTotalItems: () =>
-        get().cart.reduce((total, item) => total + item.quantity, 0),
+      getTotalUniqueItems: () => {
+        const cart = get().cart || { items: [] };
+        return cart.items.length;
+      },
 
-      // Get total price
-      getTotalPrice: () =>
-        get().cart.reduce(
-          (total, item) => total + item.price * item.quantity,
+      getTotalPrice: () => {
+        const cart = get().cart || { items: [] };
+        return cart.items.reduce(
+          (total, item) =>
+            total + parseFloat(item.product.price || 0) * item.quantity,
           0
-        ),
+        );
+      },
+
+      loadCart: async () => {
+        try {
+          set({ syncStatus: "syncing", lastSyncError: null });
+          const data = await fetchCartItems();
+          set({ cart: data.cart, syncStatus: "idle" });
+        } catch (error) {
+          console.error("Load cart failed:", error);
+          set({
+            syncStatus: "error",
+            lastSyncError: error.message,
+          });
+        }
+      },
     }),
     {
       name: "cart-storage",

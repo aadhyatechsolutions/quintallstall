@@ -49,10 +49,11 @@ const Checkout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
-
+  
   const calculateOrderDetails = () => {
-    const subtotal = cart.reduce(
-      (sum, item) => sum + item.price * item.quantity,
+    const cartItems = cart?.items || [];
+    const subtotal = cartItems.reduce(
+      (sum, item) => sum + (item.product?.price || 0) * (item.quantity || 0),
       0
     );
     const tax = subtotal * TAX_RATE;
@@ -182,7 +183,7 @@ const Checkout = () => {
                   <ShoppingCartIcon /> Cart Items
                 </Typography>
                 <Divider sx={{ mb: 2 }} />
-                {cart.map((item) => (
+                {cart.items.map((item) => (
                   <CartItem
                     key={item.id}
                     item={item}

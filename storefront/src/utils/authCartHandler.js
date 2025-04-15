@@ -1,30 +1,21 @@
-// utils/authCartHandler.js
 import { useCartStore } from "../store/cartStore"; // Add this import
 
-export const handleAddToCartWithAuthCheck = async ({
+export const handleAddToCartWithAuthCheck = ({
   product,
-  quantity = 1,
+  quantity,
+  addToCart,
   replace = false,
 }) => {
-  const token = localStorage.getItem("accessToken");
-  
-  if (!token) {
-    alert("Please login to add items to your cart.");
-    const baseUrl = window.location.origin;
-    window.location.href = `${baseUrl}/admin/session/signin`;
-    return false;
-  }
+  // Access the cart from the Zustand store
+  const cart = useCartStore.getState().cart.items;
 
-  try {
-    // Get the current state from the store
-    const { addToCart } = useCartStore.getState();
-    
-    // Call the addToCart function from the store
-    await addToCart(product, quantity, replace);
-    return true;
-  } catch (error) {
-    console.error("Cart operation failed:", error);
-    alert("Failed to update cart. Please try again.");
-    return false;
+  const itemInCart = cart.find((item) => item.product.id === product.id);
+
+  if (itemInCart) {
+    // If the product is already in the cart, either update the quantity or replace
+    addToCart(product,quantity, replace);
+  } else {
+    // If the product is not in the cart, just add it with the given quantity
+    addToCart(product, quantity, replace);
   }
 };

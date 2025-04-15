@@ -16,7 +16,10 @@ const Cart = () => {
     getTotalPrice,
   } = useCartStore();
 
-  if (cart.length === 0) return <EmptyCart />;
+  // Ensure cart is correctly accessed as cart.items
+  const items = cart?.items || [];
+
+  if (items.length === 0) return <EmptyCart />;
 
   return (
     <Box maxWidth="xl" sx={{ p: 4, mx: "auto" }}>
@@ -42,42 +45,42 @@ const Cart = () => {
             }}
           >
             <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                mb: 2,
-              }}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              mb: 2,
+            }}
+          >
+            <Typography fontWeight={600}>Product</Typography>
+            <Button
+              color="error"
+              size="small"
+              onClick={clearCart}
+              sx={{ textTransform: "none" }}
             >
-              <Typography fontWeight={600}>Product</Typography>
-              <Button
-                color="error"
-                size="small"
-                onClick={clearCart}
-                sx={{ textTransform: "none" }}
-              >
-                Clear cart
-              </Button>
-            </Box>
-
-            <Stack spacing={2}>
-              {cart.map((item) => (
-                <CartItem
-                  key={item.id}
-                  item={item}
-                  onRemove={() => removeFromCart(item.id)}
-                  onIncrease={() => increaseQuantity(item.id)}
-                  onDecrease={() => decreaseQuantity(item.id)}
-                />
-              ))}
-            </Stack>
+              Clear cart
+            </Button>
           </Box>
-        </Box>
 
-        {/* Right - Summary */}
-        <CartSummary total={getTotalPrice()} />
+          <Stack spacing={2}>
+            {items.map((item) => (
+              <CartItem
+                key={item.id}
+                item={item}
+                onRemove={() => removeFromCart(item.id)}
+                onIncrease={() => increaseQuantity(item.id)}
+                onDecrease={() => decreaseQuantity(item.id)}
+              />
+            ))}
+          </Stack>
+        </Box>
       </Box>
+
+      {/* Right - Summary */}
+      <CartSummary total={getTotalPrice()} />
     </Box>
-  );
+  </Box>
+);
 };
 
 export default Cart;

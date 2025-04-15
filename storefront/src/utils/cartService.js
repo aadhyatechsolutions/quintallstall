@@ -1,4 +1,3 @@
-// src/utils/cartService.js
 import axiosInstance from "../utils/axiosInstance";
 
 // Helper to get Authorization header
@@ -11,10 +10,13 @@ const getAuthHeader = () => {
   };
 };
 
-// Fetch all cart items
+// ✅ Fetch the entire cart object (with items + total)
 export const fetchCartItems = async () => {
   const { data } = await axiosInstance.get("/cart", getAuthHeader());
-  return data.cart;
+  return {
+    cart: data.cart,   
+    total: data.total,
+  };
 };
 
 // Add item to cart
@@ -29,7 +31,7 @@ export const addCartItem = async ({ product_id, quantity }) => {
 
 // Update cart item
 export const updateCartItem = async ({ id, quantity }) => {
-  const { data } = await axiosInstance.put(
+  const { data } = await axiosInstance.patch(
     `/cart/item/${id}`,
     { quantity },
     getAuthHeader()
@@ -39,20 +41,20 @@ export const updateCartItem = async ({ id, quantity }) => {
 
 // Delete cart item
 export const deleteCartItem = async (id) => {
-    try {
-      const { data } = await axiosInstance.delete(
-        `/cart/items/${id}`,
-        getAuthHeader()
-      );
-      return data;
-    } catch (error) {
-      // Enhance error information
-      const errorDetails = {
-        message: error.response?.data?.message || error.message,
-        status: error.response?.status,
-        data: error.response?.data
-      };
-      console.error('Delete cart item failed:', errorDetails);
-      throw errorDetails; 
-    }
-  };
+  try {
+    const { data } = await axiosInstance.delete(
+      `/cart/item/${id}`,
+      getAuthHeader()
+    );
+    return data;
+  } catch (error) {
+    // Enhanced error handling
+    const errorDetails = {
+      message: error.response?.data?.message || error.message,
+      status: error.response?.status,
+      data: error.response?.data
+    };
+    console.error("Delete cart item failed:", errorDetails);
+    throw errorDetails;
+  }
+};
