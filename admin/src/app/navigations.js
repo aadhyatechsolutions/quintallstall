@@ -31,6 +31,7 @@ const navigations = [
         children: [
           { name: "Create", path: "/features/product/create", iconText: "A" },
           { name: "View", path: "/features/product/view", iconText: "A" },
+          { name: "Reviews", path: "/features/product/reviews", icon: "assignment"},
         ] 
       },
       { 
@@ -98,17 +99,16 @@ const navigations = [
     badge: { color: "secondary" },
     children: [
       { name: "Orders", path: "/orders/orders", icon: "assignment"},
-      { name: "Reviews", path: "/orders/reviews", icon: "assignment"},
     ]
   },
-  {
-    name: "Report",
-    icon: "account_circle",
-    badge: { color: "secondary" },
-    children: [
-      { name: "Wholeseller Report", path: "/report/wholeseller-report", icon: "assignment"},
-    ]
-  },
+  // {
+  //   name: "Report",
+  //   icon: "account_circle",
+  //   badge: { color: "secondary" },
+  //   children: [
+  //     { name: "Wholeseller Report", path: "/report/wholeseller-report", icon: "assignment"},
+  //   ]
+  // },
   {
     name: "Comissions",
     icon: "account_circle",
