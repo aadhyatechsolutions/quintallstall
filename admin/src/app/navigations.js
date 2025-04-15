@@ -20,14 +20,16 @@ const navigations = [
       { 
         name: "AMPC", 
         icon: "apps",
+        level: 2,
         children: [
-          { name: "Create", path: "/features/apmc/create", iconText: "A" },
+          { name: "Create", path: "/features/apmc/create", iconText: "A"},
           { name: "View", path: "/features/apmc/view", iconText: "A" },
         ] 
       },
       { 
         name: "Product Master", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/features/product/create", iconText: "A" },
           { name: "View", path: "/features/product/view", iconText: "A" },
@@ -36,6 +38,7 @@ const navigations = [
       { 
         name: "Category", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/features/category/create", iconText: "A" },
           { name: "View", path: "/features/category/view", iconText: "A" },
@@ -52,13 +55,14 @@ const navigations = [
       { 
         name: "WholeSeller User", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/features/wholesaler/create", iconText: "A" },
           { name: "View", path: "/features/wholesaler/view", iconText: "A" },
         ] 
       },
-      { name: "View Products", path: "/wholesaler/view-products", icon: "assignment" },
-      { name: "WholeSeller KYC", path: "/wholesaler/wholesaler-kyc", icon: "assignment" },
+      { name: "View Products", level: 2, path: "/wholesaler/view-products", icon: "assignment" },
+      { name: "WholeSeller KYC", level: 2, path: "/wholesaler/wholesaler-kyc", icon: "assignment" },
     ]
   },
   {
@@ -69,12 +73,13 @@ const navigations = [
       { 
         name: "Retailer User", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/features/retailer/create", iconText: "A" },
           { name: "View", path: "/features/retailer/view", iconText: "A" },
         ] 
       },
-      { name: "Retailer KYC", path: "/retailer/retailer-kyc", icon: "assignment" },
+      { name: "Retailer KYC", level: 2, path: "/retailer/retailer-kyc", icon: "assignment" },
     ]
   },
   {
@@ -85,12 +90,13 @@ const navigations = [
       { 
         name: "Delivery User", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/features/delivery/create", iconText: "A" },
           { name: "View", path: "/features/delivery/view", iconText: "A" },
         ] 
       },
-      { name: "Delivery KYC", path: "/delivery/delivery-kyc", icon: "assignment" },
+      { name: "Delivery KYC", level: 2, path: "/delivery/delivery-kyc", icon: "assignment" },
     ]
   },
   {
@@ -98,7 +104,7 @@ const navigations = [
     icon: "account_circle",
     badge: { color: "secondary" },
     children: [
-      { name: "Orders", path: "/orders/orders", icon: "assignment"},
+      { name: "Orders", level: 2, path: "/orders/orders", icon: "assignment"},
     ]
   },
   // {
@@ -117,16 +123,18 @@ const navigations = [
       { 
         name: "Comission Master", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/comissions/comission-master/create", iconText: "A" },
           { name: "View", path: "/comissions/comission-master/view", iconText: "A" },
         ] 
       },
-      { name: "Platform Comission", path: "/comissions/platform-comission", icon: "assignment"},
-      { name: "Wage Cost Comission", path: "/comissions/wage-cost-comission", icon: "assignment"},
+      { name: "Platform Comission", level: 2, path: "/comissions/platform-comission", icon: "assignment"},
+      { name: "Wage Cost Comission", level: 2, path: "/comissions/wage-cost-comission", icon: "assignment"},
       { 
         name: "Vehicle Master", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/comissions/vehicle-master/create", iconText: "A" },
           { name: "View", path: "/comissions/vehicle-master/view", iconText: "A" },
@@ -142,6 +150,7 @@ const navigations = [
       { 
         name: "Blogs", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/frontend/blogs/create", iconText: "A" },
           { name: "View", path: "/frontend/blogs/view", iconText: "A" },
@@ -150,6 +159,7 @@ const navigations = [
       { 
         name: "Blog Category", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/frontend/blog-category/create", iconText: "A" },
           { name: "View", path: "/frontend/blog-category/view", iconText: "A" },
@@ -158,6 +168,7 @@ const navigations = [
       { 
         name: "Special Offer", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/frontend/special-offer/create", iconText: "A" },
           { name: "View", path: "/frontend/special-offer/view", iconText: "A" },
@@ -173,6 +184,7 @@ const navigations = [
       { 
         name: "Offer", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/settings/offer/create", iconText: "A" },
           { name: "View", path: "/settings/offer/view", iconText: "A" },
@@ -181,6 +193,7 @@ const navigations = [
       { 
         name: "Coin Settings", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/settings/coin-settings/create", iconText: "A" },
           { name: "View", path: "/settings/coin-settings/view", iconText: "A" },
@@ -200,6 +213,7 @@ const navigations = [
       { 
         name: "Roles", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/settings/role/create", iconText: "A" },
           { name: "View", path: "/settings/role/view", iconText: "A" },
@@ -208,12 +222,13 @@ const navigations = [
       { 
         name: "Add Staff", 
         icon: "apps",
+        level: 2,
         children: [
           { name: "Create", path: "/settings/staff/create", iconText: "A" },
           { name: "View", path: "/settings/staff/view", iconText: "A" },
         ] 
       },
-      { name: "Profile", path: "/settings/profile", iconText: "A" },
+      { name: "Profile", level: 2, path: "/settings/profile", iconText: "A" },
     ]
   }
 ];

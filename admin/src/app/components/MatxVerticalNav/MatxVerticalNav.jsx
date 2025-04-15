@@ -94,7 +94,7 @@ export default function MatxVerticalNav({ items }) {
 
       if (item.children) {
         return (
-          <MatxVerticalNavExpansionPanel mode={mode} item={item} key={index}>
+          <MatxVerticalNavExpansionPanel mode={mode} item={item} key={index} level={item.level}>
             {renderLevels(item.children)}
           </MatxVerticalNavExpansionPanel>
         );
@@ -106,7 +106,7 @@ export default function MatxVerticalNav({ items }) {
             className={`${mode === "compact" && "compactNavItem"}`}
             rel="noopener noreferrer"
             target="_blank">
-            <ButtonBase key={item.name} name="child" sx={{ width: "100%" }}>
+            <ButtonBase key={item.name} name="child" sx={{width: "100%", pl: item.indentLevel ? item.indentLevel * 2 : 4,}}>
               {(() => {
                 if (item.icon) {
                   return <Icon className="icon">{item.icon}</Icon>;
@@ -132,7 +132,7 @@ export default function MatxVerticalNav({ items }) {
                   ? `navItemActive ${mode === "compact" && "compactNavItem"}`
                   : `${mode === "compact" && "compactNavItem"}`
               }>
-              <ButtonBase key={item.name} name="child" sx={{ width: "100%" }}>
+              <ButtonBase key={item.name} name="child" sx={{width: "100%", pl: item.indentLevel ? item.indentLevel * 2 : 4, }}>
                 {item?.icon ? (
                   <Icon className="icon" sx={{ width: 36 }}>
                     {item.icon}
