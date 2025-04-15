@@ -5,6 +5,8 @@ import styled from "@mui/material/styles/styled";
 import { MatxVerticalNav } from "app/components";
 import useSettings from "app/hooks/useSettings";
 import navigations from "app/navigations";
+import { filterNavigationByRole } from "app/utils/utils";
+import useAuth from "app/hooks/useAuth";
 
 // STYLED COMPONENTS
 const StyledScrollBar = styled(Scrollbar)(() => ({
@@ -27,7 +29,10 @@ const SideNavMobile = styled("div")(({ theme }) => ({
 
 export default function Sidenav({ children }) {
   const { settings, updateSettings } = useSettings();
-
+  const { user } = useAuth();
+  const userRoles = user.roles.map(role=>role.slug);
+  const filteredNavigations = filterNavigationByRole(navigations, userRoles);
+  
   const updateSidebarMode = (sidebarSettings) => {
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
     let activeLayoutSettings = settings[activeLayoutSettingsName];
@@ -45,7 +50,7 @@ export default function Sidenav({ children }) {
     <Fragment>
       <StyledScrollBar options={{ suppressScrollX: true }}>
         {children}
-        <MatxVerticalNav items={navigations} />
+        <MatxVerticalNav items={filteredNavigations} />
       </StyledScrollBar>
 
       <SideNavMobile onClick={() => updateSidebarMode({ mode: "close" })} />

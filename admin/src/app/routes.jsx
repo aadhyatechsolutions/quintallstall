@@ -88,6 +88,8 @@ import StaffCreate from "./components/Settings/Staff/Create";
 import StaffEdit from "./components/Settings/Staff/Edit";
 import StaffView from "./components/Settings/Staff/View";
 
+import RoleGuard from "./auth/RoleGuard";
+
 const Analytics = Loadable(lazy(() => import("app/views/dashboard/Analytics")));
 
 const routes = [
@@ -101,7 +103,7 @@ const routes = [
     ),
     children: [
       ...materialRoutes,
-      { path: "/dashboard/default", element: <Analytics />, auth: authRoles.admin, },
+      { path: "/dashboard/default", element:  <Analytics />, auth: authRoles.admin, },
 
       { path: "/features/apmc/view", element: <AMPCView /> },
       { path: "/features/apmc/create", element: <AMPCCreate /> },

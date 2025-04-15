@@ -1,5 +1,5 @@
 const navigations = [
-  { name: "Dashboard", path: "/dashboard/default", icon: "dashboard" },
+  { name: "Dashboard", path: "/dashboard/default", icon: "dashboard", allowedRoles: ["admin"] },
   // { label: "PAGES", type: "label" },
   // {
   //   name: "Session/Auth",
@@ -16,11 +16,13 @@ const navigations = [
     name: "Products",
     icon: "account_circle",
     badge: { color: "secondary" },
+    allowedRoles: ["admin", 'wholesaler'],
     children: [
       { 
         name: "AMPC", 
         icon: "apps",
         level: 2,
+        allowedRoles: ["admin", 'wholesaler'],
         children: [
           { name: "Create", path: "/features/apmc/create", iconText: "A"},
           { name: "View", path: "/features/apmc/view", iconText: "A" },
@@ -30,6 +32,7 @@ const navigations = [
         name: "Product Master", 
         icon: "apps",
         level: 2,
+        allowedRoles: ["admin", 'wholesaler'],
         children: [
           { name: "Create", path: "/features/product/create", iconText: "A" },
           { name: "View", path: "/features/product/view", iconText: "A" },
@@ -39,6 +42,7 @@ const navigations = [
         name: "Category", 
         icon: "apps",
         level: 2,
+        allowedRoles: ["admin"],
         children: [
           { name: "Create", path: "/features/category/create", iconText: "A" },
           { name: "View", path: "/features/category/view", iconText: "A" },
@@ -51,6 +55,7 @@ const navigations = [
     name: "WholeSeller",
     icon: "account_circle",
     badge: { color: "secondary" },
+    allowedRoles: ["admin"],
     children: [
       { 
         name: "WholeSeller User", 
@@ -69,6 +74,7 @@ const navigations = [
     name: "Retailer",
     icon: "account_circle",
     badge: { color: "secondary" },
+    allowedRoles: ["admin"],
     children: [
       { 
         name: "Retailer User", 
@@ -86,6 +92,7 @@ const navigations = [
     name: "Delivery",
     icon: "account_circle",
     badge: { color: "secondary" },
+    allowedRoles: ["admin"],
     children: [
       { 
         name: "Delivery User", 
@@ -103,6 +110,7 @@ const navigations = [
     name: "Orders",
     icon: "account_circle",
     badge: { color: "secondary" },
+    allowedRoles: ["admin", 'wholesaler', 'retailer'],
     children: [
       { name: "Orders", level: 2, path: "/orders/orders", icon: "assignment"},
     ]
@@ -119,6 +127,7 @@ const navigations = [
     name: "Comissions",
     icon: "account_circle",
     badge: { color: "secondary" },
+    allowedRoles: ["admin"],
     children: [
       { 
         name: "Comission Master", 
@@ -146,6 +155,7 @@ const navigations = [
     name: "Frontend",
     icon: "account_circle",
     badge: { color: "secondary" },
+    allowedRoles: ["admin"],
     children: [
       { 
         name: "Blogs", 
@@ -180,11 +190,13 @@ const navigations = [
     name: "Settings",
     icon: "account_circle",
     badge: { color: "secondary" },
+    allowedRoles: ["admin",'wholesaler','retalier'],
     children: [
       { 
         name: "Offer", 
         icon: "apps",
         level: 2,
+        allowedRoles: ["admin",'wholesaler','retailer'],
         children: [
           { name: "Create", path: "/settings/offer/create", iconText: "A" },
           { name: "View", path: "/settings/offer/view", iconText: "A" },
@@ -194,6 +206,7 @@ const navigations = [
         name: "Coin Settings", 
         icon: "apps",
         level: 2,
+        allowedRoles: ["admin",'wholesaler','retailer'],
         children: [
           { name: "Create", path: "/settings/coin-settings/create", iconText: "A" },
           { name: "View", path: "/settings/coin-settings/view", iconText: "A" },
@@ -207,13 +220,14 @@ const navigations = [
       //     { name: "View", path: "/settings/coin-type/view", iconText: "A" },
       //   ] 
       // },
-      { name: "Coin Details", path: "/settings/coin-details", iconText: "A" },
-      { name: "Wallet Settings", path: "/settings/wallet-settings", iconText: "A" },
-      { name: "Tax Slab", path: "/settings/tax-slab", iconText: "A" },
+      { name: "Coin Details", path: "/settings/coin-details", iconText: "A",allowedRoles: ["admin",'wholesaler','retailer'], },
+      { name: "Wallet Settings", path: "/settings/wallet-settings", iconText: "A", allowedRoles: ["admin",'wholesaler','retailer'], },
+      { name: "Tax Slab", path: "/settings/tax-slab", iconText: "A" ,allowedRoles: ["admin"],},
       { 
         name: "Roles", 
         icon: "apps",
         level: 2,
+        allowedRoles: ["admin"],
         children: [
           { name: "Create", path: "/settings/role/create", iconText: "A" },
           { name: "View", path: "/settings/role/view", iconText: "A" },
@@ -223,6 +237,7 @@ const navigations = [
         name: "Add Staff", 
         icon: "apps",
         level: 2,
+        allowedRoles: ["admin"],
         children: [
           { name: "Create", path: "/settings/staff/create", iconText: "A" },
           { name: "View", path: "/settings/staff/view", iconText: "A" },
