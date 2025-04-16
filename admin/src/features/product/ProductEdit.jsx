@@ -253,7 +253,7 @@ export default function EditProduct() {
                 <InputLabel>Vendor Name</InputLabel>
                 <Select
                   name="user"
-                  value={formData.user}
+                  value={formData.seller}
                   onChange={handleChange}
                   label="User"
                 >

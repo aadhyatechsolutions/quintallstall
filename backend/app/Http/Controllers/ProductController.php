@@ -25,7 +25,7 @@ class ProductController extends Controller
             'seller' => 'required|exists:users,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+        
         $imageURL = null;
 
         if ($request->hasFile('image')) {
@@ -168,7 +168,7 @@ class ProductController extends Controller
         $product->save();
     
         // Eager load relationships for response
-        $product->load(['category', 'user.roles']);
+        $product->load(['category', 'seller.roles']);
     
         return response()->json([
             'product' => $product,

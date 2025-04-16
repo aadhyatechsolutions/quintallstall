@@ -1,5 +1,5 @@
 const navigations = [
-  { name: "Dashboard", path: "/dashboard/default", icon: "dashboard", allowedRoles: ["admin"] },
+  { name: "Dashboard", path: "/dashboard/default", icon: "dashboard" },
   // { label: "PAGES", type: "label" },
   // {
   //   name: "Session/Auth",
@@ -16,13 +16,13 @@ const navigations = [
     name: "Products",
     icon: "account_circle",
     badge: { color: "secondary" },
-    allowedRoles: ["admin", 'wholesaler'],
+    allowedRoles: ["admin", 'wholesaler', 'retailer'],
     children: [
       { 
         name: "AMPC", 
         icon: "apps",
         level: 2,
-        allowedRoles: ["admin", 'wholesaler'],
+        allowedRoles: ["admin", 'wholesaler', 'retailer'],
         children: [
           { name: "Create", path: "/features/apmc/create", iconText: "A"},
           { name: "View", path: "/features/apmc/view", iconText: "A" },
@@ -32,7 +32,7 @@ const navigations = [
         name: "Product Master", 
         icon: "apps",
         level: 2,
-        allowedRoles: ["admin", 'wholesaler'],
+        allowedRoles: ["admin", 'wholesaler', 'retailer'],
         children: [
           { name: "Create", path: "/features/product/create", iconText: "A" },
           { name: "View", path: "/features/product/view", iconText: "A" },
@@ -110,7 +110,7 @@ const navigations = [
     name: "Orders",
     icon: "account_circle",
     badge: { color: "secondary" },
-    allowedRoles: ["admin", 'wholesaler', 'retailer'],
+    allowedRoles: ["admin", 'wholesaler', 'retailer', 'delivery'],
     children: [
       { name: "Orders", level: 2, path: "/orders/orders", icon: "assignment"},
     ]
@@ -190,7 +190,7 @@ const navigations = [
     name: "Settings",
     icon: "account_circle",
     badge: { color: "secondary" },
-    allowedRoles: ["admin",'wholesaler','retalier'],
+    allowedRoles: ["admin",'wholesaler','retailer'],
     children: [
       { 
         name: "Offer", 

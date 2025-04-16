@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name'); 
             $table->text('description'); 
             $table->decimal('price', 8, 2);
-            $table->decimal('quantity', 8, 2)->default(0);
+            $table->integer('quantity')->default(0);
             $table->enum('unit', ['kg', 'gram', 'quintal'])->default('kg');
             $table->enum('stock_level', ['in_stock', 'out_of_stock', 'low_stock'])->default('in_stock');
 
