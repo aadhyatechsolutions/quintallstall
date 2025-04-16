@@ -63,6 +63,7 @@ class CategoryController extends Controller
             if ($image->isValid()) {
                 $imagePath = $image->store('categories', 'public');
                 $imageURL = $imagePath;
+                $category->image = $imageURL;
             } else {
                 return response()->json(['error' => 'Invalid image file'], 400);
             }
@@ -73,7 +74,7 @@ class CategoryController extends Controller
         $category->update([
             'name' => $request->name,
             'description' => $request->description,
-            'image' => $imageURL,
+            'image' => $category->image,
         ]);
 
         return response()->json(['category' => $category], 200);
