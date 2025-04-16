@@ -1,30 +1,41 @@
 /* Base styles */
 .header-wrapper {
-    width: 100%;
+  width: 100%;
+}
+
+/* Sticky header base style */
+header {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+/* Sticky header styles */
+.header-wrapper.sticky header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1100; /* Ensure it's above other elements like Popper */
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Ensure content doesn't jump when the header becomes fixed */
+.header-wrapper.sticky {
+  padding-top: var(--header-height, 80px); /* Dynamic height, if necessary */
+}
+
+/* Prevent overflow from clipping content */
+.header-wrapper, header {
+  overflow: visible; /* Ensures no clipping */
+}
+
+/* Animation when the header becomes sticky */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
   }
-  
-  header {
-    width: 100%;
-    transition: all 0.3s ease;
+  to {
+    transform: translateY(0);
   }
-  
-  /* Sticky styles */
-  .header-wrapper.sticky header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    animation: slideDown 0.3s ease-out;
-  }
-  
-  /* Ensure content doesn't jump when header becomes fixed */
-  .header-wrapper.sticky {
-    padding-top: var(--header-height, 80px);
-  }
-  
-  @keyframes slideDown {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(0); }
-  }
+}
