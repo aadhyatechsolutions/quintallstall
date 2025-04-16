@@ -49,7 +49,7 @@ Route::middleware('auth:sanctum')->get('auth/profile', [AuthController::class, '
 Route::resource('apmcs', ApmcController::class);
 Route::resource('roles', RoleController::class);
 Route::resource('users', UserController::class);
-Route::resource('products', ProductController::class);
+// Route::resource('products', ProductController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('reviews', ReviewController::class);
 
@@ -63,6 +63,15 @@ Route::resource('shipping-details', ShippingDetailController::class);
 Route::resource('payments', PaymentController::class);
 Route::resource('coins', CoinController::class);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/products/seller', [ProductController::class, 'fetchBySeller']);
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::put('/products/{product}', [ProductController::class, 'update']);
+    Route::delete('/products/{product}', [ProductController::class, 'destroy']);
+});
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{product}', [ProductController::class, 'show']);
 
 Route::middleware('auth:sanctum')->controller(CartController::class)->prefix('cart')->group(function () {
     Route::post('/add', 'addToCart');

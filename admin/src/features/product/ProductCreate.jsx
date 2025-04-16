@@ -20,6 +20,9 @@ import { useNavigate } from "react-router-dom";
 import useProductStore from "../../store/product/productStore";
 import useCategoryStore from "../../store/category/categoryStore"; 
 import useUserStore from "../../store/user/userStore";
+import useAuth from "app/hooks/useAuth";
+import { authRoles } from "app/auth/authRoles";
+
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -32,9 +35,12 @@ const Container = styled("div")(({ theme }) => ({
 
 export default function Create() {
   const navigate = useNavigate();
+  const { userRoles, user:currentUser } = useAuth();
   const { addProduct } = useProductStore();
   const { fetchCategories, categories, loading, error } = useCategoryStore();
   const { fetchUsers, users:sellers } = useUserStore();
+
+  const isAdmin = [authRoles.admin].some(role => userRoles.includes(role));
 
   const [formData, setFormData] = useState({
     name: "",
@@ -44,7 +50,7 @@ export default function Create() {
     quantity: "",   
     unit: "kg",     
     status: "active", 
-    seller: "", 
+    seller: !isAdmin ? currentUser.id : "", 
     image: null,
   });
 
@@ -224,6 +230,7 @@ export default function Create() {
                   value={formData.seller}
                   onChange={handleChange}
                   label="Seller"
+                  disabled={!isAdmin}
                 >
                   {sellers.length === 0 ? (
                     <MenuItem disabled>Loading...</MenuItem>
