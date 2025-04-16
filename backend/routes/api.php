@@ -72,5 +72,6 @@ Route::middleware('auth:sanctum')->controller(CartController::class)->prefix('ca
     Route::post('/clear', 'clearCart');
 });
 
+Route::middleware('auth:sanctum')->post('place-order', [OrderController::class, 'placeOrder']);
 
 Route::get('test', [TestController::class,'test']);

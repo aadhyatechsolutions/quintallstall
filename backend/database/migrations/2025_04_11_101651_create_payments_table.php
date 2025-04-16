@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->onDelete('cascade'); // FK to orders table
             $table->enum('payment_method', ['card', 'upi', 'cod', 'wallet', 'netbanking']); // Add more methods as required
             $table->decimal('amount', 10, 2);
-            $table->string('transaction_id');
+            $table->string('transaction_id')->nullable();
             $table->enum('payment_status', ['pending', 'success', 'failed', 'refunded']);
             $table->timestamp('paid_at')->useCurrent(); 
             $table->text('error_message')->nullable(); 
