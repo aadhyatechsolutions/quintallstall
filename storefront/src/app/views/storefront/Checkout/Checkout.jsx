@@ -19,22 +19,14 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import PaymentIcon from "@mui/icons-material/Payment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-const SHIPPING_COST = 50;
 const CURRENCY = "Rs";
-const TAX_RATE = 0.18;
 
 const Checkout = () => {
-  const {
-    cart,
-    clearCart,
-    removeFromCart,
-    increaseQuantity,
-    decreaseQuantity,
-  } = useCartStore();
-
-  const { placeOrder } = useOrderStore(); // ✅ Call from Zustand store
+  const { cart, clearCart, removeFromCart, increaseQuantity, decreaseQuantity } = useCartStore();
+  const { placeOrder } = useOrderStore();
   const navigate = useNavigate();
 
+  // Form state
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -48,20 +40,23 @@ const Checkout = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const [orderError, setOrderError] = useState("");
 
+  // Calculate order totals
   const calculateOrderDetails = () => {
     const cartItems = cart?.items || [];
     const subtotal = cartItems.reduce(
       (sum, item) => sum + (item.product?.price || 0) * (item.quantity || 0),
       0
     );
-    const tax = subtotal * TAX_RATE;
-    const total = subtotal + SHIPPING_COST + tax;
-    return { subtotal, shipping: SHIPPING_COST, tax, total };
+    const shipping = 0; // You can add shipping calculation here
+    const total = subtotal + shipping;
+    return { subtotal, shipping, total };
   };
 
   const orderDetails = calculateOrderDetails();
 
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -70,6 +65,7 @@ const Checkout = () => {
     }
   };
 
+  // Validate form fields
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = "Name is required";
@@ -86,6 +82,7 @@ const Checkout = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Check if form is complete
   const isFormComplete = () => {
     return (
       formData.name &&
@@ -99,39 +96,55 @@ const Checkout = () => {
     );
   };
 
+  // Handle order submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm() || cart.length === 0) return;
 
     setIsSubmitting(true);
+    setOrderError("");
 
     try {
       const shipping_address = `${formData.address}, ${formData.city}, ${formData.state}, ${formData.zip}`;
       const payment_method = "cod";
-      const payment_status = "pending";
-      const transaction_id = null;
-      const amount = orderDetails.total;
+      const amount = parseFloat(orderDetails.total.toFixed(2));
 
       const orderPayload = {
         shipping_address,
         payment_method,
-        amount,
-        payment_status,
-        transaction_id,
+        amount
       };
 
-      await placeOrder(orderPayload); // ✅ Trigger Zustand order logic
-
-      setOrderSuccess(true);
-      clearCart();
-      setTimeout(() => navigate("/order-success"), 2000);
-    } catch (err) {
-      console.error("Order submission failed:", err);
+      const { success, data, error } = await placeOrder(orderPayload);
+      
+      if (success) {
+        setOrderSuccess(true);
+        clearCart();
+        setTimeout(() => navigate(`/order-success`), 2000);
+      } 
+      else {
+        setOrderError(error || "Order failed. Please try again.");
+      }
+    } catch (error) {
+      setOrderError("Something went wrong. Please try again.");
+      console.error("Order submission failed:", error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // Form fields configuration
+  const formFields = [
+    { label: "Full Name", name: "name", type: "text" },
+    { label: "Address", name: "address", type: "text" },
+    { label: "City", name: "city", type: "text" },
+    { label: "State", name: "state", type: "text" },
+    { label: "ZIP Code", name: "zip", type: "text" },
+    { label: "Phone Number", name: "phone", type: "tel" },
+    { label: "Email Address", name: "email", type: "email" },
+  ];
+
+  // Success state
   if (orderSuccess) {
     return (
       <Box sx={{ maxWidth: 1200, mx: "auto", p: { xs: 2, md: 4 } }}>
@@ -142,6 +155,26 @@ const Checkout = () => {
     );
   }
 
+  // Empty cart state
+  if (cart.length === 0) {
+    return (
+      <Box textAlign="center" mt={4}>
+        <Alert severity="warning" sx={{ mb: 3 }}>
+          Your cart is empty.
+        </Alert>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate("/products")}
+          sx={{ borderRadius: 2, px: 4, py: 1.5, fontSize: "1rem" }}
+        >
+          Continue Shopping
+        </Button>
+      </Box>
+    );
+  }
+
+  // Main checkout form
   return (
     <Box sx={{ maxWidth: 1200, mx: "auto", p: { xs: 2, md: 4 } }}>
       <Typography
@@ -159,162 +192,148 @@ const Checkout = () => {
         Checkout
       </Typography>
 
-      {cart.length === 0 ? (
-        <Box textAlign="center" mt={4}>
-          <Alert severity="warning" sx={{ mb: 3 }}>
-            Your cart is empty.
-          </Alert>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate("/products")}
-            sx={{ borderRadius: 2, px: 4, py: 1.5, fontSize: "1rem" }}
-          >
-            Continue Shopping
-          </Button>
-        </Box>
-      ) : (
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
-            {/* Cart Items */}
-            <Paper elevation={1} sx={{ mb: 4, borderRadius: 2 }}>
-              <CardContent>
-                <Typography
-                  variant="h6"
-                  fontWeight="medium"
-                  sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
-                >
-                  <ShoppingCartIcon /> Cart Items
-                </Typography>
-                <Divider sx={{ mb: 2 }} />
-                {cart.items.map((item) => (
-                  <CartItem
-                    key={item.id}
-                    item={item}
-                    onRemove={() => removeFromCart(item.id)}
-                    onIncrease={() => increaseQuantity(item.id)}
-                    onDecrease={() => decreaseQuantity(item.id)}
-                  />
-                ))}
-              </CardContent>
-            </Paper>
+      <Grid container spacing={3}>
+        {/* Left Column - Cart Items and Shipping Info */}
+        <Grid item xs={12} md={8}>
+          {/* Cart Items */}
+          <Paper elevation={1} sx={{ mb: 4, borderRadius: 2 }}>
+            <CardContent>
+              <Typography
+                variant="h6"
+                fontWeight="medium"
+                sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
+              >
+                <ShoppingCartIcon /> Cart Items
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+              {cart.items.map((item) => (
+                <CartItem
+                  key={item.id}
+                  item={item}
+                  onRemove={() => removeFromCart(item.id)}
+                  onIncrease={() => increaseQuantity(item.id)}
+                  onDecrease={() => decreaseQuantity(item.id)}
+                />
+              ))}
+            </CardContent>
+          </Paper>
 
-            {/* Shipping Info */}
-            <Paper elevation={1} sx={{ borderRadius: 2 }}>
-              <CardContent>
-                <Typography
-                  variant="h6"
-                  fontWeight="medium"
-                  sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
-                >
-                  <LocalShippingIcon /> Shipping Information
-                </Typography>
-                <Divider sx={{ mb: 3 }} />
-                <form onSubmit={handleSubmit}>
-                  <Grid container spacing={2}>
-                    {[ 
-                      { label: "Full Name", name: "name" },
-                      { label: "Address", name: "address" },
-                      { label: "City", name: "city" },
-                      { label: "State", name: "state" },
-                      { label: "ZIP Code", name: "zip" },
-                      { label: "Phone", name: "phone" },
-                      { label: "Email", name: "email", type: "email" },
-                    ].map(({ label, name, type = "text" }) => (
-                      <Grid item xs={12} sm={6} key={name}>
-                        <TextField
-                          fullWidth
-                          label={label}
-                          name={name}
-                          type={type}
-                          value={formData[name]}
-                          onChange={handleInputChange}
-                          error={!!errors[name]}
-                          helperText={errors[name]}
-                          required
-                          variant="outlined"
-                          size="small"
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </form>
-              </CardContent>
-            </Paper>
-          </Grid>
-
-          {/* Order Summary */}
-          <Grid item xs={12} md={4}>
-            <Paper elevation={1} sx={{ borderRadius: 2 }}>
-              <CardContent>
-                <Typography
-                  variant="h6"
-                  fontWeight="medium"
-                  sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
-                >
-                  <PaymentIcon /> Order Summary
-                </Typography>
-                <Divider sx={{ mb: 2 }} />
-                <Box display="flex" justifyContent="space-between" mb={1.5}>
-                  <Typography variant="body2">Subtotal</Typography>
-                  <Typography variant="body2">
-                    {CURRENCY} {orderDetails.subtotal.toFixed(2)}
-                  </Typography>
-                </Box>
-                <Box display="flex" justifyContent="space-between" mb={1.5}>
-                  <Typography variant="body2">Shipping</Typography>
-                  <Typography variant="body2">
-                    {CURRENCY} {orderDetails.shipping.toFixed(2)}
-                  </Typography>
-                </Box>
-                <Box display="flex" justifyContent="space-between" mb={1.5}>
-                  <Typography variant="body2">Tax (18%)</Typography>
-                  <Typography variant="body2">
-                    {CURRENCY} {orderDetails.tax.toFixed(2)}
-                  </Typography>
-                </Box>
-                <Divider sx={{ my: 2 }} />
-                <Box display="flex" justifyContent="space-between" mb={3}>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    Total
-                  </Typography>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    {CURRENCY} {orderDetails.total.toFixed(2)}
-                  </Typography>
-                </Box>
-                <Box display="flex" justifyContent="end">
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    onClick={handleSubmit}
-                    disabled={!isFormComplete() || isSubmitting}
-                    sx={{
-                      borderRadius: 2,
-                      py: 1.5,
-                      fontSize: "1rem",
-                      boxShadow: "none",
-                      width: "auto",
-                      "&:hover": {
-                        boxShadow: "none",
-                        transform: "translateY(-2px)",
-                        transition: "all 0.3s ease",
-                      },
-                    }}
-                  >
-                    {isSubmitting ? (
-                      <CircularProgress size={24} color="inherit" />
-                    ) : (
-                      "Place Order"
-                    )}
-                  </Button>
-                </Box>
-              </CardContent>
-            </Paper>
-          </Grid>
+          {/* Shipping Information */}
+          <Paper elevation={1} sx={{ borderRadius: 2 }}>
+            <CardContent>
+              <Typography
+                variant="h6"
+                fontWeight="medium"
+                sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
+              >
+                <LocalShippingIcon /> Shipping Information
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
+              <form onSubmit={handleSubmit}>
+                <Grid container spacing={2}>
+                  {formFields.map(({ label, name, type }) => (
+                    <Grid item xs={12} sm={6} key={name}>
+                      <TextField
+                        fullWidth
+                        label={label}
+                        name={name}
+                        type={type}
+                        value={formData[name]}
+                        onChange={handleInputChange}
+                        error={!!errors[name]}
+                        helperText={errors[name]}
+                        required
+                        variant="outlined"
+                        size="small"
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </form>
+            </CardContent>
+          </Paper>
         </Grid>
-      )}
+
+        {/* Right Column - Order Summary */}
+        <Grid item xs={12} md={4}>
+          <Paper elevation={1} sx={{ borderRadius: 2 }}>
+            <CardContent>
+              <Typography
+                variant="h6"
+                fontWeight="medium"
+                sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
+              >
+                <PaymentIcon /> Order Summary
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+
+              {/* Order Breakdown */}
+              <Box display="flex" justifyContent="space-between" mb={1.5}>
+                <Typography variant="body2">Subtotal</Typography>
+                <Typography variant="body2">
+                  {CURRENCY} {orderDetails.subtotal.toFixed(2)}
+                </Typography>
+              </Box>
+
+              <Box display="flex" justifyContent="space-between" mb={1.5}>
+                <Typography variant="body2">Shipping</Typography>
+                <Typography variant="body2">
+                  {CURRENCY} {orderDetails.shipping.toFixed(2)}
+                </Typography>
+              </Box>
+
+              <Divider sx={{ my: 2 }} />
+
+              {/* Total */}
+              <Box display="flex" justifyContent="space-between" mb={3}>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Total
+                </Typography>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {CURRENCY} {orderDetails.total.toFixed(2)}
+                </Typography>
+              </Box>
+
+              {/* Place Order Button */}
+              <Box display="flex" justifyContent="end">
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  onClick={handleSubmit}
+                  disabled={!isFormComplete() || isSubmitting}
+                  sx={{
+                    borderRadius: 2,
+                    py: 1.5,
+                    fontSize: "1rem",
+                    boxShadow: "none",
+                    width: "auto",
+                    "&:hover": {
+                      boxShadow: "none",
+                      transform: "translateY(-2px)",
+                      transition: "all 0.3s ease",
+                    },
+                  }}
+                >
+                  {isSubmitting ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    "Place Order"
+                  )}
+                </Button>
+              </Box>
+
+              {/* Error Message */}
+              {orderError && (
+                <Alert severity="error" sx={{ mt: 2 }}>
+                  {orderError}
+                </Alert>
+              )}
+            </CardContent>
+          </Paper>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

@@ -5,22 +5,30 @@ const getAuthHeader = () => {
   return {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
   };
 };
 
-// ✅ API call to place an order
 export const placeOrder = async (orderPayload) => {
   try {
-    const { data } = await axiosInstance.post(
+    const response = await axiosInstance.post(
       "/place-order",
       orderPayload,
       getAuthHeader()
     );
-    return data;  
+    return {
+      success: true,
+      data: response.data,
+      status: response.status,
+    };
   } 
   catch (error) {
     console.error("Failed to place order:", error);
-    throw error;
+    return {
+      success: false,
+      error: error.response?.data?.message || "Failed to place order",
+      status: error.response?.status,
+    };
   }
 };

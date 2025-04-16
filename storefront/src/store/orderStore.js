@@ -6,29 +6,36 @@ export const useOrderStore = create(
   persist(
     (set, get) => ({
       order: null,
-      orderStatus: "pending",
+      orderStatus: "idle", // 'idle' | 'placing' | 'success' | 'error'
       orderError: null,
 
-      // Function to place an order
       placeOrder: async (orderPayload) => {
-        try {
-          set({ orderStatus: "placing" });
-
-          // Call the API to place the order
-          const orderData = await placeOrder(orderPayload);
-
-          // Update the store with the order response (success)
-          set({ order: orderData, orderStatus: "success" });
-        } 
-        catch (error) {
-          console.error("Order placement failed:", error);
-          set({ orderStatus: "error", orderError: error.message });
+        set({ orderStatus: "placing", orderError: null });
+        
+        const result = await placeOrder(orderPayload);
+        
+        if (result.success) {
+          set({
+            order: result.data,
+            orderStatus: "success",
+            orderError: null,
+          });
+          return { success: true, data: result.data };
+        } else {
+          set({
+            orderStatus: "error",
+            orderError: result.error,
+          });
+          return { success: false, error: result.error };
         }
       },
 
-      // Reset the order state (could be useful after a successful order)
       resetOrder: () => {
-        set({ order: null, orderStatus: "pending", orderError: null });
+        set({ 
+          order: null, 
+          orderStatus: "idle", 
+          orderError: null 
+        });
       },
     }),
     {

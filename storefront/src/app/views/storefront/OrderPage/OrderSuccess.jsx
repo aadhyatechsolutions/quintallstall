@@ -15,25 +15,23 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const OrderSuccess = () => {
   const navigate = useNavigate();
-  const [order, setOrder] = useState(null);
+  const [orderData, setOrderData] = useState(null);
 
   useEffect(() => {
-    // const savedOrder = localStorage.getItem("lastOrder");
-    const savedOrder = localStorage.getItem("orderData");
+    const savedOrder = localStorage.getItem("order-storage");
     if (savedOrder) {
-      setOrder(JSON.parse(savedOrder));
+      const parsed = JSON.parse(savedOrder);
+      setOrderData(parsed?.state?.order || null);
     }
   }, []);
 
-  if (!order) {
+  if (!orderData) {
     return (
       <Box sx={{ p: 4 }}>
         <Typography variant="h6">No order found.</Typography>
       </Box>
     );
   }
-
-  const { cart, formData, orderDetails, date } = order;
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
@@ -47,60 +45,23 @@ const OrderSuccess = () => {
             <Typography variant="body1" mt={1}>
               Your order has been placed successfully.
             </Typography>
-            <Typography variant="caption" color="text.secondary">
-              Order Date: {new Date(date).toLocaleString()}
-            </Typography>
           </Box>
 
           <Divider sx={{ my: 2 }} />
           <Typography variant="h6" gutterBottom>
-            Shipping Info
+            Order Summary
           </Typography>
-          <Typography>Name: {formData.name}</Typography>
-          <Typography>
-            Address: {formData.address}, {formData.city}, {formData.state} -{" "}
-            {formData.zip}
-          </Typography>
-          <Typography>Phone: {formData.phone}</Typography>
-          <Typography>Email: {formData.email}</Typography>
+          <Typography>Order ID: {orderData.order_id}</Typography>
+          <Typography>Order Status: {orderData.order_status}</Typography>
+          <Typography>Payment Status: {orderData.payment_status}</Typography>
 
+          {/* Optional static message */}
           <Divider sx={{ my: 2 }} />
-          <Typography variant="h6" gutterBottom>
-            Items Ordered
+          <Typography variant="body2" color="text.secondary">
+            You will receive an email with the order details and tracking
+            information shortly.
           </Typography>
-          <List dense>
-            {cart.map((item) => (
-              <ListItem key={item.id}>
-                <ListItemText
-                  primary={`${item.name} (x${item.quantity})`}
-                  secondary={`Rs ${item.price} each`}
-                />
-              </ListItem>
-            ))}
-          </List>
 
-          <Divider sx={{ my: 2 }} />
-          <Box display="flex" justifyContent="space-between" mb={1}>
-            <Typography>Subtotal:</Typography>
-            <Typography>Rs {orderDetails.subtotal.toFixed(2)}</Typography>
-          </Box>
-          <Box display="flex" justifyContent="space-between" mb={1}>
-            <Typography>Shipping:</Typography>
-            <Typography>Rs {orderDetails.shipping.toFixed(2)}</Typography>
-          </Box>
-          <Box display="flex" justifyContent="space-between" mb={1}>
-            <Typography>Tax:</Typography>
-            <Typography>Rs {orderDetails.tax.toFixed(2)}</Typography>
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            fontWeight="bold"
-            mt={2}
-          >
-            <Typography>Total:</Typography>
-            <Typography>Rs {orderDetails.total.toFixed(2)}</Typography>
-          </Box>
           <Box display="flex" justifyContent="center" mb={1}>
             <Button
               variant="contained"
@@ -112,7 +73,10 @@ const OrderSuccess = () => {
                 width: "auto",
                 alignSelf: "center",
               }}
-              onClick={() => navigate("/")}
+              onClick={() => {
+                localStorage.removeItem("order-storage"); // Optional: clear order
+                navigate("/");
+              }}
             >
               Continue Shopping
             </Button>
