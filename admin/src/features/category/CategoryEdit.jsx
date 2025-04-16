@@ -102,13 +102,13 @@ export default function EditCategory() {
     }
   };
 
-  if (!currentCategory) {
-    return (
-      <Container>
-        <Alert severity="error">Category not found</Alert>
-      </Container>
-    );
-  }
+  // if (!currentCategory) {
+  //   return (
+  //     <Container>
+  //       <Alert severity="error">Category not found</Alert>
+  //     </Container>
+  //   );
+  // }
 
   return (
     <Container>

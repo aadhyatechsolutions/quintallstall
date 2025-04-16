@@ -120,7 +120,7 @@ export default function OrderView() {
   const rows = orders.map((order) => ({
     id: order.id,
     buyer: order.buyer,
-    seller: order.order_items[0].product.seller,
+    seller: order.order_items.length > 0 ? order.order_items[0].product.seller : null,
     total_amount: order.total_amount,
     shipping_address: order.shipping_address,
     order_status: order.order_status,
