@@ -15,9 +15,21 @@ class OrderController extends Controller
     
     public function index()
     {
-        $orders = Order::with(['orderItems.product.seller', 'shippingDetails', 'payment', 'buyer'])->get();
-        
-        return response()->json(['orders' => $orders],200);
+        $user = auth()->user();
+
+        $roles = $user->roles->pluck('slug')->toArray();
+
+        if (in_array('admin', $roles) || in_array('delivery', $roles)) {
+            $orders = Order::with(['orderItems.product.seller', 'shippingDetails', 'payment', 'buyer'])->get();
+        } else {
+            $orders = Order::whereHas('orderItems.product', function ($query) use ($user) {
+                $query->where('seller_id', $user->id);
+            })
+            ->with(['orderItems.product.seller', 'shippingDetails', 'payment', 'buyer'])
+            ->get();
+        }
+
+        return response()->json(['orders' => $orders], 200);
     }
 
     

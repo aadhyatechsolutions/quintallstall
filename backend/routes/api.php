@@ -57,7 +57,6 @@ Route::get('products/role/{slug}', [ProductController::class, 'getProductsByRole
 Route::put('/products/{id}/status', [ProductController::class, 'updateStatus']);
 Route::get('/vehicle/types', [VehicleController::class, 'getVehicleTypes']);
 
-Route::resource('orders', OrderController::class);
 Route::resource('order-items', OrderItemController::class);
 Route::resource('shipping-details', ShippingDetailController::class);
 Route::resource('payments', PaymentController::class);
@@ -80,7 +79,9 @@ Route::middleware('auth:sanctum')->controller(CartController::class)->prefix('ca
     Route::delete('/item/{id}', 'removeCartItem');
     Route::post('/clear', 'clearCart');
 });
-
-Route::middleware('auth:sanctum')->post('place-order', [OrderController::class, 'placeOrder']);
+Route::middleware('auth:sanctum')->controller(OrderController::class)->group(function () {
+    Route::post('/place-order', 'placeOrder');
+    Route::resource('orders', OrderController::class);
+});
 
 Route::get('test', [TestController::class,'test']);
