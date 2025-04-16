@@ -72,7 +72,7 @@ class ApmcSeeder extends Seeder
             if ($imageFile && File::exists($sourceDir . '/' . $imageFile)) {
                 $uniqueName = time() . '_' . Str::slug(pathinfo($imageFile, PATHINFO_FILENAME)) . '.' . pathinfo($imageFile, PATHINFO_EXTENSION);
                 File::copy($sourceDir . '/' . $imageFile, $targetDir . '/' . $uniqueName);
-                $apmc['image'] = 'storage/apmc_images/' . $uniqueName;
+                $apmc['image'] = 'apmc_images/' . $uniqueName;
             } else {
                 $apmc['image'] = null;
             }
