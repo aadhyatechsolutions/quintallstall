@@ -6,11 +6,13 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ShippingDetail;
 use App\Models\Payment;
+use App\Models\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    // Display a listing of orders
+    
     public function index()
     {
         $orders = Order::with(['orderItems.product.seller', 'shippingDetails', 'payment', 'buyer'])->get();
@@ -18,89 +20,121 @@ class OrderController extends Controller
         return response()->json(['orders' => $orders],200);
     }
 
-    // Show the form for creating a new order
-    public function create()
-    {
-        // Add logic to return necessary data for creating an order (e.g., products, shipping methods)
-    }
-
-    // Store a newly created order in storage
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'order_status' => 'required|in:pending,completed,cancelled,shipped',
-            'total_amount' => 'required|numeric',
-            'shipping_address_id' => 'required|exists:shipping_details,id',
-            'payment_status' => 'required|in:paid,unpaid',
-        ]);
-
-        $order = Order::create($validated);
-
-        // Save OrderItems, ShippingDetails, and Payments here
-        // Example: add logic to save OrderItems
-        foreach ($request->order_items as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item['product_id'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-            ]);
-        }
-
-        ShippingDetail::create([
-            'order_id' => $order->id,
-            'address' => $request->shipping_address['address'],
-            'city' => $request->shipping_address['city'],
-            'state' => $request->shipping_address['state'],
-            'postal_code' => $request->shipping_address['postal_code'],
-            'country' => $request->shipping_address['country'],
-            'shipping_method' => $request->shipping_address['shipping_method'],
-        ]);
-
-        Payment::create([
-            'order_id' => $order->id,
-            'payment_method' => $request->payment['payment_method'],
-            'payment_status' => $request->payment['payment_status'],
-            'payment_amount' => $request->payment['payment_amount'],
-            'transaction_id' => $request->payment['transaction_id'],
-            'payment_date' => now(),
-        ]);
-
-        return response()->json($order, 201);
-    }
-
-    // Display the specified order
+    
     public function show($id)
     {
         $order = Order::with(['orderItems', 'shippingDetails', 'payment'])->findOrFail($id);
         return response()->json($order);
     }
 
-    // Update the specified order in storage
-    public function update(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'order_status' => 'in:pending,completed,cancelled,shipped',
-            'total_amount' => 'numeric',
-            'payment_status' => 'in:paid,unpaid',
-        ]);
-
-        $order = Order::findOrFail($id);
-        $order->update($validated);
-
-        // Handle updates to related entities (OrderItems, ShippingDetails, Payments)
-        // You can add the logic for updating related models here as needed
-
-        return response()->json($order);
-    }
-
-    // Remove the specified order from storage
+    
     public function destroy($id)
     {
         $order = Order::findOrFail($id);
         $order->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function placeOrder(Request $request)
+    {
+        $user = auth()->user(); // Authenticated via Sanctum
+
+        $request->validate([
+            'shipping_address' => 'required|string',
+            'payment_method' => 'required|in:card,upi,cod,wallet,netbanking',
+            'amount' => 'required|numeric',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // Get cart
+            $cart = Cart::where('buyer_id', $user->id)->first();
+
+            if (!$cart || $cart->items->isEmpty()) {
+                return response()->json(['message' => 'Cart is empty.'], 400);
+            }
+
+            // Calculate total from backend
+            $totalAmount = $cart->items->sum(fn($item) => $item->quantity * $item->price);
+
+            // Verify frontend amount (optional, but recommended)
+            if (round($request->amount, 2) != round($totalAmount, 2)) {
+                return response()->json(['message' => 'Amount mismatch.'], 422);
+            }
+
+            // Create order
+            $order = Order::create([
+                'buyer_id' => $user->id,
+                'order_status' => 'pending', // Default
+                'total_amount' => $totalAmount,
+                'shipping_address' => $request->shipping_address,
+            ]);
+
+            // Add items to order
+            foreach ($cart->items as $cartItem) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cartItem->product_id,
+                    'quantity' => $cartItem->quantity,
+                    'price' => $cartItem->price,
+                    'total' => $cartItem->quantity * $cartItem->price,
+                ]);
+            }
+
+            // Handle Payment
+            if ($request->payment_method === 'cod') {
+                // COD: no transaction, pending status
+                $payment = Payment::create([
+                    'order_id' => $order->id,
+                    'payment_method' => 'cod',
+                    'amount' => $totalAmount,
+                    'transaction_id' => null,
+                    'payment_status' => 'pending',
+                    'paid_at' => null,
+                    'error_message' => null,
+                ]);
+            } else {
+                // Online Payment: you should verify payment here with gateway (placeholder)
+                // For now, mock success
+                $verified = true; // simulate payment gateway response
+                $transactionId = uniqid('txn_');
+
+                $payment = Payment::create([
+                    'order_id' => $order->id,
+                    'payment_method' => $request->payment_method,
+                    'amount' => $totalAmount,
+                    'transaction_id' => $transactionId,
+                    'payment_status' => $verified ? 'success' : 'failed',
+                    'paid_at' => now(),
+                    'error_message' => $verified ? null : 'Payment verification failed',
+                ]);
+
+                // Update order status based on payment
+                $order->update([
+                    'order_status' => $verified ? 'completed' : 'failed',
+                ]);
+            }
+
+            // Clear cart
+            $cart->items()->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Order placed successfully.',
+                'order_id' => $order->id,
+                'order_status' => $order->order_status,
+                'payment_status' => $payment->payment_status,
+            ], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Failed to place order',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
