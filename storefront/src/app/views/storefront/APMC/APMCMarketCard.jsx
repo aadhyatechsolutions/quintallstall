@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography, Container, Button, CircularProgress } from "@mui/material";
 import PropTypes from "prop-types";
 import { useApmcs } from "../../../../hooks/useApmcs";
+import { apiConfig } from "../../../../config";
 
 const MarketButton = React.memo(({ market, onClick, isActive }) => (
   <Box
@@ -39,7 +40,7 @@ const MarketButton = React.memo(({ market, onClick, isActive }) => (
     >
       <Box
         component="img"
-        src={market.image}
+        src={`${apiConfig.MEDIA_URL}${market.image}`}
         alt={market.name}
         className="market-image"
         sx={{
