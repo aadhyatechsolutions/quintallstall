@@ -103,7 +103,7 @@ const Contact = () => {
             </Typography>
             <Divider sx={{ width: 64, height: 4, bgcolor: "#b6131a", mb: 4 }} />
 
-            <Grid container spacing={3} columns={{ xs: 12 }}>
+            <Grid container spacing={6} columns={{ xs: 12 }}>
               <Grid sx={{ gridColumn: "span 12" }}>
                 <TextField
                   label="Your Name"
