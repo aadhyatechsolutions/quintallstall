@@ -22,7 +22,7 @@ const navigations = [
         name: "AMPC", 
         icon: "apps",
         level: 2,
-        allowedRoles: ["admin", 'wholesaler', 'retailer'],
+        allowedRoles: ["admin"],
         children: [
           { name: "Create", path: "/features/apmc/create", iconText: "A"},
           { name: "View", path: "/features/apmc/view", iconText: "A" },

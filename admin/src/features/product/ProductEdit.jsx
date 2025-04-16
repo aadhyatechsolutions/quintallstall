@@ -18,7 +18,9 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useProductStore from "../../store/product/productStore";
 import useCategoryStore from "../../store/category/categoryStore";
-import useUserStore from "../../store/user/userStore"; // Assuming you have a store for users
+import useUserStore from "../../store/user/userStore"; 
+import useAuth from "app/hooks/useAuth";
+import { authRoles } from "app/auth/authRoles";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -30,11 +32,14 @@ const Container = styled("div")(({ theme }) => ({
 }));
 
 export default function EditProduct() {
-  const { id } = useParams(); // Get product ID from URL params
+  const { id } = useParams();
   const navigate = useNavigate();
+  const { userRoles, user:currentUser } = useAuth();
   const { fetchProductById, updateProduct } = useProductStore(); // Use Zustand store for product
   const { fetchCategories, categories, loading, error } = useCategoryStore(); // For category data
-  const { fetchUsers, users:sellers } = useUserStore(); // Assuming you have a user store
+  const { fetchUsers, users:sellers } = useUserStore(); 
+  const isAdmin = [authRoles.admin].some(role => userRoles.includes(role));
+
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -47,7 +52,7 @@ export default function EditProduct() {
     description: "",
     price: "", // Added price to form data
     image: null,
-    seller: "", // Added user to form data
+    seller: !isAdmin ? currentUser.id : "", 
     quantity: "", // Quantity field
     unit: "kg", // Unit field with default "kg"
     status: "active", // Status field with default "active"
@@ -252,10 +257,11 @@ export default function EditProduct() {
               <FormControl fullWidth required>
                 <InputLabel>Vendor Name</InputLabel>
                 <Select
-                  name="user"
+                  name="seller"
                   value={formData.seller}
                   onChange={handleChange}
-                  label="User"
+                  label="Seller"
+                  disabled={!isAdmin}
                 >
                   {sellers.length === 0 ? (
                     <MenuItem disabled>Loading...</MenuItem>

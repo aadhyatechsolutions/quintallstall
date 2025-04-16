@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import { fetchProducts, updateProduct, deleteProduct, addProduct, fetchProductsBySlug, fetchProductById, updateProductStatus } from './productApi'; 
+import { fetchProducts, fetchProductsBySellerId, updateProduct, deleteProduct, addProduct, fetchProductsBySlug, fetchProductById, updateProductStatus } from './productApi'; 
 
 const useProductStore = create((set) => ({
   products: [],
@@ -95,6 +95,17 @@ const useProductStore = create((set) => ({
     } catch (err) {
       set({ error: err.message });
       throw err;
+    } finally {
+      set({ loading: false });
+    }
+  },
+  fetchProductsBySeller: async () => {
+    set({ loading: true, error: null });
+    try {
+      const products = await fetchProductsBySellerId();
+      set({ products });
+    } catch (err) {
+      set({ error: err.message });
     } finally {
       set({ loading: false });
     }

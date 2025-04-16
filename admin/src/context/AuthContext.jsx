@@ -6,6 +6,7 @@ import Loading from "app/components/MatxLoading";
 
 const initialState = {
   user: null,
+  userRoles: null,
   isInitialized: false,
   isAuthenticated: false
 };
@@ -47,18 +48,21 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "INIT": {
       const { isAuthenticated, user } = action.payload;
-      return { ...state, user, isAuthenticated, isInitialized: true };
+      const userRoles = user?.roles?.map(role => role.slug) 
+      return { ...state, user, isAuthenticated, userRoles, isInitialized: true };
     }
     case "LOGIN": {
       const { user } = action.payload;
-      return { ...state, user, isAuthenticated: true };
+      const userRoles = user?.roles?.map(role => role.slug) 
+      return { ...state, user, userRoles, isAuthenticated: true };
     }
     case "LOGOUT": {
-      return { ...state, isAuthenticated: false, user: null };
+      return { ...state, isAuthenticated: false, user: null, userRoles: null };
     }
     case "REGISTER": {
       const { user } = action.payload;
-      return { ...state, isAuthenticated: true, user };
+      const userRoles = user?.roles?.map(role => role.slug) 
+      return { ...state, isAuthenticated: true, user, userRoles };
     }
     default: {
       return state;

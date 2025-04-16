@@ -175,4 +175,16 @@ class ProductController extends Controller
             'message' => 'Product status updated successfully.',
         ], 200);
     }
+    public function fetchBySeller()
+    {
+        $user = auth()->user();
+
+        $products = Product::with([
+            'category',
+            'seller:id,first_name',
+            'seller.roles:name,slug'
+        ])->where('seller_id', $user->id)->get();
+
+        return response()->json(['products' => $products], 200);
+    }
 }

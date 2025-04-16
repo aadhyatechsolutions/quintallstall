@@ -5,6 +5,8 @@ import { Breadcrumb, SimpleCard } from "app/components";
 import useProductStore from "../../store/product/productStore";
 import { useNavigate } from "react-router-dom"; 
 import {apiConfig} from 'app/config';
+import useAuth from "app/hooks/useAuth";
+import { authRoles } from "app/auth/authRoles";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -16,11 +18,13 @@ const Container = styled("div")(({ theme }) => ({
 }));
 
 export default function View() {
-  const { products, loading, error, fetchProducts, deleteProduct, updateProductStatus } = useProductStore();
+  const { products, loading, error, fetchProducts, deleteProduct, updateProductStatus, fetchProductsBySeller } = useProductStore();
+  const { userRoles } = useAuth();
+  const hasAccess = [authRoles.admin].some(role => userRoles.includes(role));
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProducts();
+    hasAccess ? fetchProducts() : fetchProductsBySeller()
   }, [fetchProducts]);
 
   const handleDelete = (id) => {

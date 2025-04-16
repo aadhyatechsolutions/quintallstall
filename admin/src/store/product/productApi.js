@@ -94,5 +94,13 @@ export const fetchProducts = async () => {
       throw new Error(error.response?.data?.message || 'Failed to update product status');
     }
   };
+
+  export const fetchProductsBySellerId = async () => {
+    const { data, status } = await axiosInstance.get('/products/seller');
+    if (status !== 200) {
+      throw new Error('Failed to fetch seller products');
+    }
+    return data.products;
+  };
   
   
