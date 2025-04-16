@@ -64,7 +64,7 @@ const CartPopover = ({
       open={open}
       anchorEl={anchorEl}
       transition
-      placement="bottom-end"
+      placement="top-end"
       disablePortal={false}
       modifiers={[
         {
@@ -74,6 +74,7 @@ const CartPopover = ({
           },
         },
       ]}
+      style={{ zIndex: 1200 }}
     >
       {({ TransitionProps }) => (
         <Grow {...TransitionProps}>
