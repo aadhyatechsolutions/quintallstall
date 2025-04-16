@@ -3,7 +3,6 @@ import {
   Box,
   Grid,
   Typography,
-  Card,
   CardContent,
   Divider,
   Button,
@@ -11,11 +10,9 @@ import {
   Alert,
   TextField,
   Paper,
-  Stepper,
-  Step,
-  StepLabel,
 } from "@mui/material";
 import { useCartStore } from "../../../../store/cartStore";
+import { useOrderStore } from "../../../../store/orderStore";
 import { useNavigate } from "react-router-dom";
 import CartItem from "../Cart/CartItem";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -25,7 +22,6 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 const SHIPPING_COST = 50;
 const CURRENCY = "Rs";
 const TAX_RATE = 0.18;
-const steps = ["Cart Items", "Shipping Info", "Payment"];
 
 const Checkout = () => {
   const {
@@ -35,7 +31,10 @@ const Checkout = () => {
     increaseQuantity,
     decreaseQuantity,
   } = useCartStore();
+
+  const { placeOrder } = useOrderStore(); // ✅ Call from Zustand store
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -45,11 +44,11 @@ const Checkout = () => {
     phone: "",
     email: "",
   });
+
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
-  const [activeStep, setActiveStep] = useState(0);
-  
+
   const calculateOrderDetails = () => {
     const cartItems = cart?.items || [];
     const subtotal = cartItems.reduce(
@@ -82,31 +81,9 @@ const Checkout = () => {
     if (!formData.email.trim()) newErrors.email = "Email is required";
     else if (!/^\S+@\S+\.\S+$/.test(formData.email))
       newErrors.email = "Email is invalid";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm() || cart.length === 0) return;
-    setIsSubmitting(true);
-    try {
-      const orderData = {
-        cart,
-        formData,
-        orderDetails,
-        date: new Date().toISOString(),
-      };
-      localStorage.setItem("orderData", JSON.stringify(orderData));
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setOrderSuccess(true);
-      clearCart();
-      setTimeout(() => navigate("/order-success"), 2000);
-    } catch (err) {
-      console.error("Order submission failed:", err);
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   const isFormComplete = () => {
@@ -120,6 +97,39 @@ const Checkout = () => {
       formData.email &&
       Object.keys(errors).length === 0
     );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm() || cart.length === 0) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const shipping_address = `${formData.address}, ${formData.city}, ${formData.state}, ${formData.zip}`;
+      const payment_method = "cod";
+      const payment_status = "pending";
+      const transaction_id = null;
+      const amount = orderDetails.total;
+
+      const orderPayload = {
+        shipping_address,
+        payment_method,
+        amount,
+        payment_status,
+        transaction_id,
+      };
+
+      await placeOrder(orderPayload); // ✅ Trigger Zustand order logic
+
+      setOrderSuccess(true);
+      clearCart();
+      setTimeout(() => navigate("/order-success"), 2000);
+    } catch (err) {
+      console.error("Order submission failed:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (orderSuccess) {
@@ -164,21 +174,15 @@ const Checkout = () => {
           </Button>
         </Box>
       ) : (
-        <Grid spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-          <Grid>
-            {/* Cart Items & Shipping Info */}
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={8}>
+            {/* Cart Items */}
             <Paper elevation={1} sx={{ mb: 4, borderRadius: 2 }}>
               <CardContent>
                 <Typography
                   variant="h6"
-                  gutterBottom
                   fontWeight="medium"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                    color: "#b6131a",
-                  }}
+                  sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
                 >
                   <ShoppingCartIcon /> Cart Items
                 </Typography>
@@ -195,149 +199,58 @@ const Checkout = () => {
               </CardContent>
             </Paper>
 
-            <Paper elevation={1} sx={{ mb: 4, borderRadius: 2 }}>
+            {/* Shipping Info */}
+            <Paper elevation={1} sx={{ borderRadius: 2 }}>
               <CardContent>
                 <Typography
                   variant="h6"
-                  gutterBottom
                   fontWeight="medium"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                    color: "#b6131a",
-                  }}
+                  sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
                 >
                   <LocalShippingIcon /> Shipping Information
                 </Typography>
                 <Divider sx={{ mb: 3 }} />
                 <form onSubmit={handleSubmit}>
-                  <Grid container columns={{ xs: 4, sm: 8 }} spacing={2}>
-                    <Grid size={{ xs: 4, sm: 4, md: 2 }}>
-                      <TextField
-                        fullWidth
-                        label="Full Name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        error={!!errors.name}
-                        helperText={errors.name}
-                        required
-                        variant="outlined"
-                        size="small"
-                        sx={{ mb: 2 }}
-                      />
-                    </Grid>
-                    <Grid size={{ xs: 4, sm: 4, md: 2 }}>
-                      <TextField
-                        fullWidth
-                        label="Address"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleInputChange}
-                        error={!!errors.address}
-                        helperText={errors.address}
-                        required
-                        variant="outlined"
-                        size="small"
-                        sx={{ mb: 2 }}
-                      />
-                    </Grid>
-                    <Grid size={{ xs: 4, sm: 4, md: 2 }}>
-                      <TextField
-                        fullWidth
-                        label="City"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleInputChange}
-                        error={!!errors.city}
-                        helperText={errors.city}
-                        required
-                        variant="outlined"
-                        size="small"
-                        sx={{ mb: 2 }}
-                      />
-                    </Grid>
-                    <Grid size={{ xs: 4, sm: 4, md: 2 }}>
-                      <TextField
-                        fullWidth
-                        label="State"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleInputChange}
-                        error={!!errors.state}
-                        helperText={errors.state}
-                        required
-                        variant="outlined"
-                        size="small"
-                        sx={{ mb: 2 }}
-                      />
-                    </Grid>
-                    <Grid size={{ xs: 4, sm: 4, md: 2 }}>
-                      <TextField
-                        fullWidth
-                        label="ZIP Code"
-                        name="zip"
-                        value={formData.zip}
-                        onChange={handleInputChange}
-                        error={!!errors.zip}
-                        helperText={errors.zip}
-                        required
-                        variant="outlined"
-                        size="small"
-                        sx={{ mb: 2 }}
-                      />
-                    </Grid>
-                    <Grid size={{ xs: 4, sm: 4, md: 2 }}>
-                      <TextField
-                        fullWidth
-                        label="Phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        error={!!errors.phone}
-                        helperText={errors.phone}
-                        required
-                        variant="outlined"
-                        size="small"
-                        sx={{ mb: 2 }}
-                      />
-                    </Grid>
-                    <Grid size={{ xs: 4, sm: 4, md: 2 }}>
-                      <TextField
-                        fullWidth
-                        label="Email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        error={!!errors.email}
-                        helperText={errors.email}
-                        required
-                        variant="outlined"
-                        size="small"
-                        sx={{ mb: 2 }}
-                      />
-                    </Grid>
+                  <Grid container spacing={2}>
+                    {[ 
+                      { label: "Full Name", name: "name" },
+                      { label: "Address", name: "address" },
+                      { label: "City", name: "city" },
+                      { label: "State", name: "state" },
+                      { label: "ZIP Code", name: "zip" },
+                      { label: "Phone", name: "phone" },
+                      { label: "Email", name: "email", type: "email" },
+                    ].map(({ label, name, type = "text" }) => (
+                      <Grid item xs={12} sm={6} key={name}>
+                        <TextField
+                          fullWidth
+                          label={label}
+                          name={name}
+                          type={type}
+                          value={formData[name]}
+                          onChange={handleInputChange}
+                          error={!!errors[name]}
+                          helperText={errors[name]}
+                          required
+                          variant="outlined"
+                          size="small"
+                        />
+                      </Grid>
+                    ))}
                   </Grid>
                 </form>
               </CardContent>
             </Paper>
           </Grid>
-          {/* Order Summary Satrt */}
-          <Grid>
-            <Paper elevation={1} sx={{ mb: 4, borderRadius: 2 }}>
+
+          {/* Order Summary */}
+          <Grid item xs={12} md={4}>
+            <Paper elevation={1} sx={{ borderRadius: 2 }}>
               <CardContent>
                 <Typography
                   variant="h6"
-                  gutterBottom
                   fontWeight="medium"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                    color: "#b6131a",
-                  }}
+                  sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
                 >
                   <PaymentIcon /> Order Summary
                 </Typography>

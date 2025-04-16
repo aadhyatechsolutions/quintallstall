@@ -1,36 +1,8 @@
 import React from "react";
-import { Box, Typography, Container, Button } from "@mui/material";
+import { Box, Typography, Container, Button, CircularProgress } from "@mui/material";
 import PropTypes from "prop-types";
+import { useApmcs } from "../../../../hooks/useApmcs";
 
-// Market data with consistent structure
-const MARKETS = [
-  {
-    id: 1,
-    name: "Sardar Patel",
-    location: "Market Yard-Jamalpur",
-    image: "assets/images/apmc/apmc-1.jpg",
-  },
-  {
-    id: 2,
-    name: "Kalupur",
-    location: "Vegetable Market",
-    image: "assets/images/apmc/apmc-2.jpg",
-  },
-  {
-    id: 3,
-    name: "Jamalpur Flower",
-    location: "Market",
-    image: "assets/images/apmc/apmc-3.jpg",
-  },
-  {
-    id: 4,
-    name: "Naroda Fruits",
-    location: "Market",
-    image: "assets/images/apmc/apmc-4.jpg",
-  },
-];
-
-// Memoized MarketButton following same pattern as CategoryButton
 const MarketButton = React.memo(({ market, onClick, isActive }) => (
   <Box
     sx={{
@@ -126,11 +98,28 @@ MarketButton.propTypes = {
 
 const APMCMarketGrid = ({
   title = "Our APMC",
-  markets = MARKETS,
   onMarketClick = () => {},
   selectedMarket = null,
 }) => {
-  if (!markets?.length) return null;
+  const { data: markets = [], isLoading, isError } = useApmcs();
+
+  if (isLoading) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 6, textAlign: "center" }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
+
+  if (isError || !markets.length) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 6, textAlign: "center" }}>
+        <Typography variant="body1" color="error">
+          Failed to load APMC markets.
+        </Typography>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ py: 2 }}>
@@ -185,14 +174,6 @@ const APMCMarketGrid = ({
 
 APMCMarketGrid.propTypes = {
   title: PropTypes.string,
-  markets: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      location: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
-    })
-  ),
   onMarketClick: PropTypes.func,
   selectedMarket: PropTypes.number,
 };

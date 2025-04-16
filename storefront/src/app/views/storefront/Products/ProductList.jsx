@@ -7,6 +7,7 @@ import CategoriesList from "../Categories/CategoriesList";
 const ProductList = () => {
   const [value, setValue] = React.useState(0);
   const { data: products = [], isLoading, error } = useProducts();
+  const activeProducts = products.filter((product) => product.status === "active");
 
   return (
     <Container maxWidth="xl" sx={{ py: 6, px: { xs: 2, sm: 3 } }}>
@@ -31,7 +32,7 @@ const ProductList = () => {
 
       {/* Product Cards */}
       <Grid container rowSpacing={2} columnSpacing={1} justifyContent="center">
-        {products.map((product) => (
+        {activeProducts.map((product) => (
           <Grid
             key={product.id}
             sx={{ display: "flex", justifyContent: "center" }}

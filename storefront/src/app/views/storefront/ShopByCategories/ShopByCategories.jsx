@@ -1,31 +1,16 @@
 import React from "react";
-import { Box, Typography, Button, Container } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Container,
+  CircularProgress,
+} from "@mui/material";
 import PropTypes from "prop-types";
+import { useCategories } from "../../../../hooks/useCategories";
+import { apiConfig } from "../../../../config";
 
-// Category data with names and image URLs
-const CATEGORIES = [
-  {
-    id: 1,
-    name: "Vegetables",
-    image: "assets/images/shopbycategories/Vegetables.jpg",
-  },
-  {
-    name: "Exotic Vegetables",
-    image: "assets/images/shopbycategories/Vegetables.jpg",
-  },
-  { name: "Fruits", image: "assets/images/shopbycategories/Vegetables.jpg" },
-  {
-    name: "Exotic Fruits",
-    image: "assets/images/shopbycategories/Vegetables.jpg",
-  },
-  { name: "Flowers", image: "assets/images/shopbycategories/Vegetables.jpg" },
-  {
-    name: "Exotic Flowers",
-    image: "assets/images/shopbycategories/Vegetables.jpg",
-  },
-];
-
-// Updated CategoryButton component with improved design
+// Category Button Component
 const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
   <Box
     sx={{
@@ -36,6 +21,9 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
       position: "relative",
       overflow: "hidden",
       borderRadius: 2,
+      justifyContent:"center",
+      alignContent:"center",
+      alignSelf:"center",
       boxShadow: isActive ? 3 : 1,
       transition: "all 0.3s ease",
       "&:hover": {
@@ -109,16 +97,34 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
   </Box>
 ));
 
+// Main Component
 const ShopByCategories = ({
   title = "Shop By Categories",
-  categories = CATEGORIES,
   onCategoryClick = () => {},
   selectedCategory = "",
 }) => {
+  const { data: categories = [], isLoading, isError } = useCategories();
+
+  if (isLoading) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 8, textAlign: "center" }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 8, textAlign: "center" }}>
+        <Typography color="error">Failed to load categories.</Typography>
+      </Container>
+    );
+  }
+
   if (!categories?.length) return null;
 
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
+    <Container maxWidth="lg" sx={{ py: 8 }} >
       <Typography
         variant="h4"
         component="h2"
@@ -157,9 +163,9 @@ const ShopByCategories = ({
       >
         {categories.map((category) => (
           <CategoryButton
-            key={category.name}
+            key={category.id || category.name}
             name={category.name}
-            image={category.image}
+            image={`${apiConfig.MEDIA_URL}${category.image}`}
             onClick={onCategoryClick}
             isActive={selectedCategory === category.name}
           />
@@ -171,12 +177,6 @@ const ShopByCategories = ({
 
 ShopByCategories.propTypes = {
   title: PropTypes.string,
-  categories: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
-    })
-  ),
   onCategoryClick: PropTypes.func,
   selectedCategory: PropTypes.string,
 };
