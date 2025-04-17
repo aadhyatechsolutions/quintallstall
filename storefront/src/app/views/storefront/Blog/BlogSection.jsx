@@ -1,4 +1,4 @@
-// /components/Blog/BlogSection.jsx
+//Blog/BlogSection.jsx
 
 import React, { useState, useRef } from 'react';
 import {
@@ -24,7 +24,7 @@ const BlogSection = ({ posts }) => {
       setVisibleCount((prev) => prev + 8);
       setLoading(false);
 
-      // 👀 Auto-scroll to new content
+      // Auto-scroll to new content
       setTimeout(() => {
         postContainerRef.current?.scrollIntoView({
           behavior: 'smooth',
@@ -62,7 +62,7 @@ const BlogSection = ({ posts }) => {
         </Typography>
       </Box>
 
-      {/* 👇 ref to scroll to */}
+      {/*ref to scroll to */}
       <Box ref={postContainerRef}>
         <BlogList posts={postsToShow} />
       </Box>

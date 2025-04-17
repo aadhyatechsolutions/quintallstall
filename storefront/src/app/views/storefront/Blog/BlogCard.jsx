@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { apiConfig } from "../../../../config";
 import {
   Card,
   CardContent,
@@ -32,7 +33,8 @@ const BlogCard = ({ id, title, excerpt, image, date, author }) => {
       <Link to={`/blog/${id}`} style={{ textDecoration: 'none' }}>
         <CardMedia
           component="img"
-          image={image}
+          image={`${apiConfig.MEDIA_URL}${image}`}
+          
           alt={`Cover image for ${title}`}
           sx={{
             height: 200,

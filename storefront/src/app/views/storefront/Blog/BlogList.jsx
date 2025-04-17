@@ -1,4 +1,4 @@
-// /components/Blog/BlogList.jsx
+//Blog/BlogList.jsx
 
 import React from 'react';
 import { Grid } from '@mui/material';
