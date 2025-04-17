@@ -148,7 +148,6 @@ const APMCMarketGrid = ({
       >
         {title}
       </Typography>
-
       <Box
         sx={{
           display: "grid",

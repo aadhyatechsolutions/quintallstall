@@ -8,6 +8,8 @@ import ProductDetails from "./app/views/storefront/Products/ProductDetails";
 import Cart from "./app/views/storefront/Cart/Cart";
 import Checkout from "./app/views/storefront/Checkout/Checkout";
 import OrderSuccess from "./app/views/storefront/OrderPage/OrderSuccess";
+import BlogPage from "./app/views/storefront/Blog/BlogPage";
+import BlogPostDetail from "./app/views/storefront/Blog/BlogPostDetail";
 
 // Lazy load other components
 const About = lazy(() => import("./app/views/storefront/About/Index"));
@@ -30,7 +32,8 @@ const routes = [
       { path: "checkout", element: <Checkout /> },
       { path: "order-success", element: <OrderSuccess /> },
       { path: "cart", element: <Cart /> },
-      { path: "blog", element: <Blog /> },
+      { path: "blog", element: <BlogPage /> },
+      { path: "/blog/:id", element: <BlogPostDetail /> },
     ],
   },
 ];

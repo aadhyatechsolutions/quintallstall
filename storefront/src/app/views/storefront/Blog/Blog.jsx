@@ -1,63 +1,18 @@
 import React from "react";
 import { Container, Typography, Grid, Box, Button } from "@mui/material";
 import BlogCard from "./BlogCard";
-
-const blogPosts = [
-  {
-    title: "Why React is Still Relevant in 2025",
-    excerpt:
-      "Explore the continued dominance of React in modern frontend development and what's next for the framework. We dive deep into the latest features and community trends.",
-    image: "https://source.unsplash.com/random/800x600?reactjs",
-    date: "April 8, 2025",
-  },
-  {
-    title: "Building Scalable Web Apps with Laravel",
-    excerpt:
-      "Laravel remains a go-to for robust backend development. Learn best practices for scaling with it, including database optimization and queue management techniques.",
-    image: "https://source.unsplash.com/random/800x600?laravel",
-    date: "April 4, 2025",
-  },
-  {
-    title: "Tailwind CSS: Utility-First Styling Revolution",
-    excerpt:
-      "Discover how Tailwind CSS is reshaping the way developers write styles with speed and flexibility. See real-world examples of productivity gains and design consistency.",
-    image: "https://source.unsplash.com/random/800x600?tailwindcss",
-    date: "March 28, 2025",
-  },
-  {
-    title: "Why React is Still Relevant in 2025",
-    excerpt:
-      "Explore the continued dominance of React in modern frontend development and what's next for the framework. We dive deep into the latest features and community trends.",
-    image: "https://source.unsplash.com/random/800x600?reactjs",
-    date: "April 8, 2025",
-  },
-  {
-    title: "Building Scalable Web Apps with Laravel",
-    excerpt:
-      "Laravel remains a go-to for robust backend development. Learn best practices for scaling with it, including database optimization and queue management techniques.",
-    image: "https://source.unsplash.com/random/800x600?laravel",
-    date: "April 4, 2025",
-  },
-  {
-    title: "Tailwind CSS: Utility-First Styling Revolution",
-    excerpt:
-      "Discover how Tailwind CSS is reshaping the way developers write styles with speed and flexibility. See real-world examples of productivity gains and design consistency.",
-    image: "https://source.unsplash.com/random/800x600?tailwindcss",
-    date: "March 28, 2025",
-  },
-];
+import { blogPosts } from "./blogData";
 
 function Blog() {
   return (
-    <Container maxWidth="lg" sx={{ py: 6 }}>
+    <Container maxWidth="lg" sx={{ py: 8 }} component="section" aria-label="Blog posts">
       <Box textAlign="center" mb={8}>
         <Typography
           variant="h3"
           fontWeight={700}
           gutterBottom
           sx={{
-            background:
-              "linear-gradient(45deg, #b6131a 30%,rgb(232, 85, 83) 90%)",
+            background: "linear-gradient(45deg, #b6131a 30%, rgb(232, 85, 83) 90%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             display: "inline-block",
@@ -70,6 +25,7 @@ function Blog() {
           color="text.secondary"
           maxWidth="md"
           mx="auto"
+          mt={2}
         >
           Insights, tutorials, and tips from our development team. Stay updated
           with the latest trends in web development.
@@ -77,27 +33,30 @@ function Blog() {
       </Box>
 
       <Grid container spacing={4} justifyContent="center">
-        {blogPosts.map((post, index) => (
-          <Grid item key={index} xs={12} sm={6} md={4}>
+        {blogPosts.map((post) => (
+          <Grid item key={post.id} xs={12} sm={6} md={4} lg={4}>
             <BlogCard {...post} />
           </Grid>
         ))}
       </Grid>
 
-      <Box textAlign="center" mt={6}>
+      <Box textAlign="center" mt={8}>
         <Button
-          variant="outlined"
+          variant="contained"
           size="large"
+          component="a"
+          href="/blog"
           sx={{
-            px: 4,
+            px: 6,
             py: 1.5,
             borderRadius: "50px",
             textTransform: "none",
             fontWeight: 600,
-            borderWidth: 2,
-            "&:hover": {
-              borderWidth: 2,
-            },
+            fontSize: '1rem',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: 4,
+            }
           }}
         >
           View all articles
