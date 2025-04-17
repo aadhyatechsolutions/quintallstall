@@ -125,108 +125,86 @@ const NavActions = ({ isLargeScreen }) => {
       </Box>
 
       <Box
-        onMouseEnter={handleHover}
-        onMouseLeave={handleClose}
-        sx={{ position: "relative" }}
+      sx={{
+        position: "relative",
+        display: "inline-block",
+        "&:hover .account-dropdown": {
+          display: "block",
+        },
+      }}
+    >
+      <Button
+        startIcon={
+          <PersonOutline fontSize={isLargeScreen ? "medium" : "small"} />
+        }
+        sx={{
+          color: "black",
+          textTransform: "none",
+          fontWeight: "bold",
+          fontSize: { md: "0.9rem", lg: "1rem" },
+          "&:hover": { color: "#2b4a04" },
+        }}
       >
-        <Button
-          startIcon={<PersonOutline fontSize={isLargeScreen ? "medium" : "small"} />}
-          sx={{
-            color: "black",
-            textTransform: "none",
-            fontWeight: "bold",
-            fontSize: { md: "0.9rem", lg: "1rem" },
-            "&:hover": { color: "#2b4a04" },
-          }}
-        >
-          My Account
-        </Button>
+        My Account
+      </Button>
 
-        <Menu
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            onMouseLeave: handleClose,
-            sx: {
-              py: 0,
-              minWidth: "130px",
-            },
-          }}
-          PaperProps={{
-            elevation: 3,
-            sx: {
-              mt: 1,
-              borderRadius: "4px",
-              overflow: "hidden",
-            },
-          }}
-        >
-          {isLoggedIn ? (
+      {/* Dropdown */}
+      <Box
+        className="account-dropdown"
+        sx={{
+          display: "none",
+          position: "absolute",
+          top: "100%",
+          left: 0,
+          backgroundColor: "white",
+          minWidth: "130px",
+          boxShadow: "0px 4px 8px rgba(0,0,0,0.1)",
+          borderRadius: "4px",
+          zIndex: 10,
+        }}
+      >
+        {isLoggedIn ? (
+          <MenuItem
+            onClick={handleLogout}
+            sx={{
+              "&:hover": { backgroundColor: "#f5f5f5" },
+              fontSize: { md: "0.9rem", lg: "1rem" },
+              fontWeight: "500",
+              color: "black",
+            }}
+          >
+            <Logout fontSize="small" sx={{ mr: 1 }} />
+            Logout
+          </MenuItem>
+        ) : (
+          <>
             <MenuItem
-              onClick={handleLogout}
-              sx={{
-                "&:hover": { backgroundColor: "#f5f5f5" },
-              }}
-            >
-              <Button
-                fullWidth
-                startIcon={<Logout fontSize="small" />}
-                sx={{
-                  justifyContent: "flex-start",
-                  textTransform: "none",
-                  color: "black",
-                  fontWeight: "500",
-                }}
-              >
-                Logout
-              </Button>
-            </MenuItem>
-          ) : [
-            <MenuItem
-              key="login"
-              onClick={handleClose}
+              onClick={handleLogin}
               sx={{
                 borderBottom: "1px solid rgba(0,0,0,0.1)",
                 "&:hover": { backgroundColor: "#f5f5f5" },
+                fontSize: { md: "0.9rem", lg: "1rem" },
+                fontWeight: "500",
+                color: "black",
               }}
             >
-              <Button
-                onClick={handleLogin}
-                fullWidth
-                sx={{
-                  justifyContent: "flex-start",
-                  textTransform: "none",
-                  color: "black",
-                  fontWeight: "500",
-                }}
-              >
-                Login
-              </Button>
-            </MenuItem>,
+              Login
+            </MenuItem>
             <MenuItem
-              key="register"
-              onClick={handleClose}
+              onClick={handleRegister}
               sx={{
                 "&:hover": { backgroundColor: "#f5f5f5" },
+                fontSize: { md: "0.9rem", lg: "1rem" },
+                fontWeight: "500",
+                color: "black",
               }}
             >
-              <Button
-                onClick={handleRegister}
-                fullWidth
-                sx={{
-                  justifyContent: "flex-start",
-                  textTransform: "none",
-                  color: "black",
-                  fontWeight: "500",
-                }}
-              >
-                Register
-              </Button>
+              Register
             </MenuItem>
-          ]}
-        </Menu>
+          </>
+        )}
       </Box>
+    </Box>
     </Box>
   );
 };
