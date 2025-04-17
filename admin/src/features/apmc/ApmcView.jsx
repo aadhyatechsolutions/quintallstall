@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Breadcrumb, SimpleCard } from "app/components";
 import useApmcStore from "../../store/apmc/apmcStore"; // Importing apmc store
 import { useNavigate } from "react-router-dom";
+import {apiConfig} from 'app/config';
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -48,7 +49,7 @@ export default function ApmcView() {
       headerName: 'Image',
       width: 150,
       renderCell: (params) => (
-        <img src={params.value} alt="APMC" style={{ width: 50, height: 50, objectFit: 'cover' }} />
+        <img src={`${apiConfig.MEDIA_URL}${params.value}`} alt="APMC" style={{ width: 50, height: 50, objectFit: 'cover' }} />
       ),
     },
     {
