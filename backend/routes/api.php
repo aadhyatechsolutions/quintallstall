@@ -20,6 +20,7 @@ use App\Http\Controllers\PaymentController;
 
 use App\Http\Controllers\CartController;
 
+use App\Http\Controllers\BlogController;
 
 use App\Http\Controllers\TestController;
 
@@ -61,6 +62,7 @@ Route::resource('order-items', OrderItemController::class);
 Route::resource('shipping-details', ShippingDetailController::class);
 Route::resource('payments', PaymentController::class);
 Route::resource('coins', CoinController::class);
+Route::resource('blogs', BlogController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/products/seller', [ProductController::class, 'fetchBySeller']);
@@ -83,5 +85,7 @@ Route::middleware('auth:sanctum')->controller(OrderController::class)->group(fun
     Route::post('/place-order', 'placeOrder');
     Route::resource('orders', OrderController::class);
 });
+
+
 
 Route::get('test', [TestController::class,'test']);
