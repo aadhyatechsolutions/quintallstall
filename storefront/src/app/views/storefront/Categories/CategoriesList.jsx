@@ -7,12 +7,12 @@ import { useNavigate } from "react-router-dom";
 
 const cardStyle = {
   minWidth: 90,
-  width: 100,
+  width: 130,
   flexShrink: 0,
   p: 1,
   borderRadius: 1,
   textAlign: "center",
-  cursor: "pointer",
+  cursor: "default",
   transition: "transform 0.2s ease-in-out",
   "&:hover": {
     transform: "translateY(-2px)",
@@ -46,11 +46,11 @@ const CategoriesList = () => {
     responsive: [
       {
         breakpoint: 1400,
-        settings: { slidesToShow: 8 },
+        settings: { slidesToShow: 7 },
       },
       {
         breakpoint: 1200,
-        settings: { slidesToShow: 6 },
+        settings: { slidesToShow: 5 },
       },
       {
         breakpoint: 992,
@@ -74,8 +74,6 @@ const CategoriesList = () => {
       },
     ],
   };
-  
-  
   
 
   return (

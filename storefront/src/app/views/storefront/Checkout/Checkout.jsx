@@ -10,6 +10,9 @@ import {
   Alert,
   TextField,
   Paper,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import { useCartStore } from "../../../../store/cartStore";
 import { useOrderStore } from "../../../../store/orderStore";
@@ -41,6 +44,14 @@ const Checkout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [orderError, setOrderError] = useState("");
+
+  // Payment method state (default is 'cod')
+  const [paymentMethod, setPaymentMethod] = useState("cod");
+
+  // Handle payment method change
+  const handlePaymentMethodChange = (e) => {
+    setPaymentMethod(e.target.value);
+  };
 
   // Calculate order totals
   const calculateOrderDetails = () => {
@@ -106,12 +117,11 @@ const Checkout = () => {
 
     try {
       const shipping_address = `${formData.address}, ${formData.city}, ${formData.state}, ${formData.zip}`;
-      const payment_method = "cod";
       const amount = parseFloat(orderDetails.total.toFixed(2));
 
       const orderPayload = {
         shipping_address,
-        payment_method,
+        payment_method: paymentMethod, // Using selected payment method
         amount
       };
 
@@ -121,8 +131,7 @@ const Checkout = () => {
         setOrderSuccess(true);
         clearCart();
         setTimeout(() => navigate(`/order-success`), 2000);
-      } 
-      else {
+      } else {
         setOrderError(error || "Order failed. Please try again.");
       }
     } catch (error) {
@@ -255,7 +264,32 @@ const Checkout = () => {
         </Grid>
 
         {/* Right Column - Order Summary */}
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, sm: 4, md: 4 }} >
+          <Paper elevation={1} sx={{ borderRadius: 2, mb: 4 }} >
+            <CardContent>
+              <Typography
+                variant="h6"
+                fontWeight="medium"
+                sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
+              >
+                <PaymentIcon /> Payment Method
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+              {/* Payment Method Selection Box */}
+              <Box sx={{ padding: 2, borderRadius: 2, backgroundColor: "#f5f5f5" }}>
+                <RadioGroup
+                  value={paymentMethod}
+                  onChange={handlePaymentMethodChange}
+                >
+                  <FormControlLabel value="cod" control={<Radio />} label="Cash on Delivery (COD)" />
+                  {/* <FormControlLabel value="card" control={<Radio />} label="Credit Card" /> */}
+                  {/* <FormControlLabel value="paypal" control={<Radio />} label="PayPal" /> */}
+                </RadioGroup>
+              </Box>
+            </CardContent>
+          </Paper>
+
+          {/* Order Summary */}
           <Paper elevation={1} sx={{ borderRadius: 2 }}>
             <CardContent>
               <Typography

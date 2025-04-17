@@ -83,7 +83,6 @@ const ProductCard = ({ product }) => {
         flexDirection: "column",
         position: "relative",
         transition: "all 0.3s ease",
-        cursor: "pointer",
         "&:hover": {  
           transform: "translateY(-6px)",
           boxShadow: theme.shadows[6],
@@ -137,7 +136,10 @@ const ProductCard = ({ product }) => {
           image={`${apiConfig.MEDIA_URL}${product.image}`}
           alt={product.name}
           onClick={handleCardClick}
-          sx={{ objectFit: "cover" }}
+          sx={{ 
+            objectFit: "cover",
+            cursor: "pointer",
+           }}
         />
       </Badge>
 
@@ -211,7 +213,9 @@ const ProductCard = ({ product }) => {
             WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
+            cursor: "pointer",
           }}
+          onClick={handleCardClick}
         >
           {product.name}
         </Typography>

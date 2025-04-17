@@ -36,6 +36,7 @@ const MarketButton = React.memo(({ market, onClick, isActive }) => (
         flexDirection: "column",
         alignItems: "center",
         backgroundColor: "background.paper",
+        cursor: "default"
       }}
     >
       <Box

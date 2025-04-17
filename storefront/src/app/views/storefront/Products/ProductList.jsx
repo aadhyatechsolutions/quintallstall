@@ -43,7 +43,7 @@ const ProductList = () => {
       </Grid>
 
       {/* Load More Button */}
-      <Box sx={{ textAlign: "center", mt: 6 }}>
+      {/* <Box sx={{ textAlign: "center", mt: 6 }}>
         <Button
           variant="outlined"
           color="error"
@@ -61,7 +61,7 @@ const ProductList = () => {
         >
           Load More Products
         </Button>
-      </Box>
+      </Box> */}
     </Container>
   );
 };
