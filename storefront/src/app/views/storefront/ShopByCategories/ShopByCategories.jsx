@@ -21,9 +21,7 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
       position: "relative",
       overflow: "hidden",
       borderRadius: 2,
-      justifyContent:"center",
-      alignContent:"center",
-      alignSelf:"center",
+      justifyContent: "center",
       boxShadow: isActive ? 3 : 1,
       transition: "all 0.3s ease",
       "&:hover": {
@@ -46,6 +44,7 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
         flexDirection: "column",
         alignItems: "center",
         backgroundColor: "background.paper",
+        cursor: "default",
       }}
     >
       <Box
@@ -55,7 +54,7 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
         className="category-image"
         sx={{
           width: "100%",
-          height: 120,
+          height: { xs: 100, sm: 120, md: 130 },
           objectFit: "cover",
           transition: "transform 0.3s ease",
           borderBottom: "1px solid",
@@ -107,7 +106,7 @@ const ShopByCategories = ({
 
   if (isLoading) {
     return (
-      <Container maxWidth="lg" sx={{ py: 8, textAlign: "center" }}>
+      <Container maxWidth={false} sx={{ py: 8, textAlign: "center" }}>
         <CircularProgress />
       </Container>
     );
@@ -115,7 +114,7 @@ const ShopByCategories = ({
 
   if (isError) {
     return (
-      <Container maxWidth="lg" sx={{ py: 8, textAlign: "center" }}>
+      <Container maxWidth={false} sx={{ py: 8, textAlign: "center" }}>
         <Typography color="error">Failed to load categories.</Typography>
       </Container>
     );
@@ -124,7 +123,13 @@ const ShopByCategories = ({
   if (!categories?.length) return null;
 
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }} >
+    <Container
+      maxWidth={false}
+      sx={{
+        py: { xs: 4, md: 8 },
+        px: { xs: 2, sm: 4, md: 6 },
+      }}
+    >
       <Typography
         variant="h4"
         component="h2"
@@ -149,27 +154,31 @@ const ShopByCategories = ({
         {title}
       </Typography>
 
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: {
-            xs: "repeat(2, 1fr)",
-            sm: "repeat(3, 1fr)",
-            lg: "repeat(6, 1fr)",
-          },
-          gap: 4,
-          mb: 6,
-        }}
-      >
-        {categories.map((category) => (
-          <CategoryButton
-            key={category.id || category.name}
-            name={category.name}
-            image={`${apiConfig.MEDIA_URL}${category.image}`}
-            onClick={onCategoryClick}
-            isActive={selectedCategory === category.name}
-          />
-        ))}
+      <Box sx={{ maxWidth: "1600px", mx: "auto" }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "repeat(2, 1fr)",
+              sm: "repeat(2, 1fr)",
+              md: "repeat(3, 1fr)",
+              lg: "repeat(5, 1fr)",
+              xl: "repeat(7, 1fr)",
+            },
+            gap: { xs: 2, sm: 3, md: 4 },
+            mb: 6,
+          }}
+        >
+          {categories.map((category) => (
+            <CategoryButton
+              key={category.id || category.name}
+              name={category.name}
+              image={`${apiConfig.MEDIA_URL}${category.image}`}
+              onClick={onCategoryClick}
+              isActive={selectedCategory === category.name}
+            />
+          ))}
+        </Box>
       </Box>
     </Container>
   );

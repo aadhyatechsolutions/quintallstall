@@ -104,7 +104,7 @@ const Contact = () => {
             <Divider sx={{ width: 64, height: 4, bgcolor: "#b6131a", mb: 4 }} />
 
             <Grid container spacing={3} columns={{ xs: 12 }}>
-              <Grid sx={{ gridColumn: "span 12" }}>
+              <Grid size={{ xs: 12, sm: 4, md: 4 }}>
                 <TextField
                   label="Your Name"
                   fullWidth
@@ -119,7 +119,7 @@ const Contact = () => {
                 />
               </Grid>
 
-              <Grid sx={{ gridColumn: "span 12" }}>
+              <Grid size={{ xs: 12, sm: 4, md: 4 }} >
                 <TextField
                   label="Email Address"
                   fullWidth
@@ -134,7 +134,7 @@ const Contact = () => {
                 />
               </Grid>
 
-              <Grid sx={{ gridColumn: "span 12" }}>
+              <Grid size={{ xs: 12, sm: 4, md: 4 }}>
                 <TextField
                   label="Subject"
                   fullWidth
@@ -149,11 +149,11 @@ const Contact = () => {
                 />
               </Grid>
 
-              <Grid sx={{ gridColumn: "span 12" }}>
+              <Grid sx={{ width: "100%" }}>
                 <TextField
                   label="Your Message"
                   multiline
-                  rows={2}
+                  rows={4}
                   fullWidth
                   variant="outlined"
                 />
