@@ -156,7 +156,7 @@ const ProductSlider = () => {
           },
         }}
       >
-        Our Products
+        Products
       </Typography>
 
       <Box
