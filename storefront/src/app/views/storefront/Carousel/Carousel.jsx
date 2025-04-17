@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import { Box, Typography, Button, Container, IconButton } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useNavigate } from 'react-router-dom';
 
 const offerImages = [
   {
@@ -69,6 +70,7 @@ function SamplePrevArrow(props) {
 }
 
 function Carousel() {
+  const navigate = useNavigate();
   const settings = {
     dots: true,
     infinite: true,
@@ -101,6 +103,7 @@ function Carousel() {
       },
     ],
   };
+
 
   return (
     <Box sx={{ position: "relative", width: "100%" }}>
@@ -211,6 +214,7 @@ function Carousel() {
               <Button
                 variant="contained"
                 size="large"
+                onClick={() => navigate('/products')}
                 sx={{
                   px: 4,
                   py: 1.5,

@@ -14,6 +14,13 @@ import { apiConfig } from "../../../../config";
 const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
   <Box
     sx={{
+      width: {
+        xs: "calc(50% - 8px)",
+        sm: "calc(50% - 12px)",
+        md: "calc(33.33% - 16px)",
+        lg: "calc(18% - 16px)",
+        xl: "calc(14.28% - 16px)",
+      },
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -157,14 +164,9 @@ const ShopByCategories = ({
       <Box sx={{ maxWidth: "1600px", mx: "auto" }}>
         <Box
           sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "repeat(2, 1fr)",
-              sm: "repeat(2, 1fr)",
-              md: "repeat(3, 1fr)",
-              lg: "repeat(5, 1fr)",
-              xl: "repeat(7, 1fr)",
-            },
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
             gap: { xs: 2, sm: 3, md: 4 },
             mb: 6,
           }}
