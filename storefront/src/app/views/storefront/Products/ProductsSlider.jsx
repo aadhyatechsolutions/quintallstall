@@ -258,7 +258,7 @@ const ProductSlider = () => {
                       sx={{
                         fontWeight: "bold",
                         color: "black",
-                        fontSize: "0.7rem",
+                        fontSize: "1rem",
                       }}
                     >
                       Per / {product.unit}
