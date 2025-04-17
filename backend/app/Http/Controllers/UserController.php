@@ -136,12 +136,12 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $roleFilter = $request->query('role');
-        
+        $roleFilters = $request->query('roles', []);
+
         $users = User::with('roles', 'address', 'bankAccount', 'vehicles', 'apmcs')
-            ->when($roleFilter, function ($query) use ($roleFilter) {
-                return $query->whereHas('roles', function ($query) use ($roleFilter) {
-                    $query->where('slug', $roleFilter);
+            ->when(!empty($roleFilters), function ($query) use ($roleFilters) {
+                return $query->whereHas('roles', function ($query) use ($roleFilters) {
+                    $query->whereIn('slug', $roleFilters);
                 });
             })
             ->get();

@@ -73,7 +73,7 @@ class ProductSeeder extends Seeder
                     'description' => 'Description for Product ' . $i,
                     'price' => rand(10, 100) . '.99',  
                     'seller_id' => $user->id,  
-                    'category_id' => rand(1, 5), 
+                    'category_id' => rand(1, 6), 
                     'image' => 'products/' . $imageName, // Store the relative path of the image
                 ]);
             }

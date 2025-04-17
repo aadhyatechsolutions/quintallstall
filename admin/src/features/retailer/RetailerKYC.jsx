@@ -16,13 +16,13 @@ const Container = styled("div")(({ theme }) => ({
 }));
 
 export default function retailerView() {
-  const { users, loading, error, fetchUsersByRole, deleteUser } = useUserStore();
+  const { users, loading, error, fetchUsersByRoles, deleteUser } = useUserStore();
   const navigate = useNavigate();
 
   
   useEffect(() => {
-    fetchUsersByRole("retailer");
-  }, [fetchUsersByRole]);
+    fetchUsersByRoles(["retailer"]);
+  }, [fetchUsersByRoles]);
 
   const handleDelete = (id) => {
     

@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import { fetchUsers, fetchUsersByRole, fetchUserById, createUser, updateUser, deleteUser } from "./userApi";
+import { fetchUsers, fetchUsersByRoles, fetchUserById, createUser, updateUser, deleteUser } from "./userApi";
 
 const useUserStore = create((set) => ({
     users: [],
@@ -29,10 +29,10 @@ const useUserStore = create((set) => ({
         }
     },
     
-    fetchUsersByRole: async (role = '') => {
+    fetchUsersByRoles: async (role = []) => {
         set({ isLoading: true });
         try {
-            const users = await fetchUsersByRole(role); 
+            const users = await fetchUsersByRoles(role); 
             set({ users });
         } catch (error) {
             set({ error: error.message });
@@ -43,24 +43,24 @@ const useUserStore = create((set) => ({
     
     
     createUser: async (userData, role) => {
-        set({ isLoading: true });
+        set({ isLoading: true, error: null });
         try {
             const newUser = await createUser(userData, role);
             set((state) => ({ users: [...state.users, newUser] }));
         } catch (error) {
             if(error.status == 422){
-                set({ error: error.response.data.message });
+                throw new Error(error.response.data.message);
             }else{
-                set({ error: error.message });
+                throw new Error(error.message);
             }
         } finally {
-            set({ isLoading: false, error: null });
+            set({ isLoading: false });
         }
     },
     
     
     updateUser: async (userId, userData, role) => {
-        set({ isLoading: true });
+        set({ isLoading: true, error: null });
         try {
             const updatedUser = await updateUser(userId, userData, role);
             set((state) => ({
@@ -73,7 +73,7 @@ const useUserStore = create((set) => ({
                 set({ error: error.message });
             }
         } finally {
-            set({ isLoading: false, error: null });
+            set({ isLoading: false });
         }
     },
     
