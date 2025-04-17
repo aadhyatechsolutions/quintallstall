@@ -249,6 +249,25 @@ const ProductCard = ({ product }) => {
           {product.description}
         </Typography>
 
+        {/* unit */}
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            mb: 1,
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            lineHeight: 1.6,
+            maxHeight: "4.8em",
+            flexGrow: 1,
+          }}
+        >
+          Per {product.unit ? `/ ${product.unit}` : ""}
+        </Typography>
+
         {/* Price and Add to Cart */}
         <Box
           sx={{

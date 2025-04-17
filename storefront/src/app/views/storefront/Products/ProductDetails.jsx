@@ -176,7 +176,7 @@ const ProductDetails = () => {
                     fontSize: "1rem",
                   }}
                 >
-                  ₹{product.originalPrice}
+                  ₹ {product.originalPrice}
                 </Typography>
               )}
               {product?.discount && (
@@ -189,10 +189,40 @@ const ProductDetails = () => {
                 </Typography>
               )}
             </Typography>
+              {/* Unit */}
+            <Typography
+              color="error.main"
+              fontWeight={600}
+              mb={0.5}
+              sx={{
+                fontSize: "0.95rem",
+                py: 0.75,
+                borderRadius: 1,
+                display: "inline-block",
+              }}
+            >
+              Item Weight: {product.unit ? `Per / ${product.unit}` : "N/A"}
+            </Typography>
 
-            <Typography color="success.main" fontWeight={500} mb={2}>
+            {/* stock_level */}
+            <Typography
+              color="success.main"
+              fontWeight={600}
+              mb={0.5}
+              sx={{
+                fontSize: "1rem",
+                py: 0.75,
+                borderRadius: 1,
+                textTransform: "capitalize",
+              }}
+            >
+              Stock : {product.stock_level ? "Available" :"Unavailable"}
+            </Typography>
+
+            <Typography fontWeight={500} mb={2}>
               Special price
             </Typography>
+
           </Grid>
 
           {/* Actions */}
