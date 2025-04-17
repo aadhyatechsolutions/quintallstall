@@ -259,7 +259,7 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'User updated successfully',
                 'success' => true,
-                'user' => $user->load(['roles', 'apmcs', 'vehicle'])->makeHidden([
+                'user' => $user->load(['roles', 'apmcs', 'vehicles'])->makeHidden([
                     'password',
                     'bank_account_number',
                     'routing_number',

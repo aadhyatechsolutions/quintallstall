@@ -29,7 +29,7 @@ class ApmcSeeder extends Seeder
                 "city" => "Ahmedabad",
                 "state" => "Gujarat",
                 "pincode" => "380022",
-                "image" => "saurastra market.jpg"
+                "image" => "sardar patel market.jpeg"
             ],
             [
                 "name" => "Kalupur Vegetable Market",
@@ -40,7 +40,7 @@ class ApmcSeeder extends Seeder
                 "city" => "Ahmedabad",
                 "state" => "Gujarat",
                 "pincode" => "380005",
-                "image" => "sardar patel market.jpg"
+                "image" => "Kalupur Veg Market.jpg"
             ],
             [
                 "name" => "Jamalpur Flower Market",
@@ -51,7 +51,7 @@ class ApmcSeeder extends Seeder
                 "city" => "Ahmedabad",
                 "state" => "Gujarat",
                 "pincode" => "380001",
-                "image" => "cheeman bhai market.jpg"
+                "image" => "Jamalpur Flower Market.png"
             ],
             [
                 "name" => "Naroda Fruits Market",
@@ -62,7 +62,7 @@ class ApmcSeeder extends Seeder
                 "city" => "Ahmedabad",
                 "state" => "Gujarat",
                 "pincode" => "380025",
-                "image" => "aadesh market.jpg"
+                "image" => "Kalupur Veg Market.jpg"
             ]
         ];
 
