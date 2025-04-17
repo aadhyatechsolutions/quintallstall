@@ -27,8 +27,11 @@ const Shop = () => {
   const { users, userStatus, fetchUsers } = useUserStore();
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    if (users.length === 0 && userStatus !== "loading") {
+      fetchUsers();
+    }
+  }, [users, userStatus, fetchUsers]);
+  
 
   if (userStatus === "loading") {
     return (
@@ -56,7 +59,7 @@ const Shop = () => {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 6, mb: 10 }}>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 10 }}>
       <Typography
         variant="h3"
         fontWeight={800}

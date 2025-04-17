@@ -6,8 +6,10 @@ const BlogPage = () => {
   const { blogs, blogStatus, blogError, fetchBlogs } = useBlogStore();
 
   useEffect(() => {
-    fetchBlogs();
-  }, []);
+    if (blogs.length === 0 && blogStatus !== "loading") {
+      fetchBlogs();
+    }
+  }, [blogs, blogStatus, fetchBlogs]);
 
   if (blogStatus === "loading") return <p>Loading...</p>;
   if (blogStatus === "error") return <p>Error: {blogError}</p>;
