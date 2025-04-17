@@ -68,9 +68,9 @@ const useUserStore = create((set) => ({
             }));
         } catch (error) {
             if(error.status == 422){
-                set({ error: error.response.data.message });
+                throw new Error(error.response.data.message);
             }else{
-                set({ error: error.message });
+                throw new Error(error.message);
             }
         } finally {
             set({ isLoading: false });
