@@ -6,7 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useLocation } from "react-router-dom"; // ✅ NEW
+import { useLocation } from "react-router-dom";
 import NavLogo from "./NavLogo";
 import NavLinks from "./NavLinks";
 import NavActions from "./NavActions";
@@ -22,7 +22,7 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const open = Boolean(anchorEl);
 
-  const location = useLocation(); // ✅ CURRENT PATHNAME
+  const location = useLocation();
   const currentPath = location.pathname;
 
   const navItems = [

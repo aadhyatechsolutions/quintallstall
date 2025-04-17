@@ -95,11 +95,11 @@ const Footer = () => {
                     Download Our App
                   </Typography>
                   <Box sx={{ display: 'flex', gap: 1 }}>
-                    <IconButton color="primary" size="small">
-                      <Apple fontSize="small" />
-                    </IconButton>
-                    <IconButton color="primary" size="small">
+                    <IconButton color="error" size="small">
                       <Android fontSize="small" />
+                    </IconButton>
+                    <IconButton color="error" size="small">
+                      <Apple fontSize="small" />
                     </IconButton>
                   </Box>
 
@@ -108,7 +108,7 @@ const Footer = () => {
                   </Typography>
                   <Box sx={{ display: 'flex', gap: 1 }}>
                     {[Facebook, Twitter, Instagram, LinkedIn].map((Icon, idx) => (
-                      <IconButton key={idx} color="primary" size="small">
+                      <IconButton key={idx} color="error" size="small">
                         <Icon fontSize="small" />
                       </IconButton>
                     ))}
@@ -128,7 +128,7 @@ const Footer = () => {
                           textDecoration: 'none',
                           display: 'block',
                           marginBottom: '8px',
-                          color: isActive ? '#1976d2' : 'gray',
+                          color: isActive ? '#d32f2f' : 'gray',
                           fontWeight: isActive ? 'bold' : 'normal',
                         })}
                       >
