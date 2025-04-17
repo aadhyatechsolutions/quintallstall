@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use App\Models\Role;
 use App\Models\Address;
 use App\Models\Apmc;
@@ -14,14 +14,43 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        // Retrieve the roles by their slugs
+        // Paths
+        $sourceDir = database_path('seeders/users');
+        $destinationDir = public_path('storage/users');
+
+        if (!File::exists($destinationDir)) {
+            File::makeDirectory($destinationDir, 0755, true);
+        }
+
+        // Utility to get and copy image based on role
+        $getProfileImage = function (string $roleSlug): string {
+            $sourceDir = database_path('seeders/users');
+            $destinationDir = public_path('storage/users');
+            $extensions = ['jpg', 'jpeg', 'png'];
+
+            foreach ($extensions as $ext) {
+                $filename = "{$roleSlug}.{$ext}";
+                $sourcePath = "{$sourceDir}/{$filename}";
+
+                if (File::exists($sourcePath)) {
+                    $targetPath = "{$destinationDir}/{$filename}";
+                    File::copy($sourcePath, $targetPath);
+                    return "users/{$filename}";
+                }
+            }
+
+            // Fallback if image not found
+            return "users/default.jpg";
+        };
+
+        // Roles
         $adminRole = Role::where('slug', 'admin')->first();
         $wholesalerRole = Role::where('slug', 'wholesaler')->first();
         $retailerRole = Role::where('slug', 'retailer')->first();
-        $deliveryRole = Role::where('slug', 'delivery')->first(); // Fetch the delivery role
+        $deliveryRole = Role::where('slug', 'delivery')->first();
         $userRole = Role::where('slug', 'user')->first();
 
-        // Create the users
+        // Admin User
         $john = User::create([
             'first_name' => 'John',
             'last_name' => 'Doe',
@@ -29,17 +58,14 @@ class UserSeeder extends Seeder
             'phone_number' => '1234567890',
             'email' => 'jason@ui-lib.com',
             'password' => bcrypt('dummyPass'),
-            'profile_image' => 'profile1.jpg',
-            'address_id' => Address::inRandomOrder()->first()->id, // Random address ID
-            'bank_account_id' => BankAccount::inRandomOrder()->first()->id, // Random bank account ID
-            'created_at' => now(),
-            'updated_at' => now(),
+            'profile_image' => $getProfileImage('admin'),
+            'address_id' => Address::inRandomOrder()->first()->id,
+            'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
         ]);
-
-        // Assign roles and apmcs using pivot tables
         $john->roles()->attach($adminRole->id);
         $john->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
 
+        // Wholesaler
         $alice = User::create([
             'first_name' => 'Alice',
             'last_name' => 'Smith',
@@ -47,17 +73,14 @@ class UserSeeder extends Seeder
             'phone_number' => '2345678901',
             'email' => 'alice.smith@wholesaler.com',
             'password' => bcrypt('password'),
-            'profile_image' => 'profile2.jpg',
+            'profile_image' => $getProfileImage('wholesaler'),
             'address_id' => Address::inRandomOrder()->first()->id,
             'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
-
-        // Assign roles and apmcs using pivot tables
         $alice->roles()->attach($wholesalerRole->id);
         $alice->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
 
+        // Retailer
         $bob = User::create([
             'first_name' => 'Bob',
             'last_name' => 'Johnson',
@@ -65,17 +88,14 @@ class UserSeeder extends Seeder
             'phone_number' => '3456789012',
             'email' => 'bob.johnson@retailer.com',
             'password' => bcrypt('password'),
-            'profile_image' => 'profile3.jpg',
+            'profile_image' => $getProfileImage('retailer'),
             'address_id' => Address::inRandomOrder()->first()->id,
             'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
-
-        // Assign roles and apmcs using pivot tables
         $bob->roles()->attach($retailerRole->id);
         $bob->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
 
+        // Regular User
         $charlie = User::create([
             'first_name' => 'Charlie',
             'last_name' => 'Davis',
@@ -83,18 +103,14 @@ class UserSeeder extends Seeder
             'phone_number' => '4567890123',
             'email' => 'charlie.davis@user.com',
             'password' => bcrypt('password'),
-            'profile_image' => 'profile4.jpg',
+            'profile_image' => $getProfileImage('user'),
             'address_id' => Address::inRandomOrder()->first()->id,
             'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
-
-        // Assign roles and apmcs using pivot tables
         $charlie->roles()->attach($userRole->id);
         $charlie->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
 
-        // Create a user with the delivery role
+        // Delivery
         $david = User::create([
             'first_name' => 'David',
             'last_name' => 'Lee',
@@ -102,14 +118,10 @@ class UserSeeder extends Seeder
             'phone_number' => '5678901234',
             'email' => 'david.lee@delivery.com',
             'password' => bcrypt('password'),
-            'profile_image' => 'profile5.jpg',
+            'profile_image' => $getProfileImage('delivery'),
             'address_id' => Address::inRandomOrder()->first()->id,
             'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
-
-        // Assign the delivery role to David and attach an APMC
         $david->roles()->attach($deliveryRole->id);
         $david->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
     }
