@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Breadcrumb, SimpleCard } from "app/components";
 import useProductStore from "../../store/product/productStore";
 import { useNavigate } from "react-router-dom"; 
+import {apiConfig} from 'app/config';
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -53,7 +54,7 @@ export default function View() {
       headerName: 'Image',
       width: 150,
       renderCell: (params) => (
-        <img src={params.value} alt="Product" style={{ width: 50, height: 50, objectFit: 'cover' }} />
+        <img src={`${apiConfig.MEDIA_URL}${params.value}`} alt="Product" style={{ width: 50, height: 50, objectFit: 'cover' }} />
       ),
     },
     {
