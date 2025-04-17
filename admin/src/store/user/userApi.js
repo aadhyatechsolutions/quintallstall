@@ -20,12 +20,18 @@ export const fetchUserById = async (userId) => {
 };
 
 // Fetch users by role, or all users if no role is provided
-export const fetchUsersByRole = async (role = '') => {
-    const url = role ? `/users?role=${role}` : '/users';  // If no role is passed, fetch all users
+export const fetchUsersByRoles = async (roles = []) => {
+    const query = roles.length > 0 
+        ? '?' + roles.map(role => `roles[]=${encodeURIComponent(role)}`).join('&')
+        : '';
+
+    const url = `/users${query}`;
     const { data, status } = await axiosInstance.get(url);
+
     if (status !== 200) {
         throw new Error('Failed to fetch users');
     }
+
     return data.users;
 };
 
