@@ -26,7 +26,7 @@ class ApmcController extends Controller
             $image = $request->file('image');
             if ($image->isValid()) {
                 $imagePath = $image->store('apmcs', 'public');
-                $imageURL = asset('storage/' . $imagePath);
+                $imageURL = $imagePath;
             } else {
                 return response()->json(['error' => 'Invalid image file'], 400);
             }
@@ -86,7 +86,7 @@ class ApmcController extends Controller
             $image = $request->file('image');
             if ($image->isValid()) {
                 $imagePath = $image->store('apmcs', 'public');
-                $imageURL = asset('storage/' . $imagePath);
+                $imageURL = $imagePath;
             } else {
                 return response()->json(['error' => 'Invalid image file'], 400);
             }
