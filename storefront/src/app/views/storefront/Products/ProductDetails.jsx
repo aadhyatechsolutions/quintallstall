@@ -42,41 +42,28 @@ const ProductDetails = () => {
 
   const handleChange = (event, newValue) => setValue(newValue);
 
-  // useEffect(() => {
-  //   if (product) {
-  //     // Check if the product is already in the cart
-  //     const itemInCart = Array.isArray(cart) && cart.items.find((item) => item.product_id === product.id);
-  //     if (itemInCart) {
-  //       // If the item exists in the cart, set the quantity to the cart value
-  //       setQuantity(itemInCart.quantity);
-  //     } else {
-  //       // Otherwise, set the default quantity to 1
-  //       setQuantity(1);
-  //     }
-  //   }
-  // }, [product, cart]);
-
-  // Decrease quantity handler
   const decreaseQuantity = () => {
     if (quantity > 1) {
       const newQty = quantity - 1;
       setQuantity(newQty);
-      updateCartItemQuantity(product.id, newQty); // Update cart when decreasing quantity
+      updateCartItemQuantity(product.id, newQty);
     }
   };
 
-  // Increase quantity handler
   const increaseQuantity = () => {
     const newQty = quantity + 1;
     setQuantity(newQty);
-    updateCartItemQuantity(product.id, newQty); // Update cart when increasing quantity
+    updateCartItemQuantity(product.id, newQty);
   };
 
-  // Function to update the quantity in the cart store
   const updateCartItemQuantity = (productId, newQuantity) => {
-    const cart = useCartStore((state) => Array.isArray(state.cart) ? state.cart : []);
+    const cart = useCartStore((state) =>
+      Array.isArray(state.cart) ? state.cart : []
+    );
+    const existingItem = cart.items?.find(
+      (item) => item.product_id === productId
+    );
     if (existingItem) {
-      // If item exists in the cart, update the quantity
       addToCart(existingItem.product, newQuantity, true);
     }
   };
@@ -88,6 +75,8 @@ const ProductDetails = () => {
       </Box>
     );
   }
+
+  const isOutOfStock = product?.stock_level === "out_of_stock";
 
   return (
     <Container maxWidth="xl" sx={{ py: 6 }}>
@@ -189,24 +178,13 @@ const ProductDetails = () => {
                 </Typography>
               )}
             </Typography>
-              {/* Unit */}
-            <Typography
-              color="error.main"
-              fontWeight={600}
-              mb={0.5}
-              sx={{
-                fontSize: "0.95rem",
-                py: 0.75,
-                borderRadius: 1,
-                display: "inline-block",
-              }}
-            >
+
+            <Typography color="error.main" fontWeight={600} mb={0.5} sx={{ fontSize: "0.95rem", py: 0.75 }}>
               Item Weight: {product.unit ? `Per / ${product.unit}` : "N/A"}
             </Typography>
 
-            {/* stock_level */}
             <Typography
-              color="success.main"
+              color={isOutOfStock ? "error.main" : "success.main"}
               fontWeight={600}
               mb={0.5}
               sx={{
@@ -216,13 +194,12 @@ const ProductDetails = () => {
                 textTransform: "capitalize",
               }}
             >
-              Stock : {product.stock_level ? "Available" :"Unavailable"}
+              Stock: {product.stock_level?.replaceAll("_", " ")}
             </Typography>
 
             <Typography fontWeight={500} mb={2}>
               Special price
             </Typography>
-
           </Grid>
 
           {/* Actions */}
@@ -277,7 +254,7 @@ const ProductDetails = () => {
                   variant="text"
                   size="small"
                   onClick={decreaseQuantity}
-                  disabled={quantity <= 1}
+                  disabled={quantity <= 1 || isOutOfStock}
                   sx={{
                     minWidth: 32,
                     fontWeight: "bold",
@@ -287,13 +264,14 @@ const ProductDetails = () => {
                 >
                   −
                 </Button>
-                <Typography sx={{ minWidth: 28, textAlign: "center", fontWeight: 500 }}>
+                <Typography sx={{ minWidth: 28, textAlign: "center", fontWeight: 500, color: isOutOfStock ? "text.disabled" : "text.primary" }}>
                   {quantity}
                 </Typography>
                 <Button
                   variant="text"
                   size="small"
                   onClick={increaseQuantity}
+                  disabled={isOutOfStock}
                   sx={{
                     minWidth: 32,
                     fontWeight: "bold",
@@ -314,6 +292,7 @@ const ProductDetails = () => {
                 color="error"
                 size="large"
                 startIcon={<ShoppingCart />}
+                disabled={isOutOfStock}
                 onClick={() =>
                   handleAddToCartWithAuthCheck({
                     product,
@@ -324,7 +303,7 @@ const ProductDetails = () => {
                 }
                 sx={{ mb: 2, py: 1.5, fontWeight: 600 }}
               >
-                ADD TO CART
+                {isOutOfStock ? "Sold Out" : "Add to Cart"}
               </Button>
 
               <Stack direction="row" spacing={1} mt={2}>

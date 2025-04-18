@@ -226,10 +226,7 @@ const Contact = () => {
                   <Box>
                     <Typography fontWeight={600}>Phone</Typography>
                     <Typography color="text.secondary">
-                      +91 9876543210
-                    </Typography>
-                    <Typography color="text.secondary">
-                      +91 1234567890
+                      +91-7778999105
                     </Typography>
                   </Box>
                 </Box>
@@ -250,9 +247,6 @@ const Contact = () => {
                     <Typography color="text.secondary">
                       info@quintalstall.com
                     </Typography>
-                    <Typography color="text.secondary">
-                      support@quintalstall.com
-                    </Typography>
                   </Box>
                 </Box>
               </Grid>
@@ -269,10 +263,10 @@ const Contact = () => {
                       APMC Market Complex, Sector 19
                     </Typography>
                     <Typography color="text.secondary">
-                      Vashi, Navi Mumbai - 400703
+                      Ahmedabad  - 380001
                     </Typography>
                     <Typography color="text.secondary">
-                      Maharashtra, India
+                      Gujarat, India
                     </Typography>
                   </Box>
                 </Box>

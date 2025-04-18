@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-// Default props for when Redux isn't implemented yet
 const defaultBannerData = {
   backgroundImage: "assets/images/banner/banner.png",
   mainText: "FREE GIFT ANY ORDER",
@@ -14,9 +14,12 @@ const defaultBannerData = {
 };
 
 const PromoBanner = () => {
-  // When Redux is implemented, replace this line with:
-  // const bannerData = useSelector(state => state.banner) || defaultBannerData;
   const bannerData = defaultBannerData;
+  const navigate = useNavigate();
+
+  const handleShopNow = () => {
+    navigate("/products"); 
+  };
 
   return (
     <Box
@@ -106,6 +109,7 @@ const PromoBanner = () => {
         <Button
           variant="contained"
           size="large"
+          onClick={handleShopNow}
           sx={{
             px: 6,
             py: 1.5,
