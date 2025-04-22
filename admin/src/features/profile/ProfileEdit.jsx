@@ -6,6 +6,7 @@ import EmailUserUpdate from "./EmailUserUpdate";
 import PasswordUpdate from "./PasswordUpdate";
 import DeleteAccount from "./DeleteAccount";
 import SessionList from "./SessionList";
+import TwoFactorAuth from "./TwoFactorAuth";
 
 const ProfileEdit = () => {
   const [snackbar, setSnackbar] = useState({
@@ -43,10 +44,16 @@ const ProfileEdit = () => {
 
       <Box boxShadow={3} borderRadius={2} mb={4}>
         <SimpleCard title="Active Browser Sessions">
+          <TwoFactorAuth setSnackbar={setSnackbar} />
+        </SimpleCard>
+      </Box>
+
+      <Box boxShadow={3} borderRadius={2} mb={4}>
+        <SimpleCard title="Active Browser Sessions">
           <SessionList setSnackbar={setSnackbar} />
         </SimpleCard>
       </Box>
-      
+
       {/* Delete Account */}
       <Box boxShadow={3} borderRadius={2}>
         <SimpleCard title="Delete Account">
