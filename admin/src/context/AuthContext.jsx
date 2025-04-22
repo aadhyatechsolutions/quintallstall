@@ -126,11 +126,18 @@ export const AuthProvider = ({ children }) => {
     const { data } = await axiosInstance.post("/auth/verifyOtp", {phone_number, otp });
     return data;
   };
-  const logout = () => {
+  const logout = async () => {
+    const { data } = await axiosInstance.post("/auth/logout");
+    const { status } = data;
+    if(status == 'success'){
+      setSession(null);
+      dispatch({ type: "LOGOUT" });
+    }
+  };
+  const deleteAccount = async () => {
     setSession(null);
     dispatch({ type: "LOGOUT" });
   };
-
   useEffect(() => {
     (async () => {
       try {
@@ -175,7 +182,8 @@ export const AuthProvider = ({ children }) => {
       logout, 
       register, 
       generateOtp,
-      verifyOtp
+      verifyOtp,
+      deleteAccount
     }}>
       {children}
     </AuthContext.Provider>

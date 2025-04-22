@@ -9,12 +9,15 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import useUserStore from "../../store/user/userStore"; // assumes you have this
-import useAuth from "app/hooks/useAuth"; // assumes this gives you current user & setUser
+import useUserStore from "../../store/user/userStore";
+import useAuth from "app/hooks/useAuth"; 
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from "../../utils/axiosInstance";
 
 const DeleteAccount = () => {
-  const { user: currentUser, logout } = useAuth();
-  const { deleteUser } = useUserStore(); // assumes this function deletes user from backend
+  const { user: currentUser, deleteAccount } = useAuth();
+  const { deleteUser } = useUserStore(); 
+  const navigate = useNavigate();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [snackbar, setSnackbar] = useState({
@@ -34,7 +37,7 @@ const DeleteAccount = () => {
         message: "Account deleted successfully!",
         severity: "success",
       });
-      logout(); // log out the user after deletion
+      deleteAccount();
     } catch (error) {
       setSnackbar({
         open: true,

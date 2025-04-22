@@ -21,6 +21,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CartController;
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\SessionController;
 
 use App\Http\Controllers\TestController;
 
@@ -45,6 +46,7 @@ Route::post('auth/generateLoginOtp', [AuthController::class, 'generateLoginOtp']
 
 Route::post('auth/generateOtp', [AuthController::class, 'generateOtp']);
 Route::post('auth/verifyOtp', [AuthController::class, 'verifyOtp']);
+Route::post('auth/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->get('auth/profile', [AuthController::class, 'profile']);
 
 Route::resource('apmcs', ApmcController::class);
@@ -84,6 +86,11 @@ Route::middleware('auth:sanctum')->controller(CartController::class)->prefix('ca
 Route::middleware('auth:sanctum')->controller(OrderController::class)->group(function () {
     Route::post('/place-order', 'placeOrder');
     Route::resource('orders', OrderController::class);
+});
+
+Route::middleware('auth:sanctum')->controller(SessionController::class)->group(function () {
+    Route::get('/sessions', 'index');
+    Route::delete('/sessions/{tokenId}', 'logout');
 });
 
 

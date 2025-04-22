@@ -67,11 +67,11 @@ const useUserStore = create((set) => ({
                 users: state.users.map((user) => user.id === userId ? updatedUser : user)
             }));
         } catch (error) {
-            if(error.status == 422){
-                throw new Error(error.response.data.message);
-            }else{
-                throw new Error(error.message);
-            }
+            throw new Error(error.response.data.message);
+            // if(error.status == 422){
+            // }else{
+            //     throw new Error(error.message);
+            // }
         } finally {
             set({ isLoading: false });
         }

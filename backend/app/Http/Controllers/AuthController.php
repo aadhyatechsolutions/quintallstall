@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\Address;
 use App\Models\BankAccount;
 use App\Models\Vehicle;
+use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 // use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken as SanctumToken;
 
 
 class AuthController extends Controller
@@ -147,6 +149,15 @@ class AuthController extends Controller
             $user->load('roles');
             $token = $user->createToken('api-token')->plainTextToken;
             // $token = JWTAuth::fromUser($user, ['id' => $user->id]);
+
+            $session = Session::create([
+                'user_id' => $user->id,
+                'device' => $request->header('User-Agent'),
+                'ip_address' => $request->ip(),
+                'browser' => $this->getBrowser($request->header('User-Agent')),
+                'token_id' => $token,
+            ]);
+
             return response()->json([
                 'message' => 'Login successful',
                 'accessToken' => $token,
@@ -182,6 +193,13 @@ class AuthController extends Controller
         $user->load('roles');
         $token = $user->createToken('api-token')->plainTextToken;
         // $token = JWTAuth::fromUser($user, ['id' => $user->id]);
+        $session = Session::create([
+            'user_id' => $user->id,
+            'device' => $request->header('User-Agent'),
+            'ip_address' => $request->ip(),
+            'browser' => $this->getBrowser($request->header('User-Agent')),
+            'token_id' => $token,
+        ]);
         return response()->json([
             'message' => 'OTP verified successfully. Login successful.',
             'accessToken' => $token,  
@@ -292,4 +310,45 @@ class AuthController extends Controller
             'user' => $user->load('roles'),
         ]);
     }
+    private function getBrowser($userAgent)
+    {
+        if (strpos($userAgent, 'Chrome') !== false) {
+            return 'Chrome';
+        } elseif (strpos($userAgent, 'Safari') !== false) {
+            return 'Safari';
+        }
+        return 'Unknown';
+    }
+    public function logout(Request $request)
+    {
+        $token = $request->bearerToken();
+
+        if (!$token) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No token provided.',
+            ], 400);
+        }
+
+        $session = Session::where('token_id', $token)->first();
+
+        $sanctumToken = SanctumToken::find($token);
+        
+        if ($sanctumToken){
+            $session->delete();
+            $sanctumToken->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Session logged out successfully.',
+            ]);
+        }
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Session not found.',
+        ], 404);
+    }
+
+
 }
+

@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -13,6 +14,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import MatxDivider from "app/components/MatxDivider";
 import useAuth from "app/hooks/useAuth";
 import { Paragraph } from "app/components/Typography";
+
+import {Snackbar,Alert } from "@mui/material";
 
 // STYLED COMPONENTS
 const ContentBox = styled("div")(() => ({
@@ -38,6 +41,12 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function EmailLogin() {
+   const [snackbar, setSnackbar] = useState({
+      open: false,
+      message: "",
+      severity: "success",
+    });
+
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -47,13 +56,17 @@ export default function EmailLogin() {
     try {
       await login(values.email, values.password);
       navigate("/");
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: error?.response?.data?.message || "Failed to login",
+        severity: "error",
+      });
     }
   };
 
   return (
-
+    <>
     <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -146,5 +159,16 @@ export default function EmailLogin() {
             </form>
         )}
     </Formik>
+    <Snackbar
+      open={snackbar.open}
+      autoHideDuration={6000}
+      onClose={() => setSnackbar({ ...snackbar, open: false })}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+    >
+      <Alert severity={snackbar.severity}>
+        {snackbar.message}
+      </Alert>
+    </Snackbar>
+    </>
   );
 }
