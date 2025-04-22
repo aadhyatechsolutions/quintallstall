@@ -173,78 +173,112 @@ class UserController extends Controller
      * Update user information.
      */
     public function update(Request $request, $id)
-    {
-        $profileImagePath = null;
+{
+    $profileImagePath = null;
 
-        DB::beginTransaction();
-        try {
-                $validated = $request->validate([
-                    'first_name' => 'required|string',
-                    'last_name' => 'required|string',
-                    'business_name' => 'required|string',
-                    'phone_number' => 'required|string|unique:users,phone_number,' . $id,
-                    'email' => 'required|email|unique:users,email,' . $id,
-                    'password' => 'nullable|min:6|confirmed',
-                    'street' => 'required|string',
-                    'city' => 'required|string',
-                    'state' => 'required|string',
-                    'postal_code' => 'required|string',
-                    'shop_number' => 'required|string',
-                    'bank_account_number' => 'required|string', 
-                    'routing_number' => 'required|string', 
-                    'ifsc_code' => 'required|string',
-                    'account_type' => 'required|string',
-                    'branch_name' => 'required|string',
-                    'role' => 'required|exists:roles,slug',
-                    'vehicle' => 'nullable|array',
-                    'apmcs' => 'nullable|array',
-                    'apmcs.*' => 'integer|exists:apmcs,id',
-                ]);
+    DB::beginTransaction();
+    try {
+        // Validate the input data
+        $validated = $request->validate([
+            'first_name' => 'nullable|string',
+            'last_name' => 'nullable|string',
+            'business_name' => 'nullable|string',
+            'phone_number' => 'nullable|string|unique:users,phone_number,' . $id,
+            'email' => 'nullable|email|unique:users,email,' . $id,
+            'password' => 'nullable|min:6',
+            'current_password' => 'nullable|string', // added current_password validation
+            'street' => 'nullable|string',
+            'city' => 'nullable|string',
+            'state' => 'nullable|string',
+            'postal_code' => 'nullable|string',
+            'shop_number' => 'nullable|string',
+            'bank_account_number' => 'nullable|string',
+            'routing_number' => 'nullable|string',
+            'ifsc_code' => 'nullable|string',
+            'account_type' => 'nullable|string',
+            'branch_name' => 'nullable|string',
+            'role' => 'nullable|exists:roles,slug',
+            'vehicle' => 'nullable|array',
+            'apmcs' => 'nullable|array',
+            'apmcs.*' => 'integer|exists:apmcs,id',
+        ]);
 
-            $user = User::findOrFail($id);
+        $user = User::findOrFail($id);
 
-            if ($request->hasFile('profile_image')) {
-                if ($user->profile_image) {
-                    Storage::disk('public')->delete($user->profile_image);
-                }
-                $profileImagePath = $request->file('profile_image')->store('profile_images', 'public');
+        // Check if current_password is provided and if it's correct
+        if ($request->filled('current_password')) {
+            if (!Hash::check($request->input('current_password'), $user->password)) {
+                // If current password doesn't match, return an error response
+                return response()->json([
+                    'message' => 'Current password is incorrect.',
+                    'error' => true
+                ], 400);
             }
+        }
 
+        // Handle profile image upload if present
+        if ($request->hasFile('profile_image')) {
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+            $profileImagePath = $request->file('profile_image')->store('profile_images', 'public');
+        }
+
+        // Update the user's address only if related fields are provided
+        if (isset($validated['street']) || isset($validated['city']) || isset($validated['state']) || isset($validated['postal_code']) || isset($validated['shop_number'])) {
             $user->address->update([
-                'street' => $validated['street'],
-                'city' => $validated['city'],
-                'state' => $validated['state'],
-                'postal_code' => $validated['postal_code'],
-                'shop_number' => $validated['shop_number'],
+                'street' => $validated['street'] ?? $user->address->street,
+                'city' => $validated['city'] ?? $user->address->city,
+                'state' => $validated['state'] ?? $user->address->state,
+                'postal_code' => $validated['postal_code'] ?? $user->address->postal_code,
+                'shop_number' => $validated['shop_number'] ?? $user->address->shop_number,
             ]);
+        }
 
+        // Update the user's bank account details only if provided
+        if (isset($validated['bank_account_number']) || isset($validated['routing_number']) || isset($validated['ifsc_code']) || isset($validated['account_type']) || isset($validated['branch_name'])) {
             $user->bankAccount->update([
-                'account_number' => Crypt::encryptString($validated['bank_account_number']),
-                'routing_number' => Crypt::encryptString($validated['routing_number']),
-                'ifsc_code' => $validated['ifsc_code'],
-                'account_type' => $validated['account_type'],
-                'branch_name' => $validated['branch_name'],
+                'account_number' => $validated['bank_account_number'] ? Crypt::encryptString($validated['bank_account_number']) : $user->bankAccount->account_number,
+                'routing_number' => $validated['routing_number'] ? Crypt::encryptString($validated['routing_number']) : $user->bankAccount->routing_number,
+                'ifsc_code' => $validated['ifsc_code'] ?? $user->bankAccount->ifsc_code,
+                'account_type' => $validated['account_type'] ?? $user->bankAccount->account_type,
+                'branch_name' => $validated['branch_name'] ?? $user->bankAccount->branch_name,
             ]);
+        }
 
-            $user->update([
-                'first_name' => $validated['first_name'],
-                'last_name' => $validated['last_name'],
-                'business_name' => $validated['business_name'],
-                'phone_number' => $validated['phone_number'],
-                'email' => strtolower($validated['email']),
-                'password' => $validated['password'] ? Hash::make($validated['password']) : $user->password,
-                'profile_image' => $profileImagePath ?: $user->profile_image,
-            ]);
+        if (isset($validated['password']) && $validated['password']) {
+            $user->password = Hash::make($validated['password']);
+        }
+        if (isset($validated['email']) && $validated['email']) {
+            $user->email = Hash::make($validated['email']);
+        }
+        // Update the user details if provided
+        $user->update([
+            'first_name' => $validated['first_name'] ?? $user->first_name,
+            'last_name' => $validated['last_name'] ?? $user->last_name,
+            'business_name' => $validated['business_name'] ?? $user->business_name,
+            'phone_number' => $validated['phone_number'] ?? $user->phone_number,
+            'password' => $validated['email'] ?? $user->password,
+            'email' => $validated['email'] ?? strtolower($user->email),
+            'profile_image' => $profileImagePath ?: $user->profile_image,
+        ]);
 
+        // Check if password is present and update it
+        
+
+        // Update role if provided
+        if (isset($validated['role'])) {
             $role = Role::where('slug', $validated['role'])->firstOrFail();
             $user->roles()->sync([$role->id]);
 
+            // Sync APMCs if applicable
             if (in_array($validated['role'], ['wholesaler', 'retailer'])) {
                 $user->apmcs()->sync($validated['apmcs'] ?? []);
             } else {
                 $user->apmcs()->sync([]);
             }
 
+            // Update vehicle info if the user is a delivery role and vehicle details are provided
             if ($validated['role'] === 'delivery' && isset($validated['vehicle'])) {
                 $user->vehicles()->updateOrCreate([], [
                     'vehicle_type' => $validated['vehicle']['vehicle_type'] ?? '',
@@ -253,39 +287,41 @@ class UserController extends Controller
                     'insurance_number' => $validated['vehicle']['insurance_number'] ?? '',
                 ]);
             }
-
-            DB::commit();
-
-            return response()->json([
-                'message' => 'User updated successfully',
-                'success' => true,
-                'user' => $user->load(['roles', 'apmcs', 'vehicles'])->makeHidden([
-                    'password',
-                    'bank_account_number',
-                    'routing_number',
-                ]),
-            ], 200);
-
-        } 
-        catch (ValidationException $e) {
-            DB::rollBack();
-
-            return response()->json([
-                'message' => $e->getMessage(),
-                'errors' => $e->errors(),
-                'error' => true,
-            ], 422);
         }
-        catch (\Throwable $th) {
-            DB::rollBack();
-            Log::error('Update user error: ' . $th->getMessage());
 
-            return response()->json([
-                'message' => 'User update failed: ' . $th->getMessage(),
-                'error' => true
-            ], 500);
-        }
+        DB::commit();
+
+        return response()->json([
+            'message' => 'User updated successfully',
+            'success' => true,
+            'user' => $user->load(['roles', 'apmcs', 'vehicles'])->makeHidden([
+                'password',
+                'bank_account_number',
+                'routing_number',
+            ]),
+        ], 200);
+
+    } catch (ValidationException $e) {
+        DB::rollBack();
+
+        return response()->json([
+            'message' => $e->getMessage(),
+            'errors' => $e->errors(),
+            'error' => true,
+        ], 422);
+    } catch (\Throwable $th) {
+        DB::rollBack();
+        Log::error('Update user error: ' . $th->getMessage());
+
+        return response()->json([
+            'message' => 'User update failed: ' . $th->getMessage(),
+            'error' => true
+        ], 500);
     }
+}
+
+
+    
     /**
      * Delete a user by ID.
      */

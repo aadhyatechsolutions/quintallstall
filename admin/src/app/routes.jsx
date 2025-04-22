@@ -72,6 +72,8 @@ import CoinCreate from "../features/coin/CoinCreate";
 import CoinView from "../features/coin/CoinView";
 import CoinEdit from "../features/coin/CoinEdit";
 
+import ProfileEdit from "../features/profile/ProfileEdit";
+
 // import CoinTypeCreate from "./components/Settings/CoinType/Create";
 // import CoinTypeView from "./components/Settings/CoinType/View";
 // import CoinTypeEdit from "./components/Settings/CoinType/Edit";
@@ -184,6 +186,9 @@ const routes = [
       { path: "/settings/staff/create", element: <StaffCreate /> },
       { path: "/settings/staff/view", element: <StaffView /> },
       { path: "/settings/staff/edit/:id", element: <StaffEdit /> },
+
+      { path: "/page-layouts/user-profile", element: <ProfileEdit /> },
+      
     ],
   },
   ...sessionRoutes,

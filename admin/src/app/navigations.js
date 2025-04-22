@@ -243,7 +243,7 @@ const navigations = [
           { name: "View", path: "/settings/staff/view", iconText: "A" },
         ] 
       },
-      { name: "Profile", level: 2, path: "/settings/profile", iconText: "A" },
+      // { name: "Profile", level: 2, path: "/settings/profile", iconText: "A" },
     ]
   }
 ];
