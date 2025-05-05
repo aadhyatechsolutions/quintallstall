@@ -26,6 +26,7 @@ const CartItem = ({ item, onRemove, onIncrease, onDecrease }) => {
       />
       <Box sx={{ flex: 1 }}>
         <Typography fontWeight={500}>{product.name}</Typography>
+        <Typography fontWeight={500}>Price: {product.price}</Typography>
         <Typography fontSize={12} color="text.secondary">
           {product.unit || "N/A"}
         </Typography>
@@ -46,13 +47,13 @@ const CartItem = ({ item, onRemove, onIncrease, onDecrease }) => {
         <IconButton size="small" onClick={onDecrease}>
           <RemoveIcon fontSize="small" />
         </IconButton>
-        <Typography>{quantity}</Typography>
+        <Typography sx={{width: 30,textAlign: "center",}}>{quantity}</Typography>
         <IconButton size="small" onClick={onIncrease}>
           <AddIcon fontSize="small" />
         </IconButton>
       </Box>
 
-      <Typography fontWeight={600} mr={2}>
+      <Typography fontWeight={600} mr={2} sx={{ minWidth: 100, textAlign: 'right' }}>
         RS: {(parseFloat(price) * quantity).toFixed(2)}
       </Typography>
 

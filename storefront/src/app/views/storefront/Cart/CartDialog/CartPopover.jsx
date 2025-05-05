@@ -123,6 +123,8 @@ const CartPopover = ({
                         </IconButton>
                       }
                     >
+
+
                       <Avatar
                         src={`${apiConfig.MEDIA_URL}${item.product.image}`}
                         alt={item.product.name}
@@ -130,8 +132,8 @@ const CartPopover = ({
                         sx={{ width: 48, height: 48, mr: 1 }}
                       />
                       <ListItemText
-                        primary={item.name}
-                        secondary={`Qty: ${item.quantity}`}
+                        primary={item.product?.name || item.name}
+                        secondary={`${item.quantity} x Rs: ${item.price}`}
                         primaryTypographyProps={{ fontSize: "0.95rem" }}
                         secondaryTypographyProps={{ fontSize: "0.8rem" }}
                       />
