@@ -51,7 +51,7 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
         flexDirection: "column",
         alignItems: "center",
         backgroundColor: "background.paper",
-        cursor: "default",
+        cursor: "pointer",
       }}
     >
       <Box
