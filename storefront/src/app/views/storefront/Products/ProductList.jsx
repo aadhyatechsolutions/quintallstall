@@ -1,12 +1,18 @@
 import React from "react";
 import { Box, Grid, Typography, Container } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import { useProducts } from "../../../../hooks/useProducts";
 import CategoriesList from "../Categories/CategoriesList";
 
 const ProductList = () => {
-  const [selectedCategoryId, setSelectedCategoryId] = React.useState(null);
   const { data: products = [], isLoading, error } = useProducts();
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get("category");
+
+  const [selectedCategoryId, setSelectedCategoryId] = React.useState(
+    categoryParam ? parseInt(categoryParam) : null
+  );
 
   const filteredProducts = products.filter(
     (product) =>
