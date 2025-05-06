@@ -13,9 +13,6 @@ const BankDetailsForm = ({ formData, setFormData, initialValues, setStep, profil
     bankAccountNumber: Yup.string()
       .matches(/^\d{9,18}$/, "Bank account number must be 9-18 digits")
       .required("Bank account number is required!"),
-    routingNumber: Yup.string()
-      .matches(/^\d{9}$/, "Routing number must be 9 digits")
-      .required("Routing number is required!"),
     ifscCode: Yup.string()
       .matches(/^[A-Za-z]{4}0[A-Z0-9]{6}$/, "Invalid IFSC Code format")
       .required("IFSC Code is required!"),
@@ -93,20 +90,7 @@ const handleBackButton = ()=>{
             sx={{ mb: 3 }}
           />
 
-          <TextField
-            fullWidth
-            size="small"
-            type="text"
-            name="routingNumber"
-            label="Routing Number"
-            variant="outlined"
-            onBlur={handleBlur}
-            value={values.routingNumber}
-            onChange={handleChange}
-            helperText={touched.routingNumber && errors.routingNumber}
-            error={Boolean(errors.routingNumber && touched.routingNumber)}
-            sx={{ mb: 3 }}
-          />
+         
 
           <TextField
             fullWidth

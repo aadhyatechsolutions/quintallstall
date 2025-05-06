@@ -61,5 +61,8 @@ class User extends Authenticatable
         return $this->hasOne(Cart::class, 'buyer_id');
     }
 
-
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }

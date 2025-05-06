@@ -54,7 +54,7 @@ export default function JwtRegister() {
       } else if (step === 'otp') {
         return (<OtpVerificationForm phoneNumber={formData.phoneNumber} setStep={setStep}/>);
       } else if (step === 'address') {
-        return <AddressForm formData={formData} setFormData={setFormData} setStep={setStep}/>;
+        return <AddressForm formData={formData} setFormData={setFormData} setStep={setStep} profileImage={profileImage}/>;
       } else if (step === 'vehicle') {
         return <VehicleDetailsForm formData={formData} setFormData={setFormData} setStep={setStep}/>;
       }else if(step === 'account'){
