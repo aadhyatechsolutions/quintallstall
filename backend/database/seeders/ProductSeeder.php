@@ -1,12 +1,13 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Apmc;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
@@ -26,6 +27,12 @@ class ProductSeeder extends Seeder
 
         if ($users->isEmpty()) {
             echo "⚠️  No users with wholesaler or retailer roles found!\n";
+            return;
+        }
+
+        $apmcs = Apmc::all();
+        if ($apmcs->isEmpty()) {
+            echo "⚠️  No APMCs found! Please seed the apmcs table first.\n";
             return;
         }
 
@@ -58,37 +65,50 @@ class ProductSeeder extends Seeder
         $userIndex = 0;
 
         foreach ($images as $imagePath) {
-            $fileName = basename($imagePath); // e.g., apple.jpg
-            $nameWithoutExt = pathinfo($fileName, PATHINFO_FILENAME); // e.g., apple
+            $fileName = basename($imagePath);
+            $nameWithoutExt = pathinfo($fileName, PATHINFO_FILENAME);
             $extension = pathinfo($fileName, PATHINFO_EXTENSION);
 
-            // Capitalize first letter
             $productName = ucfirst($nameWithoutExt);
-
-            // Random phrase
             $randomPhrase = $phrases[array_rand($phrases)];
-
-            // Final description
             $description = $productName . ' ' . $randomPhrase;
 
-            // Copy image to public directory
             $targetPath = $destinationDir . '/' . $fileName;
             File::copy($imagePath, $targetPath);
 
-            // Assign product to a user in round-robin
             $user = $users[$userIndex];
             $userIndex = ($userIndex + 1) % $userCount;
+
+            // Generate a price
+            $price = rand(10, 100) . '.99';
+
+            // Generate discount price which is less than the original price
+            $discountPrice = rand(5, (int) ($price - 1)) . '.99'; // Ensure discount price is less than price
+
+            // Quantity between 0 and 100
+            $quantity = rand(0, 100);
 
             Product::create([
                 'name' => $productName,
                 'description' => $description,
-                'price' => rand(10, 100) . '.99',
+                'price' => $price,
                 'seller_id' => $user->id,
                 'category_id' => rand(1, 6),
                 'image' => 'products/' . $fileName,
+
+                // New fields
+                'sku' => strtoupper(Str::random(8)),
+                'apmc_id' => $apmcs->random()->id,
+                'production' => now()->subDays(rand(1, 60))->toDateString(),
+                'quality' => collect(['a', 'b', 'c'])->random(),
+                'ud_field' => 'Additional product details or custom notes here.',
+                'return_policy' => 'Returns accepted within 7 days with receipt.',
+                'feature_image' => 'products/' . $fileName, // using same image
+                'discount_price' => $discountPrice, // Ensure discount price is less than price
+                'quantity' => $quantity, // Set quantity between 0 and 100
             ]);
         }
 
-        echo "✅ Seeded " . count($images) . " products with enhanced descriptions.\n";
+        echo "✅ Seeded " . count($images) . " products with enhanced fields.\n";
     }
 }

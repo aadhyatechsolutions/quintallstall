@@ -16,7 +16,7 @@ const useUserStore = create((set) => ({
         } finally {
           set({ isLoading: false });
         }
-      },
+    },
     fetchUserById: async (userId) => {
         set({ isLoading: true });
         try {
