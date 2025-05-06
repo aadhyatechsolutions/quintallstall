@@ -12,7 +12,7 @@ const OfferCard = ({ title, subtitle, description, image, buttonLabel, buttonCol
   };
 
   return (
-    <Grid size={{xs:12,sm:6,md:6}} width="100%">
+    <Grid size={{xs:12,sm:6,md:6}} width="100%" >
       <Card
         sx={{
           position: 'relative',
@@ -109,7 +109,7 @@ const OfferCards = () => {
   ];
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', py: 6, px: 2, backgroundColor: '#f9f9f9' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', py: 6, px: 2, backgroundColor: '#fff' }}>
       <Grid container spacing={4} justifyContent="center" maxWidth="none" width="100%">
         {offerData.map((offer, index) => (
           <OfferCard key={index} {...offer} />

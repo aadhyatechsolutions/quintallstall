@@ -9,6 +9,7 @@ import PromoBanner from "../../Banner/PromoBanner";
 import Carousel from "../../Carousel/Carousel";
 import TopProductsSlider from "../../Products/TopProductsSlider";
 import OfferCards from "../../PromoCard/OfferCards";
+import SpecialOfferSlider from "../../Products/SpecialOfferSlider";
 function Body() {
   return (
     <>
@@ -18,7 +19,10 @@ function Body() {
       <ProductsSlider />
       <PromoBanner />
       <TopProductsSlider/>
-      <OfferCards/>
+      <Box mt={0.5}>
+        <OfferCards />
+      </Box>
+      <SpecialOfferSlider />
       
       <Features />
       {/* <FeatureBanner /> */}
