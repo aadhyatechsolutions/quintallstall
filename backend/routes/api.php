@@ -22,7 +22,7 @@ use App\Http\Controllers\CartController;
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\SessionController;
-
+use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\TestController;
 
 /*
@@ -71,6 +71,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products/{product}', [ProductController::class, 'update']);
     Route::delete('/products/{product}', [ProductController::class, 'destroy']);
+
+    Route::get('wishlists', [WishlistController::class, 'index']);  
+    Route::post('wishlists', [WishlistController::class, 'store']); 
+    Route::delete('wishlists/{id}', [WishlistController::class, 'destroy']); 
 });
 
 Route::get('/products', [ProductController::class, 'index']);
