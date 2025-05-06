@@ -4,9 +4,11 @@ import * as Yup from "yup";
 import { TextField, Box, Button, Grid, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import axiosInstance from "../../../../utils/axiosInstance";
+import useAuth from "app/hooks/useAuth";
 
-const AddressForm = ({formData, setFormData, setStep }) => {
+const AddressForm = ({formData, setFormData, setStep, profileImage }) => {
   const [apmcs, setApmcs] = useState([]);
+  const { register } = useAuth();
   const [loadingApmcs, setLoadingApmcs] = useState(true);
 
   const validationSchema = Yup.object().shape({
@@ -15,26 +17,51 @@ const AddressForm = ({formData, setFormData, setStep }) => {
     city: Yup.string().required("City is required!"),
     state: Yup.string().required("State is required!"),
     postalCode: Yup.string()
-      .matches(/^[0-9]{5}$/, "Zip code must be 5 digits")
+      .matches(/^[0-9]{6}$/, "Zip code must be 6 digits")
       .required("Zip code is required!"),
     shopNumber: Yup.string()
-      .matches(/^[0-9]{5}$/, "Shop number must be 5 digits")
-      .required("Shop number is required!"),
+    .matches(/^[0-9]{5}$/, "Shop number must be 5 digits")
   });
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, {resetForm}) => {
+    setFormData(values);
     if(values.role === 'delivery'){
       setStep('vehicle')
-    }else{
+    }else if (values.role === 'wholesaler' || values.role === 'retailer'){
       setStep('account')
+    }else if(values.role === 'user'){
+      const snakeCaseData = convertObjectKeysToSnakeCase(values);
+      try {
+        const response = await register(snakeCaseData, profileImage); 
+        if(response.success){
+          resetForm()
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Registration failed:", error);
+      }
     }
-    setFormData(values);
+
+    
+  };
+  const camelToSnake = (str) => {
+    return str.replace(/[A-Z]/g, (match) => `_${match.toLowerCase()}`);
+  };
+  const convertObjectKeysToSnakeCase = (obj) => {
+    const newObj = {};
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const newKey = camelToSnake(key);
+        newObj[newKey] = obj[key];
+      }
+    }
+    return newObj;
   };
   useEffect(() => {
     const fetchApmcs = async () => {
       try {
-        const { data } = await axiosInstance.get("/apmc");
-        setApmcs(data);
+        const { data } = await axiosInstance.get("/apmcs");
+        setApmcs(data.apmcs);
       } catch (error) {
         console.error("Error fetching APMCs:", error);
       } finally {
@@ -153,20 +180,22 @@ const AddressForm = ({formData, setFormData, setStep }) => {
           />
 
           {/* Add shopNumber field */}
-          <TextField
-            fullWidth
-            size="small"
-            type="text"
-            name="shopNumber"
-            label="Shop Number"
-            variant="outlined"
-            onBlur={handleBlur}
-            value={values.shopNumber}
-            onChange={handleChange}
-            helperText={touched.shopNumber && errors.shopNumber}
-            error={Boolean(errors.shopNumber && touched.shopNumber)}
-            sx={{ mb: 3 }}
-          />
+          {values.role !== "user" && (
+            <TextField
+              fullWidth
+              size="small"
+              type="text"
+              name="shopNumber"
+              label="Shop Number"
+              variant="outlined"
+              onBlur={handleBlur}
+              value={values.shopNumber}
+              onChange={handleChange}
+              helperText={touched.shopNumber && errors.shopNumber}
+              error={Boolean(errors.shopNumber && touched.shopNumber)}
+              sx={{ mb: 3 }}
+            />
+          )}
 
           <Grid container spacing={2} justifyContent="space-between">
             <Grid item xs={1}>
@@ -188,7 +217,7 @@ const AddressForm = ({formData, setFormData, setStep }) => {
                 loading={isSubmitting}
                 fullWidth
               >
-                Next
+                {values.role === "user" ? "Register" : "Next"}
               </LoadingButton>
             </Grid>
           </Grid>

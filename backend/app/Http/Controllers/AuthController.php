@@ -35,15 +35,14 @@ class AuthController extends Controller
                 'phone_number' => 'required|string|unique:users',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:6|confirmed',
-                'bank_account_number' => 'required|string', 
+                'bank_account_number' => 'nullable|string|required_if:role,wholeseller,retailer,delivery', 
                 'city' => 'required|string', 
                 'state' => 'required|string', 
                 'postal_code' => 'required|string', 
-                'routing_number' => 'required|string', 
-                'shop_number' => 'required|string', 
-                'ifsc_code' => 'required|string',
-                'account_type' => 'required|string',
-                'branch_name' => 'required|string',
+                'shop_number' => 'nullable|string|required_if:role,wholeseller,retailer', 
+                'ifsc_code' => 'nullable|string|required_if:role,wholeseller,retailer,delivery',
+                'account_type' => 'nullable|string|required_if:role,wholeseller,retailer,delivery',
+                'branch_name' => 'nullable|string|required_if:role,wholeseller,retailer,delivery',
                 'vehicle_type' => 'required_if:role,delivery|string',
                 'vehicle_no' => 'required_if:role,delivery|string',
                 'permit_number' => 'required_if:role,delivery|string',
@@ -65,16 +64,17 @@ class AuthController extends Controller
                 'city' => $validated['city'],
                 'state' => $validated['state'],
                 'postal_code' => $validated['postal_code'],
-                'shop_number' => $validated['shop_number'],
+                'shop_number' => in_array($formData['role'], ['wholeseller', 'retailer']) ? $validated['shop_number'] : '',
             ]);
-
-            $bankAccount = BankAccount::create([
-                'account_number' => Crypt::encryptString($validated['bank_account_number']),
-                'routing_number' => Crypt::encryptString($validated['routing_number']),
-                'ifsc_code' => $validated['ifsc_code'],
-                'account_type' => $validated['account_type'],
-                'branch_name' => $validated['branch_name']
-            ]);
+            if(in_array($formData['role'], ['wholeseller', 'retailer', 'delivery'])){
+                $bankAccount = BankAccount::create([
+                    'account_number' => Crypt::encryptString($validated['bank_account_number']),
+                    'ifsc_code' => $validated['ifsc_code'],
+                    'account_type' => $validated['account_type'],
+                    'branch_name' => $validated['branch_name']
+                ]);
+            } 
+            
 
             $user = User::create([
                 'first_name' => $validated['first_name'],
@@ -84,7 +84,7 @@ class AuthController extends Controller
                 'email' => strtolower($validated['email']),
                 'password' => Hash::make($validated['password']),
                 'address_id' => $address->id,
-                'bank_account_id' => $bankAccount->id,
+                'bank_account_id' => $bankAccount->id ?? null,
                 'vehicle_id' => null, 
                 'profile_image' => $profileImagePath,
             ]);
@@ -113,13 +113,21 @@ class AuthController extends Controller
             // Commit transaction if everything succeeds
             DB::commit();
             $token = $user->createToken('api-token')->plainTextToken;
+
+            $session = Session::create([
+                'user_id' => $user->id,
+                'device' => $request->header('User-Agent'),
+                'ip_address' => $request->ip(),
+                'browser' => $this->getBrowser($request->header('User-Agent')),
+                'token_id' => $token,
+            ]);
             // $token = JWTAuth::fromUser($user, ['id' => $user->id]);
 
             return response()->json([
                 'message' => 'User registered successfully',
                 'success' => true,
                 'accessToken' => $token,
-                'user' => $user->makeHidden(['password', 'bank_account_number', 'routing_number']),
+                'user' => $user->makeHidden(['password', 'bank_account_number']),
                 'profile_image_url' => $profileImagePath ? asset("storage/$profileImagePath") : null,
                 'roles' => $user->roles->pluck('slug'),
                 'apmcs' => $user->apmcs->pluck('id'),
@@ -203,7 +211,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'OTP verified successfully. Login successful.',
             'accessToken' => $token,  
-            'user' => $user->makeHidden(['password', 'bank_account_number', 'routing_number']), 
+            'user' => $user->makeHidden(['password', 'bank_account_number']), 
         ]);
         
     }
