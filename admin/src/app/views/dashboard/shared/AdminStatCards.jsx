@@ -1,10 +1,8 @@
+import { useEffect } from "react";
 import Fab from "@mui/material/Fab";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid2";
 import { lighten, styled, useTheme } from "@mui/material/styles";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import StarOutline from "@mui/icons-material/StarOutline";
-import TrendingUp from "@mui/icons-material/TrendingUp";
 import Group from "@mui/icons-material/Group";
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import ArrowRightAlt from "@mui/icons-material/ArrowRightAlt";
@@ -12,11 +10,9 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectTotalWholeSellerUsers } from '../../../../redux/wholeSellerUserSlice';
-import { selectTotalRetailerUsers } from '../../../../redux/retailerUserSlice';
-import { selectTotalDeliveryUsers } from '../../../../redux/deliveryUserSlice';
-import { selectTotalOrders } from '../../../../redux/orderListSlice';
+import useUserStore from "../../../../store/user/userStore";
+import useOrderStore from "../../../../store/order/orderStore";
+
 
 // STYLED COMPONENTS
 const ContentBox = styled("div")(() => ({
@@ -60,12 +56,41 @@ const IconBox = styled("div")(() => ({
 }));
 
 export default function StatCards2() {
-  const totalWholesellers = useSelector(selectTotalWholeSellerUsers);
+  const { users, isLoading, error, fetchUsers } = useUserStore();
+  const { orders, loading: ordersLoading, error: orderError, fetchOrders } = useOrderStore();
+
+
+  useEffect(() => {
+    if (users.length === 0) {
+        fetchUsers();
+    }
+  }, [fetchUsers, users.length]);
+
+  useEffect(() => {
+    if (orders.length === 0) {
+      fetchOrders();
+    }
+  }, [fetchOrders, orders.length]); 
+
+  const totalWholesellers = users.filter(user =>
+    user.roles?.some(role => role.slug === 'wholesaler')
+  ).length;
+
+  const totalRetailers = users.filter(user =>
+    user.roles?.some(role => role.slug === 'retailer')
+  ).length;
+
+  const totalDeliveryPartners = users.filter(user =>
+    user.roles?.some(role => role.slug === 'delivery')
+  ).length;
+
+  const totalOrders = orders.length;
+
    const cardList = [
       { name: "Total Wholeseller", amount: totalWholesellers, Icon: Group, url:'/wholeseller/wholeseller-user/view' },
-      { name: "Total Retailer", amount: selectTotalRetailerUsers, Icon: Group, url:'/retailer/retailer-user/view' },
-      { name: "Delivery Partners", amount: selectTotalDeliveryUsers, Icon: Group, url:'/delivery/delivery-user/view' },
-      { name: "Total Sales", amount: selectTotalOrders, Icon: SummarizeIcon, url:'/orders/orders' }
+      { name: "Total Retailer", amount: totalRetailers, Icon: Group, url:'/retailer/retailer-user/view' },
+      { name: "Delivery Partners", amount: totalDeliveryPartners, Icon: Group, url:'/delivery/delivery-user/view' },
+      { name: "Total Sales", amount: totalOrders, Icon: SummarizeIcon, url:'/orders/orders' }
     ];
 
   const { palette } = useTheme();
