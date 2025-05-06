@@ -6,12 +6,12 @@ import {
   Container,
   CircularProgress,
 } from "@mui/material";
-import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import { useCategories } from "../../../../hooks/useCategories";
 import { apiConfig } from "../../../../config";
 
 // Category Button Component
-const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
+const CategoryButton = React.memo(({ id, name, image, onClick }) => (
   <Box
     sx={{
       width: {
@@ -19,7 +19,6 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
         sm: "calc(50% - 12px)",
         md: "calc(33.33% - 16px)",
         lg: "calc(18% - 16px)",
-        xl: "calc(14.28% - 16px)",
       },
       display: "flex",
       flexDirection: "column",
@@ -29,7 +28,7 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
       overflow: "hidden",
       borderRadius: 2,
       justifyContent: "center",
-      boxShadow: isActive ? 3 : 1,
+      boxShadow: 1,
       transition: "all 0.3s ease",
       "&:hover": {
         transform: "translateY(-5px)",
@@ -41,7 +40,7 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
     }}
   >
     <Button
-      onClick={() => onClick?.(name)}
+      onClick={() => onClick?.(id)}
       aria-label={`Shop ${name}`}
       sx={{
         width: "100%",
@@ -51,7 +50,7 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
         flexDirection: "column",
         alignItems: "center",
         backgroundColor: "background.paper",
-        cursor: "default",
+        cursor: "pointer",
       }}
     >
       <Box
@@ -72,29 +71,17 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
         sx={{
           p: 2,
           width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          flexGrow: 1,
+          textAlign: "center",
         }}
       >
-        <Typography
-          variant="subtitle1"
-          sx={{
-            fontWeight: 600,
-            color: isActive ? "primary.main" : "text.primary",
-          }}
-        >
+        <Typography variant="subtitle1" fontWeight={600}>
           {name}
         </Typography>
         <Typography
           variant="caption"
-          sx={{
-            color: "text.secondary",
-            mt: 0.5,
-            display: { xs: "none", sm: "block" },
-          }}
+          color="text.secondary"
+          mt={0.5}
+          display={{ xs: "none", sm: "block" }}
         >
           Shop Now
         </Typography>
@@ -104,12 +91,13 @@ const CategoryButton = React.memo(({ name, image, onClick, isActive }) => (
 ));
 
 // Main Component
-const ShopByCategories = ({
-  title = "Shop By Categories",
-  onCategoryClick = () => {},
-  selectedCategory = "",
-}) => {
+const ShopByCategories = ({ title = "Shop By Categories" }) => {
+  const navigate = useNavigate();
   const { data: categories = [], isLoading, isError } = useCategories();
+
+  const handleCategoryClick = (categoryId) => {
+    navigate(`/products?category=${categoryId}`);
+  };
 
   if (isLoading) {
     return (
@@ -173,23 +161,17 @@ const ShopByCategories = ({
         >
           {categories.map((category) => (
             <CategoryButton
-              key={category.id || category.name}
+              key={category.id}
+              id={category.id}
               name={category.name}
               image={`${apiConfig.MEDIA_URL}${category.image}`}
-              onClick={onCategoryClick}
-              isActive={selectedCategory === category.name}
+              onClick={handleCategoryClick}
             />
           ))}
         </Box>
       </Box>
     </Container>
   );
-};
-
-ShopByCategories.propTypes = {
-  title: PropTypes.string,
-  onCategoryClick: PropTypes.func,
-  selectedCategory: PropTypes.string,
 };
 
 export default ShopByCategories;

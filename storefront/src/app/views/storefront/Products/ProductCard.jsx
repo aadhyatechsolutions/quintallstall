@@ -56,7 +56,7 @@ const getStockConfig = (stockLevel, theme) => {
   return config[stockLevel] || config.in_stock;
 };
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product,isSpecialOffer = false }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const addToCart = useCartStore((state) => state.addToCart);
@@ -289,12 +289,25 @@ const ProductCard = ({ product }) => {
                 Rs {product.originalPrice}
               </Typography>
             )}
-            <Typography
-              variant="h6"
-              sx={{ color: theme.palette.error.main, fontWeight: 700 }}
-            >
-              Rs {product.price}
-            </Typography>
+           {isSpecialOffer && product.price && (
+    <Typography
+      variant="body2"
+      sx={{
+        textDecoration: "line-through",
+        color: "text.disabled",
+      }}
+    >
+      Rs {product.price}
+    </Typography>
+  )}
+  <Typography
+    variant="h6"
+    sx={{ color: theme.palette.error.main, fontWeight: 700 }}
+  >
+    Rs {isSpecialOffer && product.discount_price
+      ? product.discount_price
+      : product.price}
+  </Typography>
           </Box>
 
           {/* Enhanced Add to Cart Button */}

@@ -106,7 +106,7 @@ const PromoBanner = () => {
           {bannerData.discountText}
         </Typography>
 
-        <Button
+        {/* <Button
           variant="contained"
           size="large"
           onClick={handleShopNow}
@@ -127,7 +127,7 @@ const PromoBanner = () => {
           }}
         >
           {bannerData.buttonText}
-        </Button>
+        </Button> */}
       </Box>
     </Box>
   );

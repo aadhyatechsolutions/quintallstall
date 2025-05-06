@@ -48,7 +48,9 @@ const Footer = () => {
     'Shop': '/shop',
     'Blog': '/blog',
     'Contact Us': '/contact',
-    'Products': '/products'
+    'Products': '/products',
+    'Terms & Conditions': '/termsandconditions',
+    'Return Policy': '/returnpolicy',
   };
 
   const enabledLinks = Object.keys(customPaths);

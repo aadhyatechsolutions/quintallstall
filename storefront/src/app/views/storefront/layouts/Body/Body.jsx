@@ -7,6 +7,9 @@ import Features from "../../Features/Features";
 import FeatureBanner from "../../Features/FeatureBanner";
 import PromoBanner from "../../Banner/PromoBanner";
 import Carousel from "../../Carousel/Carousel";
+import TopProductsSlider from "../../Products/TopProductsSlider";
+import OfferCards from "../../PromoCard/OfferCards";
+import SpecialOfferSlider from "../../Products/SpecialOfferSlider";
 function Body() {
   return (
     <>
@@ -15,6 +18,12 @@ function Body() {
       <APMCMarketGrid />
       <ProductsSlider />
       <PromoBanner />
+      <TopProductsSlider/>
+      <Box mt={0.5}>
+        <OfferCards />
+      </Box>
+      <SpecialOfferSlider />
+      
       <Features />
       {/* <FeatureBanner /> */}
     </>

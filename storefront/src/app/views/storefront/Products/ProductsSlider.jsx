@@ -253,26 +253,31 @@ const ProductSlider = () => {
                     >
                       {product.name}
                     </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontWeight: "bold",
-                        color: "black",
-                        fontSize: "1rem",
-                      }}
-                    >
-                      Per / {product.unit}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontWeight: "bold",
-                        color: "#a81724",
-                        fontSize: "1.1rem",
-                      }}
-                    >
-                      ₹{product.price}
-                    </Typography>
+                    <Stack direction="row" alignItems="center" spacing={0.625}>
+                      {/* 0.625 * 8px = 5px spacing */}
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          fontWeight: "bold",
+                          color: "#a81724",
+                          fontSize: "1.1rem",
+                        }}
+                      >
+                        ₹{product.price}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          fontWeight: "bold",
+                          color: "black",
+                          fontSize: "1rem",
+                        }}
+                      >
+                        / {product.unit}
+                      </Typography>
+                      
+                    </Stack>
+
                     <Button
                       variant="contained"
                       size="small"

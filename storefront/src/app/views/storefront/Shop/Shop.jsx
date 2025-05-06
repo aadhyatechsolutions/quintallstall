@@ -77,7 +77,7 @@ const Shop = () => {
 
       <Grid container spacing={4} justifyContent="center">
         {users.map((user) => (
-          <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
+          <Grid key={user.id} item xs={12} sm={6} md={4} lg={3} sx={{ width: '25%' }}>
             <Card
               sx={{
                 height: "100%",

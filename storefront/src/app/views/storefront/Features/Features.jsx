@@ -8,11 +8,11 @@ import {
 } from "@mui/icons-material";
 
 const features = [
-  {
-    icon: <DeliveryDining sx={{ fontSize: 40 }} />,
-    title: "Free Shipping",
-    description: "Free Shipping world wide",
-  },
+  // {
+  //   icon: <DeliveryDining sx={{ fontSize: 40 }} />,
+  //   title: "Free Shipping",
+  //   description: "Free Shipping world wide",
+  // },
   {
     icon: <AccessTime sx={{ fontSize: 40 }} />,
     title: "24 x 7 Service",

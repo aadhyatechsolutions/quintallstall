@@ -1,13 +1,24 @@
 import React from "react";
-import { Box, Grid, Typography, Container, Button } from "@mui/material";
+import { Box, Grid, Typography, Container } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import { useProducts } from "../../../../hooks/useProducts";
 import CategoriesList from "../Categories/CategoriesList";
 
 const ProductList = () => {
-  const [value, setValue] = React.useState(0);
   const { data: products = [], isLoading, error } = useProducts();
-  const activeProducts = products.filter((product) => product.status === "active");
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get("category");
+
+  const [selectedCategoryId, setSelectedCategoryId] = React.useState(
+    categoryParam ? parseInt(categoryParam) : null
+  );
+
+  const filteredProducts = products.filter(
+    (product) =>
+      product.status === "active" &&
+      (!selectedCategoryId || product.category_id === selectedCategoryId)
+  );
 
   return (
     <Container maxWidth="xl" sx={{ py: 6, px: { xs: 2, sm: 3 } }}>
@@ -27,14 +38,25 @@ const ProductList = () => {
           Our Products
         </Typography>
       </Box>
-      {/* categories List*/}
-      <CategoriesList />
+
+      {/* Categories List */}
+      <CategoriesList
+        selectedCategoryId={selectedCategoryId}
+        onCategoryClick={(id) =>
+          setSelectedCategoryId((prev) => (prev === id ? null : id))
+        }
+      />
 
       {/* Product Cards */}
       <Grid container rowSpacing={2} columnSpacing={1} justifyContent="center">
-        {activeProducts.map((product) => (
+        {filteredProducts.map((product) => (
           <Grid
             key={product.id}
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
             sx={{ display: "flex", justifyContent: "center" }}
           >
             <ProductCard product={product} />
@@ -42,26 +64,14 @@ const ProductList = () => {
         ))}
       </Grid>
 
-      {/* Load More Button */}
-      {/* <Box sx={{ textAlign: "center", mt: 6 }}>
-        <Button
-          variant="outlined"
-          color="error"
-          size="large"
-          sx={{
-            px: 6,
-            py: 1.5,
-            borderRadius: 2,
-            fontWeight: 600,
-            borderWidth: 2,
-            "&:hover": {
-              borderWidth: 2,
-            },
-          }}
-        >
-          Load More Products
-        </Button>
-      </Box> */}
+      {/* No Products Message */}
+      {!isLoading && filteredProducts.length === 0 && (
+        <Box sx={{ textAlign: "center", mt: 6 }}>
+          <Typography variant="body1">
+            No products found in this category.
+          </Typography>
+        </Box>
+      )}
     </Container>
   );
 };

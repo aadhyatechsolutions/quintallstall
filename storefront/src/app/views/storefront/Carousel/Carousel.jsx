@@ -20,7 +20,7 @@ const offerImages = [
     subtitle: "Organic Farm Products",
     description: "Farm Fresh Direct to Your Home",
     details: "Get 20% off on all organic products this weekend!",
-    buttonText: "View Offers",
+    buttonText: "Shop Now",
   },
 ];
 
@@ -214,7 +214,7 @@ function Carousel() {
               <Button
                 variant="contained"
                 size="large"
-                onClick={() => navigate('/products')}
+                onClick={() => navigate('/shop')}
                 sx={{
                   px: 4,
                   py: 1.5,
