@@ -1,27 +1,33 @@
 import React from 'react';
-import { 
-  Box, 
-  Container, 
-  Typography, 
+import {
+  Box,
+  Container,
+  Typography,
   IconButton,
   useTheme,
   useMediaQuery,
   Divider
 } from '@mui/material';
-import { 
-  Facebook, 
-  Twitter, 
-  Instagram, 
+import {
+  Facebook,
+  Twitter,
+  Instagram,
   LinkedIn,
   Apple,
   Android,
-  Payment 
+  Payment
 } from '@mui/icons-material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
+import { useCategories } from "../../../../../hooks/useCategories";
 
 const Footer = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { data: categories = [], isLoading } = useCategories();
+
+  const categoryParam = searchParams.get('category');
 
   const footerColumns = [
     {
@@ -34,7 +40,7 @@ const Footer = () => {
     },
     {
       title: 'Products',
-      items: ['Vegetables', 'Exotic Vegetables', 'Fruits', 'Exotic Fruits', 'Flowers']
+      isDynamicCategory: true
     },
     {
       title: 'Contact Us',
@@ -48,13 +54,12 @@ const Footer = () => {
     'Shop': '/shop',
     'Blog': '/blog',
     'Contact Us': '/contact',
-    'Products': '/products',
     'Terms & Conditions': '/termsandconditions',
     'Return Policy': '/returnpolicy',
+    'Privacy Policy': '/privacy-policy',
   };
 
   const enabledLinks = Object.keys(customPaths);
-
   const isLinkEnabled = (item) => enabledLinks.includes(item);
 
   return (
@@ -83,7 +88,7 @@ const Footer = () => {
               <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
                 {column.title}
               </Typography>
-              
+
               {column.isContact ? (
                 <Box>
                   <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -92,7 +97,7 @@ const Footer = () => {
                   <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                     Email: <strong>info@quintalstall.com</strong>
                   </Typography>
-                  
+
                   <Typography variant="subtitle2" sx={{ mt: 2, mb: 1 }}>
                     Download Our App
                   </Typography>
@@ -118,38 +123,75 @@ const Footer = () => {
                 </Box>
               ) : (
                 <Box>
-                  {column.items.map((item) => {
-                    const enabled = isLinkEnabled(item);
-                    const path = customPaths[item] || '#';
-
-                    return enabled ? (
-                      <NavLink
-                        key={item}
-                        to={path}
-                        style={({ isActive }) => ({
+                  {column.isDynamicCategory && !isLoading ? (
+                    categories.map((cat) => (
+                      <Typography
+                        key={cat.id}
+                        onClick={() => navigate(`/products?category=${cat.id}`)}
+                        sx={{
                           textDecoration: 'none',
                           display: 'block',
                           marginBottom: '8px',
-                          color: isActive ? '#d32f2f' : 'gray',
-                          fontWeight: isActive ? 'bold' : 'normal',
-                        })}
-                      >
-                        {item}
-                      </NavLink>
-                    ) : (
-                      <Typography
-                        key={item}
-                        sx={{
-                          color: 'lightgray',
-                          display: 'block',
-                          marginBottom: '8px',
-                          cursor: 'not-allowed'
+                          color: categoryParam === cat.id.toString() ? '#d32f2f' : 'gray',
+                          cursor: 'pointer',
+                          fontWeight: categoryParam === cat.id.toString() ? 'bold' : 'normal',
+                          transition: 'color 0.3s',
+                          '&:hover': {
+                            color: '#d32f2f',
+                            fontWeight: 'bold',
+                          },
                         }}
                       >
-                        {item}
+                        {cat.name}
                       </Typography>
-                    );
-                  })}
+                    ))
+                  ) : (
+                    column.items?.map((item) => {
+                      const enabled = isLinkEnabled(item);
+                      const path = customPaths[item] || '#';
+
+                      return enabled ? (
+                        <NavLink
+                          key={item}
+                          to={path}
+                          style={({ isActive }) => ({
+                            textDecoration: 'none',
+                            display: 'block',
+                            marginBottom: '8px',
+                            color: isActive ? '#d32f2f' : 'gray',
+                            fontWeight: isActive ? 'bold' : 'normal',
+                            transition: 'color 0.3s',
+                          })}
+                          className={({ isActive }) =>
+                            isActive ? 'active' : ''
+                          }
+                        >
+                          <Typography
+                            sx={{
+                              '&:hover': {
+                                color: '#d32f2f',
+                                fontWeight: 'bold',
+                              }
+                            }}
+                          >
+                            {item}
+                          </Typography>
+                        </NavLink>
+                      ) : (
+                        <Typography
+                          key={item}
+                          sx={{
+                            color: 'lightgray',
+                            display: 'block',
+                            marginBottom: '8px',
+                            cursor: 'not-allowed'
+                          }}
+                        >
+                          {item}
+                        </Typography>
+                      );
+                    })
+                  )}
                 </Box>
               )}
             </Box>
@@ -158,20 +200,20 @@ const Footer = () => {
 
         <Divider sx={{ my: 4 }} />
 
-        <Box sx={{ 
-          display: 'flex', 
-          flexDirection: isMobile ? 'column' : 'row', 
-          justifyContent: 'space-between', 
-          alignItems: 'center' 
+        <Box sx={{
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center'
         }}>
           <Typography variant="body2" color="text.secondary">
             © 2025 Quintal Stall. All rights reserved.
           </Typography>
-          
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            mt: isMobile ? 2 : 0 
+
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            mt: isMobile ? 2 : 0
           }}>
             <Payment sx={{ mr: 1, color: 'text.secondary' }} />
             <Typography variant="body2" color="text.secondary">

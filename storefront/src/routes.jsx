@@ -13,6 +13,7 @@ import BlogPostDetail from "./app/views/storefront/Blog/BlogPostDetail";
 import ShopByCategories from "./app/views/storefront/ShopByCategories/ShopByCategories";
 import TermsAndConditions from "./app/views/storefront/TermsAndConditions/TermsAndConditions";
 import ReturnPolicy from "./app/views/storefront/ReturnPolicy/ReturnPolicy";
+import PrivacyInfo from "./app/views/storefront/PrivacyPolicy/PrivacyInfo";
 
 
 // Lazy load other components
@@ -42,6 +43,7 @@ const routes = [
       { path: "/blog/:id", element: <BlogPostDetail /> },
       { path: "/termsandconditions", element: <TermsAndConditions /> },
       { path: "/returnpolicy", element: <ReturnPolicy /> },
+      { path: "/privacy-policy", element: <PrivacyInfo /> },
     ],
   },
 ];

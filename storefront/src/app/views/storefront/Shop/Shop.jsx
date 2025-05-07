@@ -19,11 +19,12 @@ import StoreIcon from "@mui/icons-material/Store";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import BusinessIcon from "@mui/icons-material/Business";
 import { useUserStore } from "../../../../store/userStore";
+import { useNavigate } from "react-router-dom";
 
 const Shop = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const navigate = useNavigate();
   const { users, userStatus, fetchUsers } = useUserStore();
 
   useEffect(() => {
@@ -32,6 +33,10 @@ const Shop = () => {
     }
   }, [users, userStatus, fetchUsers]);
   
+  const handleSellerClick = (seller_id) => {
+    navigate(`/products?seller=${seller_id}`);
+  };
+
 
   if (userStatus === "loading") {
     return (
@@ -77,7 +82,7 @@ const Shop = () => {
 
       <Grid container spacing={4} justifyContent="center">
         {users.map((user) => (
-          <Grid key={user.id} item xs={12} sm={6} md={4} lg={3} sx={{ width: '25%' }}>
+          <Grid key={user.id} size={{xs:12,sm:6,md:4,lg:3}} sx={{ width: '25%' }}>
             <Card
               sx={{
                 height: "100%",
@@ -123,7 +128,9 @@ const Shop = () => {
               </CardMedia>
 
               <CardContent sx={{ flexGrow: 1 }}>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography gutterBottom variant="h5" component="div" onClick={() => handleSellerClick(user.id)} 
+                sx={{ cursor: "pointer", color: "primary.main", }}  
+                >
                   {user.business_name || `${user.first_name} ${user.last_name}`}
                 </Typography>
 

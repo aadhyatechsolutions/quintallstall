@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Grid, Typography, Container } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "./ProductCard";
@@ -9,15 +9,28 @@ const ProductList = () => {
   const { data: products = [], isLoading, error } = useProducts();
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get("category");
+  const sellerParam = searchParams.get("seller");
 
+  // Local state for selected category ID
   const [selectedCategoryId, setSelectedCategoryId] = React.useState(
     categoryParam ? parseInt(categoryParam) : null
   );
+  const [selectedSellerId, setSelectedSellerId] = React.useState(
+    sellerParam ? parseInt(sellerParam) : null
+  );
 
+  // Whenever the category query parameter changes, update selectedCategoryId
+  useEffect(() => {
+    setSelectedCategoryId(categoryParam ? parseInt(categoryParam) : null);
+    setSelectedSellerId(sellerParam ? parseInt(sellerParam) : null);
+  }, [categoryParam,sellerParam]);
+
+  // Filter products based on selected category
   const filteredProducts = products.filter(
     (product) =>
       product.status === "active" &&
-      (!selectedCategoryId || product.category_id === selectedCategoryId)
+      (!selectedCategoryId || product.category_id === selectedCategoryId)&&
+      (!selectedSellerId || product.seller.id === selectedSellerId)
   );
 
   return (
@@ -42,9 +55,20 @@ const ProductList = () => {
       {/* Categories List */}
       <CategoriesList
         selectedCategoryId={selectedCategoryId}
-        onCategoryClick={(id) =>
-          setSelectedCategoryId((prev) => (prev === id ? null : id))
-        }
+        onCategoryClick={(id) => {
+          // Update URL query parameter when a category is clicked
+          setSelectedCategoryId(id);
+          if (id) {
+            // Update query parameter to reflect the selected category
+            window.history.replaceState(
+              null,
+              "",
+              `?category=${id}`
+            );
+          } else {
+            window.history.replaceState(null, "", window.location.pathname); // Reset category query param
+          }
+        }}
       />
 
       {/* Product Cards */}
@@ -52,11 +76,6 @@ const ProductList = () => {
         {filteredProducts.map((product) => (
           <Grid
             key={product.id}
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={3}
             sx={{ display: "flex", justifyContent: "center" }}
           >
             <ProductCard product={product} />
