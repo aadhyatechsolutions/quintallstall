@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\Address;
 use App\Models\BankAccount;
 use App\Models\Vehicle;
+use App\Models\Wallet;
 use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 // use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
+
 use Laravel\Sanctum\PersonalAccessToken as SanctumToken;
 
 
@@ -88,7 +90,14 @@ class AuthController extends Controller
                 'vehicle_id' => null, 
                 'profile_image' => $profileImagePath,
             ]);
-
+            if (in_array($validated['role'], ['wholeseller', 'retailer'])) {
+                Wallet::create([
+                    'user_id' => $user->id,
+                    'amount' => 0,
+                    'status' => 'Inactive',
+                ]);
+            }
+            
             if ($request->role === 'delivery') {
                 $vehicle = Vehicle::create([
                     'user_id' => $user->id,

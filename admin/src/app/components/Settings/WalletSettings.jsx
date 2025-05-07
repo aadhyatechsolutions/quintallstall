@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Box, Stack, Grid, Button, Icon, TextField, MenuItem, Select, FormControl, InputLabel, styled } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { setWalletStatus } from "../../../redux/walletSlice"; // Your Redux action
-import { useNavigate } from "react-router-dom";
-import { SimpleCard } from "app/components";
-import { Breadcrumb } from "app/components";
+import {
+  Box,
+  Stack,
+  Grid,
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Typography,
+  styled,
+} from "@mui/material";
+import { SimpleCard, Breadcrumb } from "app/components";
+import useCoinStore from "../../../store/coin/coinStore"; // Adjust path if needed
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -16,57 +25,113 @@ const Container = styled("div")(({ theme }) => ({
 }));
 
 export default function MakeWallet() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [walletStatus, setWalletStatus] = useState("Inactive");
+  const [walletAmount, setWalletAmount] = useState(500);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [addAmount, setAddAmount] = useState("");
+  const [selectedCoin, setSelectedCoin] = useState("");
 
-  // Get the current wallet status from the Redux store
-  const currentWalletStatus = useSelector((state) => state.wallet.status);
+  // Zustand coin store
+  const { coins, fetchCoins, loading } = useCoinStore();
 
-  const [walletStatus, setWalletStatusState] = useState(currentWalletStatus || "Inactive"); // Default to 'Inactive' if no value in Redux
-
-  // Set the updated wallet status in state after Redux update
   useEffect(() => {
-    setWalletStatusState(currentWalletStatus);
-  }, [currentWalletStatus]);
+    fetchCoins(); // fetch coin list on component mount
+  }, [fetchCoins]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(setWalletStatus(walletStatus)); // Dispatch the updated wallet status to Redux
-    navigate("/settings/wallet-settings");  // Re-navigate to refresh the view
+  const toggleWalletStatus = () => {
+    setWalletStatus(walletStatus === "Active" ? "Inactive" : "Active");
+  };
+
+  const handleAddMoney = (e) => {
+    e.preventDefault();
+    if (addAmount && !isNaN(addAmount)) {
+      setWalletAmount((prev) => prev + parseFloat(addAmount));
+      setAddAmount("");
+      setSelectedCoin("");
+      setShowAddForm(false);
+    }
   };
 
   return (
     <Container>
       <Box className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: "Make Wallet", path: "/wallet/make-wallet" }, { name: "Create" }]} />
+        <Breadcrumb routeSegments={[{ name: "Wallet", path: "/wallet/make-wallet" }, { name: "Overview" }]} />
       </Box>
 
       <Stack spacing={3}>
-        <SimpleCard title="Make Wallet">
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              {/* Wallet Status Dropdown Field */}
-              <Grid item xs={12} sm={3}>
-                <FormControl fullWidth required>
-                  <InputLabel>Make Wallet</InputLabel>
-                  <Select
-                    value={walletStatus}
-                    onChange={(e) => setWalletStatusState(e.target.value)}
-                    label="Make Wallet"
-                  >
-                    <MenuItem value="Active">Active</MenuItem>
-                    <MenuItem value="Inactive">Inactive</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
+        <SimpleCard title="Wallet">
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Typography variant="h6">Wallet Amount: ₹{walletAmount}</Typography>
+              <Typography variant="body1" color={walletStatus === "Active" ? "green" : "red"}>
+                Status: {walletStatus}
+              </Typography>
             </Grid>
 
-            {/* Submit Button */}
-            <Button color="primary" variant="contained" type="submit" sx={{ mt: 3 }}>
-              <Icon>send</Icon>
-              <span sx={{ pl: 1, textTransform: "capitalize" }}>Submit</span>
-            </Button>
-          </form>
+            <Grid item>
+              <Button
+                variant="contained"
+                color={showAddForm ? "secondary" : "primary"}
+                onClick={() => setShowAddForm(!showAddForm)}
+              >
+                {showAddForm ? "Cancel" : "Add Money"}
+              </Button>
+              <Button
+                variant="outlined"
+                color={walletStatus === "Active" ? "error" : "success"}
+                onClick={toggleWalletStatus}
+                sx={{ ml: 2 }}
+              >
+                {walletStatus === "Active" ? "Deactivate" : "Activate"}
+              </Button>
+            </Grid>
+          </Grid>
+
+          {showAddForm && (
+            <Box component="form" onSubmit={handleAddMoney} mt={4}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth required>
+                    <InputLabel>Coin</InputLabel>
+                    <Select
+                      value={selectedCoin}
+                      label="Coin"
+                      onChange={(e) => setSelectedCoin(e.target.value)}
+                    >
+                      {loading ? (
+                        <MenuItem disabled>Loading...</MenuItem>
+                      ) : coins.length ? (
+                        coins.map((coin) => (
+                          <MenuItem key={coin.id} value={coin.name}>
+                            {coin.name}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>No Coins Available</MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Amount"
+                    fullWidth
+                    type="number"
+                    required
+                    value={addAmount}
+                    onChange={(e) => setAddAmount(e.target.value)}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Button type="submit" variant="contained" color="secondary">
+                    Submit
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
+          )}
         </SimpleCard>
       </Stack>
     </Container>

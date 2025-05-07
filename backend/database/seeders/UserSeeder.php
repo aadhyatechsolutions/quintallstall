@@ -9,6 +9,7 @@ use App\Models\Address;
 use App\Models\Apmc;
 use App\Models\BankAccount;
 use App\Models\User;
+use App\Models\Wallet;
 
 class UserSeeder extends Seeder
 {
@@ -79,7 +80,11 @@ class UserSeeder extends Seeder
         ]);
         $alice->roles()->attach($wholesalerRole->id);
         $alice->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
-
+        Wallet::create([
+            'user_id' => $alice->id,
+            'amount' => 1000.00,
+            'status' => 'Active',
+        ]);
         // Retailer
         $bob = User::create([
             'first_name' => 'Bob',
@@ -94,7 +99,11 @@ class UserSeeder extends Seeder
         ]);
         $bob->roles()->attach($retailerRole->id);
         $bob->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
-
+        Wallet::create([
+            'user_id' => $bob->id,
+            'amount' => 500.00,
+            'status' => 'Active',
+        ]);
         // Regular User
         $charlie = User::create([
             'first_name' => 'Charlie',
