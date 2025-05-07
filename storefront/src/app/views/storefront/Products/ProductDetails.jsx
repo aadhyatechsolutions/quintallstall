@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { apiConfig } from "../../../../config";
 import {
   Box,
@@ -15,6 +15,8 @@ import {
   useTheme,
   Paper,
   CircularProgress,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import {
   ShoppingCart,
@@ -22,6 +24,10 @@ import {
   Share,
   LocalShipping,
   Verified,
+  Description as DescriptionIcon,
+  Info as InfoIcon,
+  Policy as PolicyIcon,
+  RateReview as ReviewIcon,
 } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
 import { useProduct } from "../../../../hooks/useProducts";
@@ -32,15 +38,16 @@ const ProductDetails = () => {
   const theme = useTheme();
   const { id } = useParams();
   const { data: product, isLoading } = useProduct(id);
+  const [activeTab, setActiveTab] = useState(0);
 
   const cart = useCartStore((state) => state.cart) || [];
   const addToCart = useCartStore((state) => state.addToCart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
-
-  const [value, setValue] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
-  const handleChange = (event, newValue) => setValue(newValue);
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
@@ -77,6 +84,70 @@ const ProductDetails = () => {
   }
 
   const isOutOfStock = product?.stock_level === "out_of_stock";
+
+  // Tab content components
+  const tabContents = [
+    {
+      label: "Description",
+      icon: <DescriptionIcon fontSize="small" />,
+      content: (
+        <Typography variant="body1" paragraph>
+          {product.description || "No description available."}
+        </Typography>
+      ),
+    },
+    {
+      label: "Additional Info",
+      icon: <InfoIcon fontSize="small" />,
+      content: (
+        <Box>
+          <Typography variant="body1" paragraph>
+            <strong>SKU:</strong> {product.sku}
+          </Typography>
+          <Typography variant="body1" paragraph>
+            <strong>Category:</strong> {product.category.name}
+          </Typography>
+          <Typography variant="body1" paragraph>
+            <strong>Quality Grade:</strong> A
+          </Typography>
+          <Typography variant="body1" paragraph>
+            <strong>Additional Details:</strong> {product.ud_field || "N/A"}
+          </Typography>
+          <Typography variant="body1" paragraph>
+            <strong>AMPC Id:</strong> {product.apmc_id}
+          </Typography>
+        </Box>
+      ),
+    },
+    {
+      label: "Return Policy",
+      icon: <PolicyIcon fontSize="small" />,
+      content: (
+        <Typography variant="body1" paragraph>
+          {product.return_policy || "Standard return policy applies."}
+        </Typography>
+      ),
+    },
+    {
+      label: "Reviews",
+      icon: <ReviewIcon fontSize="small" />,
+      content: (
+        <Box>
+          <Stack direction="row" spacing={1} alignItems="center" mb={2}>
+            <Rating value={product?.rating || 0} precision={0.1} readOnly />
+            <Typography variant="body2">
+              ({product?.reviews || 0} reviews)
+            </Typography>
+          </Stack>
+          <Typography variant="body1" color="text.secondary">
+            {product.reviews
+              ? "Read what our customers say about this product"
+              : "No reviews yet. Be the first to review!"}
+          </Typography>
+        </Box>
+      ),
+    },
+  ];
 
   return (
     <Container maxWidth="xl" sx={{ py: 6 }}>
@@ -226,10 +297,10 @@ const ProductDetails = () => {
                 Seller Information
               </Typography>
               <Typography variant="body2" gutterBottom>
-                Sold by: <strong>SuperComNet</strong> (4.5/5 rating)
+               Name: <strong>{product.seller.first_name}</strong>
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                7 Days Replacement Policy
+                1 Days Replacement Policy
               </Typography>
 
               <Divider sx={{ my: 2 }} />
@@ -317,6 +388,47 @@ const ProductDetails = () => {
             </Paper>
           </Grid>
         </Grid>
+
+        {/* Tabs Section */}
+        <Box sx={{ mt: 6, borderTop: `1px solid ${theme.palette.divider}` }}>
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            variant="fullWidth"
+            sx={{
+              "& .MuiTabs-indicator": {
+                backgroundColor: theme.palette.error.main,
+                height: 3,
+              },
+            }}
+          >
+            {tabContents.map((tab, index) => (
+              <Tab
+                key={index}
+                label={tab.label}
+                icon={tab.icon}
+                iconPosition="start"
+                sx={{
+                  textTransform: "none",
+                  fontWeight: 600,
+                  color:
+                    activeTab === index
+                      ? theme.palette.primary.main
+                      : theme.palette.text.secondary,
+                  "&:hover": {
+                    color: theme.palette.error.main,
+                    backgroundColor: theme.palette.action.hover,
+                  },
+                  "&.Mui-selected": {
+                    color: theme.palette.error.main,
+                  },
+                }}
+              />
+            ))}
+          </Tabs>
+          <Divider />
+          <Box sx={{ p: 3 }}>{tabContents[activeTab].content}</Box>
+        </Box>
       </Paper>
     </Container>
   );

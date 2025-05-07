@@ -1,5 +1,15 @@
 import React, { useEffect } from "react";
-import { Box, Grid, Typography, Container } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  Container,
+  TextField,
+  MenuItem,
+  FormControl,
+  Select,
+  InputLabel,
+} from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import { useProducts } from "../../../../hooks/useProducts";
@@ -11,7 +21,6 @@ const ProductList = () => {
   const categoryParam = searchParams.get("category");
   const sellerParam = searchParams.get("seller");
 
-  // Local state for selected category ID
   const [selectedCategoryId, setSelectedCategoryId] = React.useState(
     categoryParam ? parseInt(categoryParam) : null
   );
@@ -19,19 +28,36 @@ const ProductList = () => {
     sellerParam ? parseInt(sellerParam) : null
   );
 
-  // Whenever the category query parameter changes, update selectedCategoryId
+  const [sortBy, setSortBy] = React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState("");
+
   useEffect(() => {
     setSelectedCategoryId(categoryParam ? parseInt(categoryParam) : null);
     setSelectedSellerId(sellerParam ? parseInt(sellerParam) : null);
-  }, [categoryParam,sellerParam]);
+  }, [categoryParam, sellerParam]);
 
-  // Filter products based on selected category
-  const filteredProducts = products.filter(
-    (product) =>
-      product.status === "active" &&
-      (!selectedCategoryId || product.category_id === selectedCategoryId)&&
-      (!selectedSellerId || product.seller.id === selectedSellerId)
-  );
+  const filteredProducts = products
+    .filter(
+      (product) =>
+        product.status === "active" &&
+        (!selectedCategoryId || product.category_id === selectedCategoryId) &&
+        (!selectedSellerId || product.seller.id === selectedSellerId) &&
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "priceLowHigh":
+          return a.price - b.price;
+        case "priceHighLow":
+          return b.price - a.price;
+        case "nameAZ":
+          return a.name.localeCompare(b.name);
+        case "nameZA":
+          return b.name.localeCompare(a.name);
+        default:
+          return 0;
+      }
+    });
 
   return (
     <Container maxWidth="xl" sx={{ py: 6, px: { xs: 2, sm: 3 } }}>
@@ -56,20 +82,60 @@ const ProductList = () => {
       <CategoriesList
         selectedCategoryId={selectedCategoryId}
         onCategoryClick={(id) => {
-          // Update URL query parameter when a category is clicked
           setSelectedCategoryId(id);
           if (id) {
-            // Update query parameter to reflect the selected category
-            window.history.replaceState(
-              null,
-              "",
-              `?category=${id}`
-            );
+            window.history.replaceState(null, "", `?category=${id}`);
           } else {
-            window.history.replaceState(null, "", window.location.pathname); // Reset category query param
+            window.history.replaceState(null, "", window.location.pathname);
           }
         }}
       />
+
+      {/* Search and Sort Controls */}
+      <Grid container rowSpacing={2} columnSpacing={1} justifyContent="center">
+        <Box
+            display="flex"
+            flexDirection={{ xs: "column", sm: "row" }}
+            justifyContent="flex-start"
+            alignItems="center"
+            gap={2}
+            p={3}
+            bgcolor="#f9f9f9"
+            borderRadius={3}
+            // boxShadow={1}
+            mb={4}
+          >
+            
+            <TextField
+              label="Search Products"
+              variant="outlined"
+              size="small"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              fullWidth
+              sx={{ maxWidth: 400 }}
+              InputProps={{
+                sx: { borderRadius: 2 },
+              }}
+            />
+
+            <FormControl size="small" sx={{ minWidth: 200 }}>
+              <InputLabel>Sort By</InputLabel>
+              <Select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                label="Sort By"
+                sx={{ borderRadius: 2 }}
+              >
+                <MenuItem value="None">None</MenuItem>
+                <MenuItem value="priceLowHigh">Price: Low to High</MenuItem>
+                <MenuItem value="priceHighLow">Price: High to Low</MenuItem>
+                <MenuItem value="nameAZ">Name: A to Z</MenuItem>
+                <MenuItem value="nameZA">Name: Z to A</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+      </Grid>
 
       {/* Product Cards */}
       <Grid container rowSpacing={2} columnSpacing={1} justifyContent="center">
@@ -87,7 +153,7 @@ const ProductList = () => {
       {!isLoading && filteredProducts.length === 0 && (
         <Box sx={{ textAlign: "center", mt: 6 }}>
           <Typography variant="body1">
-            No products found in this category.
+            No products found matching your criteria.
           </Typography>
         </Box>
       )}
