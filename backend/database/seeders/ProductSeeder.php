@@ -94,9 +94,17 @@ class ProductSeeder extends Seeder
             // Generate a price
             $price = rand(10, 100) . '.99';
 
-            // Generate discount price which is less than the original price
-            $discountPrice = rand(5, (int) ($price - 1)) . '.99'; // Ensure discount price is less than price
-
+            $hasDiscount = rand(0, 1); // 50% chance to apply discount
+            $discountPrice = null;
+            
+            if ($hasDiscount) {
+                $priceInt = (int) $price;
+                if ($priceInt > 5) {
+                    $discount = rand(5, $priceInt - 1);
+                    $discountPrice = $discount . '.99';
+                }
+            }
+            
             // Quantity between 0 and 100
             $quantity = rand(0, 100);
 

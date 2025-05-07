@@ -13,9 +13,10 @@ import AMPCView from "../features/apmc/ApmcView";
 import AMPCCreate from "../features/apmc/ApmcCreate";
 import AMPCEdit from "../features/apmc/ApmcEdit";
 
-import ProductView from "../features/product/ProductView";
+import ProductList from "../features/product/ProductList";
 import ProductCreate from "../features/product/ProductCreate";
 import ProductEdit from "../features/product/ProductEdit";
+import ProductView from "../features/product/ProductView";
 import ProductReview from "../features/product/ProductReview";
 
 import CategoryCreate from "../features/category/CategoryCreate";
@@ -28,7 +29,7 @@ import WholeSalerEdit from "../features/wholesaler/WholesalerEdit";
 import WholeSalerProductView from "../features/wholesaler/WholesalerProductView";
 import WholeSalerKYC from "../features/wholesaler/WholesalerKYC";
 
-import ProductList from "./components/WholeSeller/ProductList";
+// import ProductList from "./components/WholeSeller/ProductList";
 
 import RetailerCreate from "../features/retailer/RetailerCreate";
 import RetailerView from "../features/retailer/RetailerView";
@@ -111,8 +112,9 @@ const routes = [
       { path: "/features/apmc/create", element: <AMPCCreate /> },
       { path: "/features/apmc/edit/:id", element: <AMPCEdit /> },
 
-      { path: "/features/product/view", element: <ProductView /> },
+      { path: "/features/product/list", element: <ProductList /> },
       { path: "/features/product/create", element: <ProductCreate />, },
+      { path: "/features/product/view/:id", element: <ProductView />,},
       { path: "/features/product/edit/:id", element: <ProductEdit />,},
       { path: "/features/product/reviews", element: <ProductReview />,},
 

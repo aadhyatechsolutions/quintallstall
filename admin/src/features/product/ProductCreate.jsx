@@ -108,7 +108,7 @@ import {
           severity: "success",
         });
   
-        setTimeout(() => navigate("/features/product/view"), 1500);
+        setTimeout(() => navigate("/features/product/list"), 1500);
       } catch (err) {
         setSnackbar({
           open: true,
@@ -120,14 +120,14 @@ import {
   
     return (
       <Container>
-        <Box className="breadcrumb">
+        {/* <Box className="breadcrumb">
           <Breadcrumb
             routeSegments={[
               { name: "Product Master", path: "/features/product/view" },
               { name: "Create Product" },
             ]}
           />
-        </Box>
+        </Box> */}
   
         <SimpleCard title="Create Product">
           <form onSubmit={handleSubmit}>
@@ -364,7 +364,6 @@ import {
                   type="number"
                   value={formData.discount_price}
                   onChange={handleChange}
-                  required
                 />
               </Grid>
   

@@ -35,7 +35,7 @@ const navigations = [
         allowedRoles: ["admin", 'wholesaler', 'retailer'],
         children: [
           { name: "Create", path: "/features/product/create", iconText: "A" },
-          { name: "View", path: "/features/product/view", iconText: "A" },
+          { name: "List", path: "/features/product/list", iconText: "A" },
         ] 
       },
       { 

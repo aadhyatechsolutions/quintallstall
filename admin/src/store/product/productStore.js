@@ -76,6 +76,7 @@ const useProductStore = create((set) => ({
     set({ loading: true, error: null });
     try {
       const product = await fetchProductById(id);  
+      set({ currentProduct:product });
       return product;
     } catch (err) {
       set({ error: err.message });
