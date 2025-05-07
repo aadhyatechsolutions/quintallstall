@@ -13,47 +13,79 @@ class ProductController extends Controller
 {
     // Method to create a new product
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'quantity' => 'required|numeric|min:0',
-            'unit' => 'required|in:kg,gram,quintal',
-            'status' => 'required|string|in:active,inactive',
-            'category' => 'required|exists:categories,id',
-            'seller' => 'required|exists:users,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-        
-        $imageURL = null;
+{
+    // Validate the request data, including the new fields
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'required|string',
+        'price' => 'required|numeric|min:0',
+        'quantity' => 'required|numeric|min:0',
+        'unit' => 'required|in:kg,gram,quintal',
+        'status' => 'required|string|in:active,inactive',
+        'category' => 'required|exists:categories,id',
+        'seller' => 'required|exists:users,id',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'feature_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // validation for feature image
+        'sku' => 'required|string|max:255',
+        'production' => 'required|string|max:255',
+        'quality' => 'required|in:a,b,c', // Quality can be 'a', 'b', or 'c'
+        'ud_field' => 'required|string|max:255',
+        'return_policy' => 'required|string|max:255',
+        'discount_price' => 'nullable|numeric|min:0',
+        'apmc' => 'nullable|exists:apmcs,id', // APMCs, ensuring the APMC exists
+    ]);
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            if ($image->isValid()) {
-                $imagePath = $image->store('products', 'public');
-                $imageURL = $imagePath;
-            } else {
-                return response()->json(['error' => 'Invalid image file'], 400);
-            }
+    // Handle image upload
+    $imageURL = null;
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        if ($image->isValid()) {
+            $imagePath = $image->store('products', 'public');
+            $imageURL = $imagePath;
+        } else {
+            return response()->json(['error' => 'Invalid image file'], 400);
         }
-
-        $product = Product::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'quantity' => $request->quantity,
-            'unit' => $request->unit,
-            'status' => $request->status,
-            'category_id' => $request->category,
-            'seller_id' => $request->seller,
-            'image' => $imageURL,
-        ]);
-
-        $product->load(['category', 'seller.roles']);
-
-        return response()->json(['product' => $product], 201);
     }
+
+    // Handle feature image upload
+    $featureImageURL = null;
+    if ($request->hasFile('feature_image')) {
+        $featureImage = $request->file('feature_image');
+        if ($featureImage->isValid()) {
+            $featureImagePath = $featureImage->store('products/feature_images', 'public');
+            $featureImageURL = $featureImagePath;
+        } else {
+            return response()->json(['error' => 'Invalid feature image file'], 400);
+        }
+    }
+
+    // Create product with all the required fields including the new ones
+    $product = Product::create([
+        'name' => $request->name,
+        'description' => $request->description,
+        'price' => $request->price,
+        'quantity' => $request->quantity,
+        'unit' => $request->unit,
+        'status' => $request->status,
+        'category_id' => $request->category,
+        'seller_id' => $request->seller,
+        'image' => $imageURL,
+        'feature_image' => $featureImageURL, // Add feature image URL
+        'sku' => $request->sku,
+        'production' => $request->production,
+        'quality' => $request->quality,
+        'ud_field' => $request->ud_field,
+        'return_policy' => $request->return_policy,
+        'discount_price' => $request->discount_price,
+        'apmc_id' => $request->apmc, // Add APMC ID
+    ]);
+
+    // Load necessary relationships
+    $product->load(['category', 'seller.roles', 'apmc']);
+
+    return response()->json(['product' => $product], 201);
+}
+
 
 
     public function index()

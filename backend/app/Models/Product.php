@@ -18,7 +18,16 @@ class Product extends Model
         'seller_id',
         'image',
         'status',
+        'apmc_id',       // New relationship field
+        'sku',            // Additional fields
+        'production',
+        'quality',
+        'ud_field',
+        'return_policy',
+        'discount_price',
+        'feature_image',  // If you're saving feature image
     ];
+
 
     public function category()
     {
@@ -27,5 +36,9 @@ class Product extends Model
     public function seller()
     {
         return $this->belongsTo(User::class);
+    }
+    public function apmc()
+    {
+        return $this->belongsTo(Apmc::class); 
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\Product;
@@ -61,6 +62,17 @@ class ProductSeeder extends Seeder
             'is grown with care',
         ];
 
+        $productionPhrases = [
+            'grown in the lush fields of the countryside',
+            'produced using sustainable farming techniques',
+            'harvested at peak ripeness',
+            'carefully cultivated in local farms',
+            'manufactured using eco-friendly methods',
+            'produced under strict quality control',
+            'sourced directly from small-scale farmers',
+            'gathered with a focus on quality and sustainability',
+        ];
+
         $userCount = $users->count();
         $userIndex = 0;
 
@@ -88,6 +100,9 @@ class ProductSeeder extends Seeder
             // Quantity between 0 and 100
             $quantity = rand(0, 100);
 
+            // Random production description
+            $productionDescription = $productionPhrases[array_rand($productionPhrases)];
+
             Product::create([
                 'name' => $productName,
                 'description' => $description,
@@ -99,7 +114,7 @@ class ProductSeeder extends Seeder
                 // New fields
                 'sku' => strtoupper(Str::random(8)),
                 'apmc_id' => $apmcs->random()->id,
-                'production' => now()->subDays(rand(1, 60))->toDateString(),
+                'production' => $productionDescription, // Set production as a text description
                 'quality' => collect(['a', 'b', 'c'])->random(),
                 'ud_field' => 'Additional product details or custom notes here.',
                 'return_policy' => 'Returns accepted within 7 days with receipt.',
