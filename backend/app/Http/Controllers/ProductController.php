@@ -92,6 +92,7 @@ class ProductController extends Controller
     {
         $products = Product::with([
             'category',
+            'apmc',
             'seller' => function($query) {
                 $query->select('id', 'first_name');
             },

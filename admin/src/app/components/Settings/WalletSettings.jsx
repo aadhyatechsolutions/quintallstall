@@ -13,7 +13,7 @@ import {
   styled,
 } from "@mui/material";
 import { SimpleCard, Breadcrumb } from "app/components";
-import useCoinStore from "../../../store/coin/coinStore"; // Adjust path if needed
+import useCoinStore from "../../../store/coin/coinStore";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -28,14 +28,13 @@ export default function MakeWallet() {
   const [walletStatus, setWalletStatus] = useState("Inactive");
   const [walletAmount, setWalletAmount] = useState(500);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [addAmount, setAddAmount] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [selectedCoin, setSelectedCoin] = useState("");
 
-  // Zustand coin store
   const { coins, fetchCoins, loading } = useCoinStore();
 
   useEffect(() => {
-    fetchCoins(); // fetch coin list on component mount
+    fetchCoins();
   }, [fetchCoins]);
 
   const toggleWalletStatus = () => {
@@ -44,9 +43,10 @@ export default function MakeWallet() {
 
   const handleAddMoney = (e) => {
     e.preventDefault();
-    if (addAmount && !isNaN(addAmount)) {
-      setWalletAmount((prev) => prev + parseFloat(addAmount));
-      setAddAmount("");
+    if (quantity && !isNaN(quantity)) {
+      // Simulated logic: could also calculate value based on coin rate
+      setWalletAmount((prev) => prev + parseFloat(quantity));
+      setQuantity("");
       setSelectedCoin("");
       setShowAddForm(false);
     }
@@ -74,7 +74,7 @@ export default function MakeWallet() {
                 color={showAddForm ? "secondary" : "primary"}
                 onClick={() => setShowAddForm(!showAddForm)}
               >
-                {showAddForm ? "Cancel" : "Add Money"}
+                {showAddForm ? "Cancel" : "Add Coins"}
               </Button>
               <Button
                 variant="outlined"
@@ -101,11 +101,13 @@ export default function MakeWallet() {
                       {loading ? (
                         <MenuItem disabled>Loading...</MenuItem>
                       ) : coins.length ? (
-                        coins.map((coin) => (
-                          <MenuItem key={coin.id} value={coin.name}>
-                            {coin.name}
-                          </MenuItem>
-                        ))
+                        coins
+                          .filter((coin) => coin.status?.toLowerCase() === "active")
+                          .map((coin) => (
+                            <MenuItem key={coin.id} value={coin.name}>
+                              {coin.name}
+                            </MenuItem>
+                          ))
                       ) : (
                         <MenuItem disabled>No Coins Available</MenuItem>
                       )}
@@ -115,12 +117,12 @@ export default function MakeWallet() {
 
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Amount"
+                    label="Quantity"
                     fullWidth
                     type="number"
                     required
-                    value={addAmount}
-                    onChange={(e) => setAddAmount(e.target.value)}
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
                   />
                 </Grid>
 
