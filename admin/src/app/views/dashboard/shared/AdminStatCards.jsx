@@ -87,9 +87,9 @@ export default function StatCards2() {
   const totalOrders = orders.length;
 
    const cardList = [
-      { name: "Total Wholeseller", amount: totalWholesellers, Icon: Group, url:'/wholeseller/wholeseller-user/view' },
-      { name: "Total Retailer", amount: totalRetailers, Icon: Group, url:'/retailer/retailer-user/view' },
-      { name: "Delivery Partners", amount: totalDeliveryPartners, Icon: Group, url:'/delivery/delivery-user/view' },
+      { name: "Total Wholeseller", amount: totalWholesellers, Icon: Group, url:'/features/wholesaler/view' },
+      { name: "Total Retailer", amount: totalRetailers, Icon: Group, url:'/features/retailer/view' },
+      { name: "Delivery Partners", amount: totalDeliveryPartners, Icon: Group, url:'/features/delivery/view' },
       { name: "Total Sales", amount: totalOrders, Icon: SummarizeIcon, url:'/orders/orders' }
     ];
 
