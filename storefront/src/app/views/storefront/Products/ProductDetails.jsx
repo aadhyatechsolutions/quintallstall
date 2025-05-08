@@ -270,7 +270,7 @@ const ProductDetails = () => {
               />
             </Box>
             <Stack direction="row" spacing={1} mt={2} justifyContent="center">
-              {[1, 2, 3, 4].map((item) => (
+              {[1].map((item) => (
                 <Box
                   key={item}
                   sx={{
