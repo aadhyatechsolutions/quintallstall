@@ -1,4 +1,4 @@
-import { memo } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
@@ -82,11 +82,13 @@ const IconBox = styled("div")(({ theme }) => ({
 
 const Layout1Topbar = () => {
   const theme = useTheme();
-   const { walletValue} = useWalletStore();
+   const { walletValue, fetchWallet} = useWalletStore();
   const { settings, updateSettings } = useSettings();
   const { logout, user } = useAuth();
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+ useEffect(() => {
+    fetchWallet();
+  }, [fetchWallet]);
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };

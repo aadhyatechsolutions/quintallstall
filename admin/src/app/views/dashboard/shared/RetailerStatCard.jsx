@@ -62,7 +62,7 @@ export default function RetailerStatCard() {
     { name: "Total Products", amount: totalProducts, Icon: Inventory2Icon, url: "/features/product/list" },
     { name: "Total Customers", amount: totalCustomers, Icon: GroupIcon, url: "/orders/orders" },
     { name: "Total Orders", amount: totalOrders, Icon: SummarizeIcon, url: "/orders/orders" },
-    { name: "Total Earnings", amount: `₹${totalEarnings.toFixed(2)}`, Icon: MonetizationOnIcon, url: "/dashboard" }
+    { name: "Total Earnings", amount: `₹${totalEarnings.toFixed(2)}`, Icon: MonetizationOnIcon, url: "/" }
   ];
 
   return (
