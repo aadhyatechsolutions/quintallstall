@@ -23,6 +23,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\WalletController;
 use App\Http\Controllers\TestController;
 
 /*
@@ -97,6 +98,11 @@ Route::middleware('auth:sanctum')->controller(SessionController::class)->group(f
     Route::delete('/sessions/{tokenId}', 'logout');
 });
 
+Route::middleware('auth:sanctum')->controller(WalletController::class)->group(function () {
+    Route::post('/wallet/add-coin', 'addCoin');
+    Route::get('/wallet', 'getWallet');
+    Route::put('/wallet', 'update'); 
+});
 
 
 Route::get('test', [TestController::class,'test']);

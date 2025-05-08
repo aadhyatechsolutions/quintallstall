@@ -1,25 +1,27 @@
 import { create } from 'zustand';
 import {
-  fetchWallets,
-  createWallet,
+  fetchWallet,
   updateWallet,
   deleteWallet,
-  fetchWalletById
+  addCoin,
 } from './walletApi';
 
-const useWalletStore = create((set) => ({
-  wallets: [],
-  currentWallet: null,
+const useWalletStore = create((set, get) => ({
+  wallet: null,
   loading: false,
   error: null,
+  walletValue: 0,
 
-  fetchWallets: async () => {
+  // Fetch the current user's wallet
+  fetchWallet: async () => {
     set({ loading: true, error: null });
     try {
-      const wallets = await fetchWallets();
-      set({ wallets });
+      const wallet = await fetchWallet(); // assumes API returns current user's wallet
+      set({ wallet, walletValue: wallet.amount });
+      return wallet;
     } catch (err) {
       set({ error: err.message });
+      throw err;
     } finally {
       set({ loading: false });
     }
@@ -28,9 +30,7 @@ const useWalletStore = create((set) => ({
   addWallet: async (walletData) => {
     try {
       const newWallet = await createWallet(walletData);
-      set((state) => ({
-        wallets: [...state.wallets, newWallet],
-      }));
+      set({ wallet: newWallet, walletValue: newWallet.amount });
       return newWallet;
     } catch (err) {
       set({ error: err.message });
@@ -38,16 +38,11 @@ const useWalletStore = create((set) => ({
     }
   },
 
-  updateWallet: async (walletData, walletId) => {
+  addCoin: async ({ coin_id, quantity }) => {
     set({ loading: true, error: null });
     try {
-      const updatedWallet = await updateWallet(walletData, walletId);
-      set((state) => ({
-        wallets: state.wallets.map((w) =>
-          w.id === walletId ? updatedWallet : w
-        ),
-      }));
-      return updatedWallet;
+      const { wallet } = await addCoin({ coin_id, quantity });
+      set({ wallet, walletValue: wallet.amount });
     } catch (err) {
       set({ error: err.message });
       throw err;
@@ -56,24 +51,11 @@ const useWalletStore = create((set) => ({
     }
   },
 
-  deleteWallet: async (walletId) => {
-    try {
-      await deleteWallet(walletId);
-      set((state) => ({
-        wallets: state.wallets.filter((w) => w.id !== walletId),
-      }));
-    } catch (err) {
-      set({ error: err.message });
-      throw err;
-    }
-  },
-
-  fetchWalletById: async (id) => {
+  updateStatus: async (status) => {
     set({ loading: true, error: null });
     try {
-      const wallet = await fetchWalletById(id);
-      set({ currentWallet: wallet });
-      return wallet;
+      const updatedWallet = await updateWallet(status);
+      set({ wallet: updatedWallet });
     } catch (err) {
       set({ error: err.message });
       throw err;

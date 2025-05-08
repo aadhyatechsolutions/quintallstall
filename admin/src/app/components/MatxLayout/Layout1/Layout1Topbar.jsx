@@ -15,18 +15,18 @@ import WebAsset from "@mui/icons-material/WebAsset";
 import MailOutline from "@mui/icons-material/MailOutline";
 import StarOutline from "@mui/icons-material/StarOutline";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
-
+import { Typography } from "@mui/material";
 import useAuth from "app/hooks/useAuth";
 import useSettings from "app/hooks/useSettings";
 import { NotificationProvider } from "app/contexts/NotificationContext";
-
+import useWalletStore from "../../../../store/wallet/walletStore";
 import { Span } from "app/components/Typography";
 import ShoppingCart from "app/components/ShoppingCart";
 import { MatxMenu, MatxSearchBox } from "app/components";
 import { NotificationBar } from "app/components/NotificationBar";
 import { themeShadows } from "app/components/MatxTheme/themeColors";
 import { topBarHeight } from "app/utils/constant";
-
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 // STYLED COMPONENTS
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary
@@ -82,6 +82,7 @@ const IconBox = styled("div")(({ theme }) => ({
 
 const Layout1Topbar = () => {
   const theme = useTheme();
+   const { walletValue} = useWalletStore();
   const { settings, updateSettings } = useSettings();
   const { logout, user } = useAuth();
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -132,6 +133,12 @@ const Layout1Topbar = () => {
           </NotificationProvider>
 
           <ShoppingCart /> */}
+          <Box display="flex" alignItems="center">
+            <AccountBalanceWalletIcon/>
+            <Typography variant="body1" sx={{ ml: 0.5 }}>
+              ₹{walletValue}
+            </Typography>
+          </Box>
 
           <MatxMenu
             menuButton={

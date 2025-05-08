@@ -221,7 +221,7 @@ const navigations = [
       //   ] 
       // },
       { name: "Coin Details", path: "/settings/coin-details", iconText: "A",allowedRoles: ["admin",'wholesaler','retailer'], },
-      { name: "Wallet Settings", path: "/settings/wallet-settings", iconText: "A", allowedRoles: ["admin",'wholesaler','retailer'], },
+      { name: "Wallet Settings", path: "/settings/wallet-settings", iconText: "A", allowedRoles: ['wholesaler','retailer'], },
       { name: "Tax Slab", path: "/settings/tax-slab", iconText: "A" ,allowedRoles: ["admin"],},
       { 
         name: "Roles", 
