@@ -58,10 +58,10 @@ export default function WholesalerStatCard() {
   const totalCustomers = customerIds.size;
 
   const cardList = [
-    { name: "Total Products", amount: totalProducts, Icon: Inventory2Icon, url: "/products/my-products" },
-    { name: "Total Customers", amount: totalCustomers, Icon: GroupIcon, url: "/customers" },
-    { name: "Total Orders", amount: totalOrders, Icon: SummarizeIcon, url: "/orders/my-orders" },
-    { name: "Total Earnings", amount: `₹${totalEarnings.toFixed(2)}`, Icon: MonetizationOnIcon, url: "/orders/earnings" }
+    { name: "Total Products", amount: totalProducts, Icon: Inventory2Icon, url: "/features/product/list" },
+    { name: "Total Customers", amount: totalCustomers, Icon: GroupIcon, url: "/orders/orders" },
+    { name: "Total Orders", amount: totalOrders, Icon: SummarizeIcon, url: "/orders/orders" },
+    { name: "Total Earnings", amount: `₹${totalEarnings.toFixed(2)}`, Icon: MonetizationOnIcon, url: "/" }
   ];
 
   return (

@@ -1,37 +1,42 @@
 import axiosInstance from "../../utils/axiosInstance";
 
-export const fetchWallets = async () => {
+// ✅ Fetch the current user's wallet
+export const fetchWallet = async () => {
   try {
-    const { data } = await axiosInstance.get('/wallets');
-    return data.wallets;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch wallets');
-  }
-};
-
-
-export const updateWallet = async (walletData, walletId) => {
-  try {
-    const { data } = await axiosInstance.put(`/wallets/${walletId}`, walletData);
+    const { data } = await axiosInstance.get('/wallet');
     return data.wallet;
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to update wallet');
+    throw new Error(error.response?.data?.message || 'Failed to fetch wallet');
   }
 };
 
+
+// ✅ Delete a wallet
 export const deleteWallet = async (walletId) => {
   try {
-    await axiosInstance.delete(`/wallets/${walletId}`);
+    await axiosInstance.delete(`/wallet/${walletId}`);
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Failed to delete wallet');
   }
 };
 
-export const fetchWalletById = async (id) => {
+export const addCoin = async ({ coin_id, quantity }) => {
   try {
-    const { data } = await axiosInstance.get(`/wallets/${id}`);
-    return data.wallet;
+    const { data } = await axiosInstance.post('/wallet/add-coin', {
+      coin_id,
+      quantity,
+    });
+    return data; 
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch wallet by ID');
+    throw new Error(error.response?.data?.message || 'Failed to add coin to wallet');
+  }
+};
+
+export const updateWallet = async (status) => {
+  try {
+    const response = await axiosInstance.put(`/wallet`, { status });
+    return response.data.wallet;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to update wallet');
   }
 };
