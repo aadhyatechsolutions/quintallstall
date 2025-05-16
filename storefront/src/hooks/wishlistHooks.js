@@ -1,9 +1,12 @@
-// src/hooks/wishlistHooks.js
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { addWishlistItem, deleteWishlistItem, fetchWishlistItems } from "../utils/wishlistService";
+import {
+  addWishlistItem,
+  deleteWishlistItem,
+  fetchWishlistItems,
+} from "../utils/wishlistService";
 import { useWishlistStore } from "../store/wishlistStore";
 
-// Fetch wishlist
+// Fetch wishlist hook
 export const useWishlist = () => {
   return useQuery({
     queryKey: ["wishlist"],
@@ -23,12 +26,12 @@ export const useWishlist = () => {
   });
 };
 
-// Wishlist mutations (add, remove)
+// Mutations for wishlist
 export const useWishlistMutations = () => {
   const queryClient = useQueryClient();
 
-  const addMutation = useMutation({
-    mutationFn: addWishlistItem,
+  const addMutation = useMutation(addWishlistItem, {
+    onSuccess: () => queryClient.invalidateQueries(["wishlist"]),
     onError: (error) => {
       useWishlistStore.setState({
         syncStatus: "error",
@@ -37,11 +40,13 @@ export const useWishlistMutations = () => {
     },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: deleteWishlistItem,
+  const deleteMutation = useMutation(deleteWishlistItem, {
     onSuccess: () => queryClient.invalidateQueries(["wishlist"]),
     onError: (error) => {
-      // Handle error
+      useWishlistStore.setState({
+        syncStatus: "error",
+        lastSyncError: error.message,
+      });
     },
   });
 

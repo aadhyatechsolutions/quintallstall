@@ -20,6 +20,7 @@ import {
   ShoppingCart,
   FavoriteBorder,
   Share,
+  Bookmark,
   CheckCircle,
   Error as ErrorIcon,
   Warning,
@@ -27,7 +28,9 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../../../../store/cartStore";
+import { useWishlistStore } from "../../../../store/wishlistStore";
 import { handleAddToCartWithAuthCheck } from "../../../../utils/authCartHandler";
+
 // Stock configuration utility
 const getStockConfig = (stockLevel, theme) => {
   const config = {
@@ -56,10 +59,11 @@ const getStockConfig = (stockLevel, theme) => {
   return config[stockLevel] || config.in_stock;
 };
 
-const ProductCard = ({ product,isSpecialOffer = false }) => {
+const ProductCard = ({ product, isSpecialOffer = false }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const addToCart = useCartStore((state) => state.addToCart);
+  const addToWishlist = useWishlistStore((state) => state.addToWishlist);
   const stockConfig = getStockConfig(product.stock_level, theme);
 
   const handleCardClick = () => navigate(`/products/${product.id}`);
@@ -69,6 +73,12 @@ const ProductCard = ({ product,isSpecialOffer = false }) => {
       product,
       addToCart,
     });
+  };
+
+  // Add this function to handle wishlist click
+  const handleAddToWishlist = (e) => {
+    e.stopPropagation();
+    addToWishlist(product);
   };
 
   return (
@@ -83,7 +93,7 @@ const ProductCard = ({ product,isSpecialOffer = false }) => {
         flexDirection: "column",
         position: "relative",
         transition: "all 0.3s ease",
-        "&:hover": {  
+        "&:hover": {
           transform: "translateY(-6px)",
           boxShadow: theme.shadows[6],
           "& .product-actions": { opacity: 1 },
@@ -136,10 +146,10 @@ const ProductCard = ({ product,isSpecialOffer = false }) => {
           image={`${apiConfig.MEDIA_URL}${product.image}`}
           alt={product.name}
           onClick={handleCardClick}
-          sx={{ 
+          sx={{
             objectFit: "cover",
             cursor: "pointer",
-           }}
+          }}
         />
       </Badge>
 
@@ -163,8 +173,9 @@ const ProductCard = ({ product,isSpecialOffer = false }) => {
           size="small"
           sx={{
             bgcolor: "background.paper",
-            "&:hover": { bgcolor: "rgba(182, 19, 26, 0.1)" },
+            "&:hover": { bgcolor: "rgb(238, 31, 42)" },
           }}
+          onClick={handleAddToWishlist}
         >
           <FavoriteBorder fontSize="small" />
         </IconButton>
@@ -172,10 +183,10 @@ const ProductCard = ({ product,isSpecialOffer = false }) => {
           size="small"
           sx={{
             bgcolor: "background.paper",
-            "&:hover": { bgcolor: "rgba(182, 19, 26, 0.1)" },
+            "&:hover": { bgcolor: "rgb(238, 31, 42)" },
           }}
         >
-          <Share fontSize="small" />
+          <Bookmark fontSize="small" />
         </IconButton>
       </Box>
 
@@ -289,25 +300,26 @@ const ProductCard = ({ product,isSpecialOffer = false }) => {
                 Rs {product.originalPrice}
               </Typography>
             )}
-           {isSpecialOffer && product.price && (
-    <Typography
-      variant="body2"
-      sx={{
-        textDecoration: "line-through",
-        color: "text.disabled",
-      }}
-    >
-      Rs {product.price}
-    </Typography>
-  )}
-  <Typography
-    variant="h6"
-    sx={{ color: theme.palette.error.main, fontWeight: 700 }}
-  >
-    Rs {isSpecialOffer && product.discount_price
-      ? product.discount_price
-      : product.price}
-  </Typography>
+            {isSpecialOffer && product.price && (
+              <Typography
+                variant="body2"
+                sx={{
+                  textDecoration: "line-through",
+                  color: "text.disabled",
+                }}
+              >
+                Rs {product.price}
+              </Typography>
+            )}
+            <Typography
+              variant="h6"
+              sx={{ color: theme.palette.error.main, fontWeight: 700 }}
+            >
+              Rs{" "}
+              {isSpecialOffer && product.discount_price
+                ? product.discount_price
+                : product.price}
+            </Typography>
           </Box>
 
           {/* Enhanced Add to Cart Button */}
