@@ -24,6 +24,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\TaxController;
 use App\Http\Controllers\TestController;
 
 /*
@@ -104,5 +105,11 @@ Route::middleware('auth:sanctum')->controller(WalletController::class)->group(fu
     Route::put('/wallet', 'update'); 
 });
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/taxes', [TaxController::class, 'index']); 
+    Route::post('/tax', [TaxController::class, 'store']);
+    Route::put('/tax/{id}', [TaxController::class, 'update']);
+    Route::delete('/tax/{id}', [TaxController::class, 'destroy']);
+});
 
 Route::get('test', [TestController::class,'test']);

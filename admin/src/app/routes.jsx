@@ -81,8 +81,8 @@ import ProfileEdit from "../features/profile/ProfileEdit";
 
 import CoinDetails from "./components/Settings/CoinDetails";
 import WalletSettings from "./components/Settings/WalletSettings";
-import TaxSlabCreate from "./components/Settings/TaxSlabCreate";
-
+// import TaxSlabCreate from "./components/Settings/TaxSlabCreate";
+import TaxSlab from "../features/tax/TaxSlab";
 import RoleCreate from "../features/role/RoleCreate";
 import RoleEdit from "../features/role/RoleEdit";
 import RoleView from "../features/role/RoleView";
@@ -179,7 +179,7 @@ const routes = [
 
       { path: "/settings/coin-details", element: <CoinDetails /> },
       { path: "/settings/wallet-settings", element: <WalletSettings /> },
-      { path: "/settings/tax-slab", element: <TaxSlabCreate /> },
+      { path: "/settings/tax-slab", element: <TaxSlab /> },
 
       { path: "/settings/role/create", element: <RoleCreate /> },
       { path: "/settings/role/view", element: <RoleView /> },
