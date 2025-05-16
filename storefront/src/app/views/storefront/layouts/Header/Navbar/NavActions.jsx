@@ -97,7 +97,7 @@ const NavActions = ({ isLargeScreen }) => {
           sx={{ color: "black", "&:hover": { color: "#2b4a04" } }}
           onClick={() => navigate("/wishlist")}
         >
-          <Badge badgeContent={"1"} color="error">
+          <Badge badgeContent={1} color="error">
             <FavoriteBorder fontSize={isLargeScreen ? "medium" : "small"} />
           </Badge>
         </IconButton>
