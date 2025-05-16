@@ -99,7 +99,7 @@ Route::middleware('auth:sanctum')->controller(SessionController::class)->group(f
 });
 
 Route::middleware('auth:sanctum')->controller(WalletController::class)->group(function () {
-    Route::post('/wallet/add-coin', 'addCoin');
+    Route::post('/wallet/add-amount', 'addAmount');
     Route::get('/wallet', 'getWallet');
     Route::put('/wallet', 'update'); 
 });

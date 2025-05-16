@@ -4,7 +4,7 @@ import {
   MenuItem, FormControl, InputLabel, Typography, styled
 } from "@mui/material";
 import { SimpleCard, Breadcrumb } from "app/components";
-import useCoinStore from "../../../store/coin/coinStore";
+// import useCoinStore from "../../../store/coin/coinStore";
 import useWalletStore from "../../../store/wallet/walletStore";
 
 const Container = styled("div")(({ theme }) => ({
@@ -19,16 +19,16 @@ const Container = styled("div")(({ theme }) => ({
 export default function MakeWallet() {
   // const [walletStatus, setWalletStatus] = useState("Inactive");
   const [showAddForm, setShowAddForm] = useState(false);
-  const [quantity, setQuantity] = useState("");
+  const [amount, setAmount] = useState("");
   const [selectedCoinId, setSelectedCoinId] = useState("");
 
-  const { coins, fetchCoins, loading: coinsLoading } = useCoinStore();
-  const { walletValue, addCoin, updateStatus, fetchWallet, wallet } = useWalletStore();
+  // const { coins, fetchCoins, loading: coinsLoading } = useCoinStore();
+  const { walletValue, addAmount, updateStatus, fetchWallet, wallet } = useWalletStore();
 
   useEffect(() => {
-    fetchCoins();
+    // fetchCoins();
     fetchWallet();
-  }, [fetchCoins, fetchWallet]);
+  }, [ fetchWallet]);
 
   const toggleWalletStatus = async () => {
     const newStatus = wallet?.status === "Active" ? "Inactive" : "Active";
@@ -40,14 +40,14 @@ export default function MakeWallet() {
     }
   };
 
-  const handleAddCoins = async (e) => {
+  const handleAddAmount = async (e) => {
     e.preventDefault();
-    if (!selectedCoinId || isNaN(quantity) || quantity <= 0) return;
+    if (isNaN(amount) || amount <= 0) return;
 
     try {
-      await addCoin({ coin_id: selectedCoinId, quantity: Number(quantity) });
-      setQuantity("");
-      setSelectedCoinId("");
+      await addAmount({amount: Number(amount) });
+      setAmount("");
+      // setSelectedCoinId("");
       await fetchWallet();
     } catch (error) {
       console.error("Failed to add coin:", error.message);
@@ -90,41 +90,17 @@ export default function MakeWallet() {
           </Grid>
 
           {showAddForm && (
-            <Box component="form" onSubmit={handleAddCoins} mt={4}>
+            <Box component="form" onSubmit={handleAddAmount} mt={4}>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth required>
-                    <InputLabel>Coin</InputLabel>
-                    <Select
-                      value={selectedCoinId}
-                      label="Coin"
-                      onChange={(e) => setSelectedCoinId(e.target.value)}
-                    >
-                      {coinsLoading ? (
-                        <MenuItem disabled>Loading...</MenuItem>
-                      ) : coins.length ? (
-                        coins
-                          .filter((coin) => coin.status?.toLowerCase() === "active")
-                          .map((coin) => (
-                            <MenuItem key={coin.id} value={coin.id}>
-                              {coin.name} (₹{coin.value})
-                            </MenuItem>
-                          ))
-                      ) : (
-                        <MenuItem disabled>No Coins Available</MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
-                </Grid>
 
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Quantity"
+                    label="Amount"
                     fullWidth
                     type="number"
                     required
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
                     inputProps={{ min: 1 }}
                   />
                 </Grid>
