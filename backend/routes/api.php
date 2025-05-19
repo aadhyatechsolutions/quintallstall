@@ -26,6 +26,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\PurchaseCoinController;
+use App\Http\Controllers\ContactUsController;
 
 use App\Http\Controllers\TestController;
 
@@ -119,5 +120,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/purchased-coins', [PurchaseCoinController::class, 'getAllCoins']);
     Route::post('/purchase-coins', [PurchaseCoinController::class, 'store']);
 });
+
+Route::post('/contact-us', [ContactUsController::class, 'send']);
 
 Route::get('test', [TestController::class,'test']);
