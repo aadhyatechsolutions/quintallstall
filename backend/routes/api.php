@@ -49,6 +49,7 @@ Route::post('auth/login', [AuthController::class, 'login'])->name('login');
 Route::post('auth/otpLogin', [AuthController::class, 'otpLogin']);
 Route::post('auth/generateLoginOtp', [AuthController::class, 'generateLoginOtp']);
 
+
 Route::post('auth/generateOtp', [AuthController::class, 'generateOtp']);
 Route::post('auth/verifyOtp', [AuthController::class, 'verifyOtp']);
 Route::post('auth/logout', [AuthController::class, 'logout']);
@@ -57,6 +58,9 @@ Route::middleware('auth:sanctum')->get('auth/profile', [AuthController::class, '
 Route::resource('apmcs', ApmcController::class);
 Route::resource('roles', RoleController::class);
 Route::resource('users', UserController::class);
+
+Route::post('/staff/create', [UserController::class, 'createStaff']);
+Route::put('/staff/{id}', [UserController::class, 'updateStaff']);
 // Route::resource('products', ProductController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('reviews', ReviewController::class);

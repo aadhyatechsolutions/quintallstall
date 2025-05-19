@@ -89,9 +89,10 @@ import RoleCreate from "../features/role/RoleCreate";
 import RoleEdit from "../features/role/RoleEdit";
 import RoleView from "../features/role/RoleView";
 
-import StaffCreate from "./components/Settings/Staff/Create";
-import StaffEdit from "./components/Settings/Staff/Edit";
-import StaffView from "./components/Settings/Staff/View";
+import StaffCreate from "../features/staff/StaffCreate";
+import StaffEdit from "../features/staff/StaffEdit";
+// import StaffEdit from "./components/Settings/Staff/Edit";
+import StaffView from "../features/staff/StaffView";
 
 import RoleGuard from "./auth/RoleGuard";
 

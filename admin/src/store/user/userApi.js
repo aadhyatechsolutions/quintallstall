@@ -44,7 +44,14 @@ export const createUser = async (userData) => {
     }
     return data.user;
 };
-
+export const createStaff = async (userData) => {
+    
+    const { data, status } = await axiosInstance.post('/staff/create', userData);
+    if (status !== 201) {
+        throw new Error('Failed to create staff');
+    }
+    return data.user;
+};
 // Update an existing user's data and role
 export const updateUser = async (userId, userData, role) => {
     const { data, status } = await axiosInstance.post(`/users/${userId}`, userData);
@@ -53,7 +60,13 @@ export const updateUser = async (userId, userData, role) => {
     }
     return data.user;
 };
-
+export const updateStaff = async (userId, userData) => {
+    const { data, status } = await axiosInstance.post(`/staff/${userId}`, userData);
+    if (status !== 200) {
+        throw new Error('Failed to update staff');
+    }
+    return data.user;
+};
 // Delete a user by their ID
 export const deleteUser = async (userId) => {
     const { data, status } = await axiosInstance.delete(`/users/${userId}`);

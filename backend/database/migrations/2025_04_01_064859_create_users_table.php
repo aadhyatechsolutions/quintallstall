@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('business_name');
+            $table->string('business_name')->nullable();
             $table->string('phone_number');
             $table->string('email')->unique();
             $table->string('password');
             $table->string('profile_image')->nullable();
-            
+            $table->string('status')->default('active');
             // Foreign key relationships
             $table->foreignId('address_id')->nullable()->constrained('addresses')->onDelete('set null');
             $table->foreignId('apmc_id')->nullable()->constrained('apmcs')->onDelete('set null');

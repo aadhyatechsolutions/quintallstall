@@ -32,10 +32,11 @@ import {
   const predefinedPermissions = [
     "product",
     "order",
-    "report",
+    "wholesaler",
+    "retailer",
+    'delivery',
     "commission",
     "frontend",
-    "user_management",
     "settings",
   ];
   
