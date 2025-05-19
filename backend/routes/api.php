@@ -25,6 +25,8 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\TaxController;
+use App\Http\Controllers\PurchaseCoinController;
+
 use App\Http\Controllers\TestController;
 
 /*
@@ -110,6 +112,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/tax', [TaxController::class, 'store']);
     Route::put('/tax/{id}', [TaxController::class, 'update']);
     Route::delete('/tax/{id}', [TaxController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/purchase-coins', [PurchaseCoinController::class, 'index']);
+    Route::post('/purchase-coins', [PurchaseCoinController::class, 'store']);
 });
 
 Route::get('test', [TestController::class,'test']);

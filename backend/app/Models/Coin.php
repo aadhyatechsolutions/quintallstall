@@ -10,5 +10,8 @@ class Coin extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'slug', 'description', 'value', 'status'];
-
+    public function purchaseCoins()
+    {
+        return $this->hasMany(PurchaseCoin::class);
+    }
 }
