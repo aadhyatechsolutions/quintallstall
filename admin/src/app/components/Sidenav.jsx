@@ -30,8 +30,8 @@ const SideNavMobile = styled("div")(({ theme }) => ({
 export default function Sidenav({ children }) {
   const { settings, updateSettings } = useSettings();
   const { user } = useAuth();
-  const userRoles = user.roles.map(role=>role.slug);
-  const filteredNavigations = filterNavigationByRole(navigations, userRoles);
+  const userPermissions = user.roles.map(role=>role.permissions);
+  const filteredNavigations = filterNavigationByRole(navigations, JSON.parse(userPermissions));
   
   const updateSidebarMode = (sidebarSettings) => {
     let activeLayoutSettingsName = settings.activeLayout + "Settings";

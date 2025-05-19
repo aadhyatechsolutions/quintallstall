@@ -30,13 +30,15 @@ export function getTimeDifference(date) {
   else return `${(difference / 86400 / 30 / 12).toFixed(1)} y`;
 }
 
-export function filterNavigationByRole(navigations, userRoles) {
+export function filterNavigationByRole(navigations, userPermissions) {
   const hasAccess = (item) => {
     // If item has no role restriction, include it
-    if (!item.allowedRoles || item.allowedRoles.length === 0) return true;
+    if(item?.name?.toLowerCase() == 'dashboard') return true;
+    // if (!item.allowedRoles || item.allowedRoles.length === 0) return true;
 
     // If item.roles is defined, check if user has any matching role
-    return item.allowedRoles.some(role => userRoles.includes(role));
+    // return item.allowedRoles.some(role => userRoles.includes(role));
+    return userPermissions.includes(item?.name?.toLowerCase());
   };
 
   const filterItems = (items) => {
@@ -44,7 +46,7 @@ export function filterNavigationByRole(navigations, userRoles) {
       .filter(hasAccess)
       .map(item => ({
         ...item,
-        children: item.children ? filterItems(item.children) : undefined,
+        children: item.children,
       }))
       .filter(item => !(item.children && item.children.length === 0)); // Remove empty groups
   };

@@ -49,16 +49,17 @@ const navigations = [
         ] 
       },
       { name: "Product Reviews", path: "/features/product/reviews", icon: "assignment"},
+      { name: "Purchase Coin", path: "/settings/purchase-coin", iconText: "A", allowedRoles: ['wholesaler','retailer'], },
     ]
   },
   {
-    name: "WholeSeller",
+    name: "WholeSaler",
     icon: "account_circle",
     badge: { color: "secondary" },
     allowedRoles: ["admin"],
     children: [
       { 
-        name: "WholeSeller User", 
+        name: "WholeSaler User", 
         icon: "apps",
         level: 2,
         children: [
@@ -221,7 +222,7 @@ const navigations = [
       //   ] 
       // },
       { name: "Purchased Coins", path: "/settings/purchased-coins", iconText: "A",allowedRoles: ["admin"], },
-      { name: "Purchase Coin", path: "/settings/purchase-coin", iconText: "A", allowedRoles: ['wholesaler','retailer'], },
+      
       { name: "Wallet Settings", path: "/settings/wallet-settings", iconText: "A", allowedRoles: ['wholesaler','retailer'], },
       { name: "Tax Slab", path: "/settings/tax-slab", iconText: "A" ,allowedRoles: ["admin"],},
       { 

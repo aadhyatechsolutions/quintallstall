@@ -33,7 +33,7 @@ const usePurchaseCoinStore = create((set) => ({
       const data = await fetchPurchaseCoins();
       set({ purchaseCoins: data });
     } catch (err) {
-      set({ error: err.message });
+      set({ error: err.message,purchaseCoins:[] });
     } finally {
       set({ loading: false });
     }
