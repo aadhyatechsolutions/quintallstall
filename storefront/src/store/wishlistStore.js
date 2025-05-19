@@ -9,7 +9,7 @@ import {
 export const useWishlistStore = create(
   persist(
     (set, get) => ({
-      wishlist: { items: null },
+      wishlist: { items: [] },
       syncStatus: "idle",
       lastSyncError: null,
 
