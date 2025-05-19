@@ -206,7 +206,7 @@ const navigations = [
         name: "Coin Settings", 
         icon: "apps",
         level: 2,
-        allowedRoles: ["admin",'wholesaler','retailer'],
+        allowedRoles: ["admin"],
         children: [
           { name: "Create", path: "/settings/coin-settings/create", iconText: "A" },
           { name: "View", path: "/settings/coin-settings/view", iconText: "A" },
@@ -220,7 +220,8 @@ const navigations = [
       //     { name: "View", path: "/settings/coin-type/view", iconText: "A" },
       //   ] 
       // },
-      { name: "Coin Details", path: "/settings/coin-details", iconText: "A",allowedRoles: ["admin",'wholesaler','retailer'], },
+      { name: "Purchased Coins", path: "/settings/purchased-coins", iconText: "A",allowedRoles: ["admin"], },
+      { name: "Purchase Coin", path: "/settings/purchase-coin", iconText: "A", allowedRoles: ['wholesaler','retailer'], },
       { name: "Wallet Settings", path: "/settings/wallet-settings", iconText: "A", allowedRoles: ['wholesaler','retailer'], },
       { name: "Tax Slab", path: "/settings/tax-slab", iconText: "A" ,allowedRoles: ["admin"],},
       { 

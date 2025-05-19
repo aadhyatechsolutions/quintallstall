@@ -20,11 +20,10 @@ export const deleteWallet = async (walletId) => {
   }
 };
 
-export const addCoin = async ({ coin_id, quantity }) => {
+export const addAmount = async ({amount }) => {
   try {
-    const { data } = await axiosInstance.post('/wallet/add-coin', {
-      coin_id,
-      quantity,
+    const { data } = await axiosInstance.post('/wallet/add-amount', {
+      amount,
     });
     return data; 
   } catch (error) {

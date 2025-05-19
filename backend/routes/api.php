@@ -24,6 +24,10 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\TaxController;
+use App\Http\Controllers\PurchaseCoinController;
+use App\Http\Controllers\ContactUsController;
+
 use App\Http\Controllers\TestController;
 
 /*
@@ -99,10 +103,24 @@ Route::middleware('auth:sanctum')->controller(SessionController::class)->group(f
 });
 
 Route::middleware('auth:sanctum')->controller(WalletController::class)->group(function () {
-    Route::post('/wallet/add-coin', 'addCoin');
+    Route::post('/wallet/add-amount', 'addAmount');
     Route::get('/wallet', 'getWallet');
     Route::put('/wallet', 'update'); 
 });
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/taxes', [TaxController::class, 'index']); 
+    Route::post('/tax', [TaxController::class, 'store']);
+    Route::put('/tax/{id}', [TaxController::class, 'update']);
+    Route::delete('/tax/{id}', [TaxController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/purchase-coins', [PurchaseCoinController::class, 'index']);
+    Route::get('/purchased-coins', [PurchaseCoinController::class, 'getAllCoins']);
+    Route::post('/purchase-coins', [PurchaseCoinController::class, 'store']);
+});
+
+Route::post('/contact-us', [ContactUsController::class, 'send']);
 
 Route::get('test', [TestController::class,'test']);

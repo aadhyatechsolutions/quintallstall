@@ -79,10 +79,12 @@ import ProfileEdit from "../features/profile/ProfileEdit";
 // import CoinTypeView from "./components/Settings/CoinType/View";
 // import CoinTypeEdit from "./components/Settings/CoinType/Edit";
 
-import CoinDetails from "./components/Settings/CoinDetails";
-import WalletSettings from "./components/Settings/WalletSettings";
-import TaxSlabCreate from "./components/Settings/TaxSlabCreate";
-
+// import CoinDetails from "./components/Settings/CoinDetails";
+import PurchasedCoins from "../features/coin/PurchasedCoins";
+import PurchaseCoin from "../features/coin/PurchaseCoin";
+import WalletSettings from "../features/wallet/WalletSettings";
+// import TaxSlabCreate from "./components/Settings/TaxSlabCreate";
+import TaxSlab from "../features/tax/TaxSlab";
 import RoleCreate from "../features/role/RoleCreate";
 import RoleEdit from "../features/role/RoleEdit";
 import RoleView from "../features/role/RoleView";
@@ -177,9 +179,12 @@ const routes = [
       // { path: "/settings/coin-type/view", element: <CoinTypeView /> },
       // { path: "/settings/coin-type/edit/:id", element: <CoinTypeEdit /> },
 
-      { path: "/settings/coin-details", element: <CoinDetails /> },
+      { path: "/settings/purchased-coins", element: <PurchasedCoins /> },
+      { path: "/settings/purchase-coin", element: <PurchaseCoin /> },
+      
+      
       { path: "/settings/wallet-settings", element: <WalletSettings /> },
-      { path: "/settings/tax-slab", element: <TaxSlabCreate /> },
+      { path: "/settings/tax-slab", element: <TaxSlab /> },
 
       { path: "/settings/role/create", element: <RoleCreate /> },
       { path: "/settings/role/view", element: <RoleView /> },

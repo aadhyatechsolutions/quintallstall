@@ -8,11 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class WalletController extends Controller
 {
-    public function addCoin(Request $request)
+    public function addAmount(Request $request)
     {
         $request->validate([
-            'coin_id' => 'required|exists:coins,id',  
-            'quantity' => 'required|numeric|min:1'   
+            'amount' => 'required|numeric|min:1'   
         ]);
 
         $wallet = Wallet::where('user_id', Auth::id())->first();
@@ -21,14 +20,8 @@ class WalletController extends Controller
             return response()->json(['message' => 'Wallet not found for this user'], 404);
         }
 
-        $coin = Coin::find($request->coin_id);
-        if (!$coin) {
-            return response()->json(['message' => 'Coin not found'], 404);
-        }
 
-        $totalValue = $coin->value * $request->quantity;
-
-        $wallet->amount += $totalValue;
+        $wallet->amount += $request->amount;
         $wallet->save();
 
         return response()->json([

@@ -19,7 +19,9 @@ import { Typography } from "@mui/material";
 import useAuth from "app/hooks/useAuth";
 import useSettings from "app/hooks/useSettings";
 import { NotificationProvider } from "app/contexts/NotificationContext";
+import useCoinStore from "../../../../store/coin/coinStore";
 import useWalletStore from "../../../../store/wallet/walletStore";
+import usePurchaseCoinStore from "../../../../store/purchaseCoin/purchaseCoinStore";
 import { Span } from "app/components/Typography";
 import ShoppingCart from "app/components/ShoppingCart";
 import { MatxMenu, MatxSearchBox } from "app/components";
@@ -27,6 +29,7 @@ import { NotificationBar } from "app/components/NotificationBar";
 import { themeShadows } from "app/components/MatxTheme/themeColors";
 import { topBarHeight } from "app/utils/constant";
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import SavingsIcon from '@mui/icons-material/Savings';
 // STYLED COMPONENTS
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary
@@ -82,13 +85,17 @@ const IconBox = styled("div")(({ theme }) => ({
 
 const Layout1Topbar = () => {
   const theme = useTheme();
-   const { walletValue, fetchWallet} = useWalletStore();
+  const { coins, fetchCoins } = useCoinStore();
+  const { walletValue, fetchWallet} = useWalletStore();
+  const { purchaseCoins, fetchPurchaseCoins } = usePurchaseCoinStore();
   const { settings, updateSettings } = useSettings();
   const { logout, user } = useAuth();
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
  useEffect(() => {
+    fetchCoins();
     fetchWallet();
-  }, [fetchWallet]);
+    fetchPurchaseCoins();
+  }, [fetchCoins,fetchWallet, fetchPurchaseCoins]);
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };
@@ -104,6 +111,12 @@ const Layout1Topbar = () => {
     updateSidebarMode({ mode });
   };
 
+  const getCoinById = (id) => coins.find((coin) => coin.id === id);
+  const totalCoinQuantity = purchaseCoins.reduce((sum, pCoin) => {
+    const coin = getCoinById(pCoin.coin_id);
+    const value = parseFloat(coin?.value || 0);
+    return sum + pCoin.quantity;
+  }, 0);
   return (
     <TopbarRoot>
       <TopbarContainer>
@@ -111,34 +124,20 @@ const Layout1Topbar = () => {
           <StyledIconButton onClick={handleSidebarToggle}>
             <Menu />
           </StyledIconButton>
-
-          {/* <IconBox>
-            <StyledIconButton>
-              <MailOutline />
-            </StyledIconButton>
-
-            <StyledIconButton>
-              <WebAsset />
-            </StyledIconButton>
-
-            <StyledIconButton>
-              <StarOutline />
-            </StyledIconButton>
-          </IconBox> */}
         </Box>
 
-        <Box display="flex" alignItems="center">
-          {/* <MatxSearchBox />
-
-          <NotificationProvider>
-            <NotificationBar />
-          </NotificationProvider>
-
-          <ShoppingCart /> */}
+        <Box display="flex" alignItems="center" gap={2}>
           <Box display="flex" alignItems="center">
             <AccountBalanceWalletIcon/>
             <Typography variant="body1" sx={{ ml: 0.5 }}>
               ₹{walletValue}
+            </Typography>
+          </Box>
+          <Typography variant="body1" color="text.secondary">|</Typography>
+          <Box display="flex" alignItems="center">
+            <SavingsIcon/>
+            <Typography variant="body1" sx={{ ml: 0.5 }}>
+              {totalCoinQuantity}
             </Typography>
           </Box>
 

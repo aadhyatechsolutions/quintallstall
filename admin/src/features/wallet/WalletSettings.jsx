@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 import { SimpleCard, Breadcrumb } from "app/components";
 // import useCoinStore from "../../../store/coin/coinStore";
-import useWalletStore from "../../../store/wallet/walletStore";
+import useWalletStore from "../../store/wallet/walletStore";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",

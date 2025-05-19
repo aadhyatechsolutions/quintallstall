@@ -3,7 +3,7 @@ import {
   fetchWallet,
   updateWallet,
   deleteWallet,
-  addCoin,
+  addAmount,
 } from './walletApi';
 
 const useWalletStore = create((set, get) => ({
@@ -38,10 +38,10 @@ const useWalletStore = create((set, get) => ({
     }
   },
 
-  addCoin: async ({ coin_id, quantity }) => {
+  addAmount: async ({ amount }) => {
     set({ loading: true, error: null });
     try {
-      const { wallet } = await addCoin({ coin_id, quantity });
+      const { wallet } = await addAmount({amount });
       set({ wallet, walletValue: wallet.amount });
     } catch (err) {
       set({ error: err.message });
