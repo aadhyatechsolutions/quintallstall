@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import { fetchUsers, fetchUsersByRoles, fetchUserById, createUser, updateUser, deleteUser } from "./userApi";
+import { fetchUsers, fetchUsersByRoles, fetchUserById, createUser, createStaff, updateStaff, updateUser, deleteUser } from "./userApi";
 
 const useUserStore = create((set) => ({
     users: [],
@@ -58,7 +58,34 @@ const useUserStore = create((set) => ({
         }
     },
     
-    
+    createStaff: async (userData, role) => {
+        set({ isLoading: true, error: null });
+        try {
+            const newUser = await createStaff(userData, role);
+            set((state) => ({ users: [...state.users, newUser] }));
+        } catch (error) {
+            if(error.status == 422){
+                throw new Error(error.response.data.message);
+            }else{
+                throw new Error(error.message);
+            }
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+     updateStaff: async (userId, userData) => {
+        set({ isLoading: true, error: null });
+        try {
+            const updatedUser = await updateStaff(userId, userData);
+            set((state) => ({
+                users: state.users.map((user) => user.id === userId ? updatedUser : user)
+            }));
+        } catch (error) {
+            throw new Error(error.response.data.message);
+        } finally {
+            set({ isLoading: false });
+        }
+    },
     updateUser: async (userId, userData, role) => {
         set({ isLoading: true, error: null });
         try {

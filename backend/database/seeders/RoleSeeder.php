@@ -33,6 +33,11 @@ class RoleSeeder extends Seeder
             'description' => 'Administrator role',
         ]);
         Role::create([
+            'name' => 'Staff',
+            'slug' => 'staff',
+            'description' => 'Staff role',
+        ]);
+        Role::create([
             'name' => 'User',
             'slug' => 'user',
             'description' => 'Regular user role',
