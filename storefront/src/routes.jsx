@@ -14,7 +14,9 @@ import ShopByCategories from "./app/views/storefront/ShopByCategories/ShopByCate
 import TermsAndConditions from "./app/views/storefront/TermsAndConditions/TermsAndConditions";
 import ReturnPolicy from "./app/views/storefront/ReturnPolicy/ReturnPolicy";
 import PrivacyInfo from "./app/views/storefront/PrivacyPolicy/PrivacyInfo";
-
+import YourOrder from "./app/views/storefront/YourOrder/YourOrder";
+import YourAccount from "./app/views/storefront/YourAccount/YourAccount";
+import Wishlist from "./app/views/storefront/YourAccount/Wishlist/Wishlist";
 
 // Lazy load other components
 const About = lazy(() => import("./app/views/storefront/About/Index"));
@@ -44,6 +46,9 @@ const routes = [
       { path: "/termsandconditions", element: <TermsAndConditions /> },
       { path: "/returnpolicy", element: <ReturnPolicy /> },
       { path: "/privacy-policy", element: <PrivacyInfo /> },
+      { path: "/your-order", element: <YourOrder /> },
+      { path: "/your-account", element: <YourAccount /> },
+      { path: "/wishlist", element: <Wishlist /> },
     ],
   },
 ];

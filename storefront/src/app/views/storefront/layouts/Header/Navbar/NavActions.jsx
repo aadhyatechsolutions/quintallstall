@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useCartStore } from "../../../../../../store/cartStore";
 import CartPopover from "../../../Cart/CartDialog/CartPopover";
+import { useWishlistStore } from "../../../../../../store/wishlistStore";
 
 const NavActions = ({ isLargeScreen }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -30,6 +31,7 @@ const NavActions = ({ isLargeScreen }) => {
   const cartAnchorRef = useRef(null);
   const open = Boolean(anchorEl);
   const { cart } = useCartStore();
+  const { wishlist } = useWishlistStore();
 
   // Check login status on component mount and when token might change
   useEffect(() => {
@@ -91,8 +93,11 @@ const NavActions = ({ isLargeScreen }) => {
       )}
 
       <Tooltip title="Wishlist">
-        <IconButton sx={{ color: "black", "&:hover": { color: "#2b4a04" } }}>
-          <Badge badgeContent={4} color="error">
+        <IconButton
+          sx={{ color: "black", "&:hover": { color: "#2b4a04" } }}
+          onClick={() => navigate("/wishlist")}
+        >
+          <Badge badgeContent={1} color="error">
             <FavoriteBorder fontSize={isLargeScreen ? "medium" : "small"} />
           </Badge>
         </IconButton>
@@ -125,73 +130,47 @@ const NavActions = ({ isLargeScreen }) => {
       </Box>
 
       <Box
-      sx={{
-        position: "relative",
-        display: "inline-block",
-        "&:hover .account-dropdown": {
-          display: "block",
-        },
-      }}
-    >
-      <Button
-        startIcon={
-          <PersonOutline fontSize={isLargeScreen ? "medium" : "small"} />
-        }
         sx={{
-          color: "black",
-          textTransform: "none",
-          fontWeight: "bold",
-          fontSize: { md: "0.9rem", lg: "1rem" },
-          "&:hover": { color: "#2b4a04" },
+          position: "relative",
+          display: "inline-block",
+          "&:hover .account-dropdown": {
+            display: "block",
+          },
         }}
       >
-        My Account
-      </Button>
+        <Button
+          startIcon={
+            <PersonOutline fontSize={isLargeScreen ? "medium" : "small"} />
+          }
+          sx={{
+            color: "black",
+            textTransform: "none",
+            fontWeight: "bold",
+            fontSize: { md: "0.9rem", lg: "1rem" },
+            "&:hover": { color: "#2b4a04" },
+          }}
+        >
+          My Account
+        </Button>
 
-      {/* Dropdown */}
-      <Box
-        className="account-dropdown"
-        sx={{
-          display: "none",
-          position: "absolute",
-          top: "100%",
-          left: 0,
-          backgroundColor: "white",
-          minWidth: "130px",
-          boxShadow: "0px 4px 8px rgba(0,0,0,0.1)",
-          borderRadius: "4px",
-          zIndex: 10,
-        }}
-      >
-        {isLoggedIn ? (
-          <MenuItem
-            onClick={handleLogout}
-            sx={{
-              "&:hover": { backgroundColor: "#f5f5f5" },
-              fontSize: { md: "0.9rem", lg: "1rem" },
-              fontWeight: "500",
-              color: "black",
-            }}
-          >
-            <Logout fontSize="small" sx={{ mr: 1 }} />
-            Logout
-          </MenuItem>
-        ) : (
-          <>
+        {/* Dropdown */}
+        <Box
+          className="account-dropdown"
+          sx={{
+            display: "none",
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            backgroundColor: "white",
+            minWidth: "130px",
+            boxShadow: "0px 4px 8px rgba(0,0,0,0.1)",
+            borderRadius: "4px",
+            zIndex: 10,
+          }}
+        >
+          {isLoggedIn ? (
             <MenuItem
-              onClick={handleLogin}
-              sx={{
-                borderBottom: "1px solid rgba(0,0,0,0.1)",
-                "&:hover": { backgroundColor: "#f5f5f5" },
-                fontSize: { md: "0.9rem", lg: "1rem" },
-                fontWeight: "500",
-                color: "black",
-              }}
-            >
-              Login
-            </MenuItem>
-            <MenuItem
-              onClick={handleRegister}
+              onClick={handleLogout}
               sx={{
                 "&:hover": { backgroundColor: "#f5f5f5" },
                 fontSize: { md: "0.9rem", lg: "1rem" },
@@ -199,12 +178,38 @@ const NavActions = ({ isLargeScreen }) => {
                 color: "black",
               }}
             >
-              Register
+              <Logout fontSize="small" sx={{ mr: 1 }} />
+              Logout
             </MenuItem>
-          </>
-        )}
+          ) : (
+            <>
+              <MenuItem
+                onClick={handleLogin}
+                sx={{
+                  borderBottom: "1px solid rgba(0,0,0,0.1)",
+                  "&:hover": { backgroundColor: "#f5f5f5" },
+                  fontSize: { md: "0.9rem", lg: "1rem" },
+                  fontWeight: "500",
+                  color: "black",
+                }}
+              >
+                Login
+              </MenuItem>
+              <MenuItem
+                onClick={handleRegister}
+                sx={{
+                  "&:hover": { backgroundColor: "#f5f5f5" },
+                  fontSize: { md: "0.9rem", lg: "1rem" },
+                  fontWeight: "500",
+                  color: "black",
+                }}
+              >
+                Register
+              </MenuItem>
+            </>
+          )}
+        </Box>
       </Box>
-    </Box>
     </Box>
   );
 };
