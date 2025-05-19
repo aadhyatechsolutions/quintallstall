@@ -116,6 +116,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/purchase-coins', [PurchaseCoinController::class, 'index']);
+    Route::get('/purchased-coins', [PurchaseCoinController::class, 'getAllCoins']);
     Route::post('/purchase-coins', [PurchaseCoinController::class, 'store']);
 });
 

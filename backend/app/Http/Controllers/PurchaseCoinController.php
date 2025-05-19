@@ -16,7 +16,14 @@ class PurchaseCoinController extends Controller
             'purchaseCoins' => $coins
         ]);
     }
+    public function getAllCoins(){
+        $coins = PurchaseCoin::with(['coin','user'])->get();
 
+        return response()->json([
+            'message' => 'Purchase coins fetched successfully',
+            'purchaseCoins' => $coins
+        ]);
+    }
     public function store(Request $request)
     {
         $request->validate([

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import {
-  fetchAllPurchaseCoins,
+  fetchAllPurchasedCoins,
+  fetchPurchaseCoins,
   addPurchaseCoin,
   // updatePurchaseCoin,
   // deletePurchaseCoin,
@@ -9,15 +10,27 @@ import {
 
 const usePurchaseCoinStore = create((set) => ({
   purchaseCoins: [],
+  allPurchasedCoins: [],
   loading: false,
   error: null,
   currentPurchaseCoin: null,
 
+   fetchAllPurchasedCoins: async () => {
+    set({ loading: true, error: null });
+    try {
+      const data = await fetchAllPurchasedCoins();
+      set({ allPurchasedCoins: data });
+    } catch (err) {
+      set({ error: err.message });
+    } finally {
+      set({ loading: false });
+    }
+  },
   // Fetch all purchase coins
   fetchPurchaseCoins: async () => {
     set({ loading: true, error: null });
     try {
-      const data = await fetchAllPurchaseCoins();
+      const data = await fetchPurchaseCoins();
       set({ purchaseCoins: data });
     } catch (err) {
       set({ error: err.message });
