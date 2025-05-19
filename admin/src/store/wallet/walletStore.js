@@ -33,7 +33,7 @@ const useWalletStore = create((set, get) => ({
       set({ wallet: newWallet, walletValue: newWallet.amount });
       return newWallet;
     } catch (err) {
-      set({ error: err.message });
+      set({ error: err.message, wallet: null, walletValue: 0 });
       throw err;
     }
   },

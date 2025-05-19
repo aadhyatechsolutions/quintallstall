@@ -27,7 +27,7 @@ import {
   }));
   
   const predefinedPermissions = [
-    "product",
+    "products",
     "order",
     "wholesaler",
     "retailer",

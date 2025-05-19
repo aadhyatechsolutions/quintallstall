@@ -52,13 +52,13 @@ const navigations = [
     ]
   },
   {
-    name: "WholeSeller",
+    name: "WholeSaler",
     icon: "account_circle",
     badge: { color: "secondary" },
     allowedRoles: ["admin"],
     children: [
       { 
-        name: "WholeSeller User", 
+        name: "WholeSaler User", 
         icon: "apps",
         level: 2,
         children: [
