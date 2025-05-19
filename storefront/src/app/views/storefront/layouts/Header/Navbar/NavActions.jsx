@@ -33,9 +33,6 @@ const NavActions = ({ isLargeScreen }) => {
   const { cart } = useCartStore();
   const { wishlist, loadWishlist } = useWishlistStore();
 
-  console.log("wishlist", wishlist);
-  console.log("loadWishlist", loadWishlist);
-
   // Check login status on component mount and when token might change
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
