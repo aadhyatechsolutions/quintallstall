@@ -43,8 +43,8 @@ export const createOrder = async (orderData) => {
 export const updateOrderStatus = async (orderId, status) => {
   try {
     const { data, status: responseStatus } = await axiosInstance.put(
-      `/orders/${orderId}/status`,
-      { status }
+      `/orders/${orderId}/update-status`,
+      { order_status:status }
     );
     if (responseStatus !== 200) {
       throw new Error('Failed to update order status');

@@ -98,7 +98,9 @@ Route::middleware('auth:sanctum')->controller(CartController::class)->prefix('ca
 });
 Route::middleware('auth:sanctum')->controller(OrderController::class)->group(function () {
     Route::post('/place-order', 'placeOrder');
+    Route::put('/orders/{id}/update-status', 'updateStatus');
     Route::resource('orders', OrderController::class);
+
 });
 
 Route::middleware('auth:sanctum')->controller(SessionController::class)->group(function () {

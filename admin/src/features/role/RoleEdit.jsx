@@ -28,7 +28,7 @@ import {
   
   const predefinedPermissions = [
     "products",
-    "order",
+    "orders",
     "wholesaler",
     "retailer",
     'delivery',

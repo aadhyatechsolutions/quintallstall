@@ -49,13 +49,6 @@ export default function OrderView() {
     navigate(`/features/order/edit/${id}`);
   };
 
-  const formatAddress = (address) => {
-    const { name, area, village, taluka, city, state, pincode } = address;
-
-    return [name, area, village, taluka, city, state, pincode]
-      .filter(Boolean) // Remove null/undefined/empty strings
-      .join(", ");
-  }
   const columns = [
     { field: "id", headerName: "Order ID", width: 100 },
 
@@ -92,7 +85,7 @@ export default function OrderView() {
         </span>
       )
     },
-    { field: "pickup_address", headerName: "Pickup Address", width: 300 },
+
     { field: "shipping_address", headerName: "Shipping Address", width: 300 },
 
     {
@@ -137,9 +130,8 @@ export default function OrderView() {
 
   const isDelivery = user?.roles?.some(role => role.slug === "delivery");
   const filteredOrders = isDelivery
-    ? orders.filter((order) => order.order_status === "pending")
+    ? orders.filter((order) => order.order_status === "completed" && order.delivery_user_id === user.id) 
     : orders;
-
 
   if (isDelivery) {
     columns.push(
@@ -171,7 +163,6 @@ export default function OrderView() {
     buyer: order.buyer,
     seller: order.order_items.length > 0 ? order.order_items[0].product.seller : null,
     total_amount: order.total_amount,
-    pickup_address:  formatAddress(order.order_items[0].product.apmc),
     shipping_address: order.shipping_address,
     order_status: order.order_status,
     payment_method: order.payment.payment_method,

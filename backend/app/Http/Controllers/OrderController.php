@@ -20,12 +20,12 @@ class OrderController extends Controller
         $roles = $user->roles->pluck('slug')->toArray();
 
         if (in_array('admin', $roles) || in_array('delivery', $roles)) {
-            $orders = Order::with(['orderItems.product.seller', 'shippingDetails', 'payment', 'buyer'])->get();
+            $orders = Order::with(['orderItems.product.seller', 'orderItems.product.apmc', 'shippingDetails', 'payment', 'buyer'])->get();
         } else {
             $orders = Order::whereHas('orderItems.product', function ($query) use ($user) {
                 $query->where('seller_id', $user->id);
             })
-            ->with(['orderItems.product.seller', 'shippingDetails', 'payment', 'buyer'])
+            ->with(['orderItems.product.seller','orderItems.product.apmc', 'shippingDetails', 'payment', 'buyer'])
             ->get();
         }
 
@@ -149,4 +149,40 @@ class OrderController extends Controller
             ], 500);
         }
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'order_status' => 'required|in:pending,accepted,completed,cancelled,failed',
+        ]);
+
+        try {
+            $order = Order::findOrFail($id);
+            $order->order_status = $validated['order_status'];
+
+            // Optionally: Assign delivery_user_id if accepted
+            if ($validated['order_status'] === 'accepted' && auth()->check()) {
+                $order->delivery_user_id = auth()->id();
+            }
+
+            $order->save();
+            $updatedOrder = Order::with([
+                'orderItems.product.seller',
+                'shippingDetails',
+                'payment',
+                'buyer'
+            ])->findOrFail($id);
+            return response()->json([
+                'message' => 'Order status updated successfully',
+                'success' => true,
+                'order' => $updatedOrder
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update order status',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 }

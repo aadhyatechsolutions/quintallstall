@@ -16,25 +16,25 @@ class RoleSeeder extends Seeder
             'name' => 'Admin',
             'slug' => 'admin',
             'description' => 'Administrator role',
-            'permissions' => '["products","retailer","frontend","order","delivery","settings","commission","wholesaler"]'
+            'permissions' => '["products","retailer","frontend","orders","delivery","settings","commission","wholesaler"]'
         ]);
         Role::create([
             'name' => 'Wholesaler',
             'slug' => 'wholesaler',
             'description' => 'Administrator role',
-            'permissions' => '["products","order","wholesaler"]'
+            'permissions' => '["products","orders","wholesaler"]'
         ]);
         Role::create([
             'name' => 'Retailer',
             'slug' => 'retailer',
             'description' => 'Administrator role',
-            'permissions' => '["products","order","retailer"]'
+            'permissions' => '["products","orders","retailer"]'
         ]);
         Role::create([
             'name' => 'Delivery',
             'slug' => 'delivery',
             'description' => 'Administrator role',
-            'permissions' => '["products","order","delivery"]'
+            'permissions' => '["products","orders","delivery"]'
         ]);
         Role::create([
             'name' => 'Staff',

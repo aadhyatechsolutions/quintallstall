@@ -36,24 +36,23 @@ export default function OrderView() {
       console.error("Failed to update status:", err);
     }
   };
-  const handleAcceptOrder = async (orderId) => {
+  const handleDeliverOrder = async (orderId) => {
     try {
-      await updateOrderStatus(orderId, 'accepted');
+      await updateOrderStatus(orderId, 'completed');
       // fetchOrders();
     } catch (err) {
-      console.error("Error accepting order:", err);
+      console.error("Error delivering order:", err);
     }
   };
 
   const handleEdit = (id) => {
     navigate(`/features/order/edit/${id}`);
   };
-
   const formatAddress = (address) => {
     const { name, area, village, taluka, city, state, pincode } = address;
 
     return [name, area, village, taluka, city, state, pincode]
-      .filter(Boolean) // Remove null/undefined/empty strings
+      .filter(Boolean)
       .join(", ");
   }
   const columns = [
@@ -137,26 +136,25 @@ export default function OrderView() {
 
   const isDelivery = user?.roles?.some(role => role.slug === "delivery");
   const filteredOrders = isDelivery
-    ? orders.filter((order) => order.order_status === "pending")
+    ? orders.filter((order) => order.order_status === "accepted" && order.delivery_user_id === user.id)
     : orders;
-
 
   if (isDelivery) {
     columns.push(
       {
-        field: "accept_order",
+        field: "deliver_order",
         headerName: "Actions",
         width: 150,
         renderCell: (params) => {
-          if (params.row.order_status === "pending") {
+          if (params.row.order_status === "accepted") {
             return (
               <Button
                 variant="contained"
                 color="primary"
                 size="small"
-                onClick={() => handleAcceptOrder(params.row.id)}
+                onClick={() => handleDeliverOrder(params.row.id)}
               >
-                Accept Order
+                Deliver Order
               </Button>
             );
           }

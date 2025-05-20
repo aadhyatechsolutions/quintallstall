@@ -15,7 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('buyer_id');
             $table->foreign('buyer_id')->references('id')->on('users')->onDelete('cascade');
-            $table->enum('order_status', ['pending', 'completed', 'cancelled', 'failed']);
+            $table->enum('order_status', ['pending', 'accepted', 'completed', 'cancelled', 'failed'])->default('pending');
+
+            $table->unsignedBigInteger('delivery_user_id')->nullable();
+            $table->foreign('delivery_user_id')->references('id')->on('users')->onDelete('set null');
+            
             $table->decimal('total_amount', 10, 2);
             $table->text('shipping_address');
             $table->timestamps();

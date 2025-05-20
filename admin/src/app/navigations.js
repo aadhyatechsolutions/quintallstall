@@ -112,7 +112,9 @@ const navigations = [
     badge: { color: "secondary" },
     allowedRoles: ["admin", 'wholesaler', 'retailer', 'delivery'],
     children: [
-      { name: "Orders", level: 2, path: "/orders/orders", icon: "assignment"},
+      { name: "All Orders", level: 2, path: "/orders/orders", icon: "assignment"},
+      { name: "Accepted Orders", level: 2, path: "/orders/accepted-orders", icon: "assignment"},
+      { name: "Delivered Orders", level: 2, path: "/orders/delivered-orders", icon: "assignment"},
     ]
   },
   // {
