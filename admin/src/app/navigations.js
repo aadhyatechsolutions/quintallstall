@@ -223,8 +223,6 @@ const navigations = [
       //   ] 
       // },
       { name: "Purchased Coins", path: "/settings/purchased-coins", iconText: "A",allowedRoles: ["admin"], },
-      { name: "Purchase Coin", path: "/settings/purchase-coin", iconText: "A", allowedRoles: ['wholesaler','retailer'], },
-      { name: "Wallet Settings", path: "/settings/wallet-settings", iconText: "A", allowedRoles: ['wholesaler','retailer'], },
       { name: "Tax Slab", path: "/settings/tax-slab", iconText: "A" ,allowedRoles: ["admin"],},
       { 
         name: "Roles", 
@@ -247,6 +245,25 @@ const navigations = [
         ] 
       },
       // { name: "Profile", level: 2, path: "/settings/profile", iconText: "A" },
+    ]
+  },
+  {
+    name: "Coin",
+    icon: "account_circle",
+    badge: { color: "secondary" },
+    allowedRoles: ['wholesaler','retailer'],
+    children: [
+      { name: "Purchased Coins", path: "/settings/purchased-coins", iconText: "A" },
+      { name: "Purchase Coin", path: "/settings/purchase-coin", iconText: "A"  },
+    ]
+  },
+  {
+    name: "Wallet",
+    icon: "account_circle",
+    badge: { color: "secondary" },
+    allowedRoles: ['wholesaler','retailer'],
+    children: [
+      { name: "Wallet Settings", path: "/settings/wallet-settings", iconText: "A" },
     ]
   }
 ];

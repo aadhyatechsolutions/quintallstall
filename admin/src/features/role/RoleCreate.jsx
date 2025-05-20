@@ -38,6 +38,8 @@ import {
     "commission",
     "frontend",
     "settings",
+    "coin",
+    "wallet",
   ];
   
   export default function CreateRole() {

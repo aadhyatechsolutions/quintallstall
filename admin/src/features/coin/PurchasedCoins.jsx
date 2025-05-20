@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { SimpleCard } from "app/components";
 import usePurchaseCoinStore from "../../store/purchaseCoin/purchaseCoinStore";
 import { format } from "date-fns";
+import useAuth from "app/hooks/useAuth";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -15,8 +16,8 @@ const Container = styled("div")(({ theme }) => ({
 }));
 
 export default function PurchasedCoinsView() {
- const { allPurchasedCoins, fetchAllPurchasedCoins, error, loading } = usePurchaseCoinStore();
-
+  const { allPurchasedCoins, fetchAllPurchasedCoins, error, loading } = usePurchaseCoinStore();
+  const { user } = useAuth();
   useEffect(() => {
     fetchAllPurchasedCoins();
   }, [fetchAllPurchasedCoins]);
@@ -41,8 +42,12 @@ export default function PurchasedCoinsView() {
         },
         }
   ];
+  const isAdmin = user?.roles?.some(role => role.slug === "admin");
+  const filteredPurchasedCoins = isAdmin
+    ? allPurchasedCoins
+    : allPurchasedCoins.filter(coin => coin.user_id === user.id);
 
-  const rows = allPurchasedCoins.map((purchasedCoin) => ({
+  const rows = filteredPurchasedCoins.map((purchasedCoin) => ({
     id: purchasedCoin.coin.id,
     coin_type: purchasedCoin.coin.name,
     value: purchasedCoin.coin.value,

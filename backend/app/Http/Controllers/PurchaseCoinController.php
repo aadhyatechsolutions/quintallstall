@@ -17,7 +17,7 @@ class PurchaseCoinController extends Controller
         ]);
     }
     public function getAllCoins(){
-        $coins = PurchaseCoin::with(['coin','user'])->get();
+        $coins = PurchaseCoin::with(['coin','user.roles'])->get();
 
         return response()->json([
             'message' => 'Purchase coins fetched successfully',
