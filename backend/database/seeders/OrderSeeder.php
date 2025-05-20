@@ -13,7 +13,7 @@ class OrderSeeder extends Seeder
 {
     public function run()
     {
-        $faker = Faker::create();
+        $faker = Faker::create('en_IN');
 
         foreach (range(1, 10) as $index) {
             // Create an order

@@ -45,6 +45,7 @@ import DeliveryKYC from "../features/delivery/DeliveryKYC";
 import OrderView from "../features/order/OrderView";
 import AcceptedOrders from "../features/order/AcceptedOrders";
 import DeliveredOrders from "../features/order/DeliveredOrders";
+import OrderMap from "../features/order/OrderMap";
 import Reviews from "./components/Orders/Reviews";
 
 import WholeSellerReport from "./components/Report/WholeSellerReport";
@@ -150,7 +151,7 @@ const routes = [
       { path: "/orders/orders", element: <OrderView /> },
       { path: "/orders/accepted-orders", element: <AcceptedOrders /> },
       { path: "/orders/delivered-orders", element: <DeliveredOrders /> },
-      // { path: "/orders/reviews", element: <Reviews /> },
+      { path: "/orders/order-map", element: <OrderMap /> },
 
       { path: "/report/wholeseller-report", element: <WholeSellerReport /> },
 

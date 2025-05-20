@@ -39,21 +39,31 @@ export default function OrderView() {
   const handleAcceptOrder = async (orderId) => {
     try {
       await updateOrderStatus(orderId, 'accepted');
-      // fetchOrders();
     } catch (err) {
       console.error("Error accepting order:", err);
     }
   };
 
-  const handleEdit = (id) => {
-    navigate(`/features/order/edit/${id}`);
+  
+ const handleViewMap = async (row) => {
+    try {
+      
+      navigate("/orders/order-map",{
+        state: {
+          origin: row.pickup_address,
+          destination: row.shipping_address,
+        }
+      });
+    } catch (err) {
+      console.error("Error Viewing map:", err);
+    }
   };
 
   const formatAddress = (address) => {
     const { name, area, village, taluka, city, state, pincode } = address;
 
     return [name, area, village, taluka, city, state, pincode]
-      .filter(Boolean) // Remove null/undefined/empty strings
+      .filter(Boolean)
       .join(", ");
   }
   const columns = [
@@ -146,18 +156,30 @@ export default function OrderView() {
       {
         field: "accept_order",
         headerName: "Actions",
-        width: 150,
+        width: 200,
         renderCell: (params) => {
           if (params.row.order_status === "pending") {
             return (
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={() => handleAcceptOrder(params.row.id)}
-              >
-                Accept Order
-              </Button>
+              <Box>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() => handleAcceptOrder(params.row.id)}
+                  style={{ marginRight: 8 }}
+                >
+                  Accept Order
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() => handleViewMap(params.row)}
+                  style={{ marginRight: 8 }}
+                >
+                  Map
+                </Button>
+              </Box>
             );
           }
           return <span style={{ color: "gray" }}>—</span>;
