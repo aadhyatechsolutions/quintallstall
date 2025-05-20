@@ -31,7 +31,8 @@ export default function Sidenav({ children }) {
   const { settings, updateSettings } = useSettings();
   const { user } = useAuth();
   const userPermissions = user.roles.map(role=>role.permissions);
-  const filteredNavigations = filterNavigationByRole(navigations, JSON.parse(userPermissions));
+  const userRoles = user.roles.map(role=>role.slug);
+  const filteredNavigations = filterNavigationByRole(navigations, JSON.parse(userPermissions), userRoles);
   
   const updateSidebarMode = (sidebarSettings) => {
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
