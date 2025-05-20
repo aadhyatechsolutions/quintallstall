@@ -31,30 +31,30 @@ export function getTimeDifference(date) {
 }
 
 export function filterNavigationByRole(navigations, userPermissions, userRoles) {
-  const hasAccess = (item) => {
-    // If item has no role restriction, include it
-    if(item?.name?.toLowerCase() == 'dashboard') return true;
-    // if (!item.allowedRoles || item.allowedRoles.length === 0) return true;
+ 
 
-    // If item.roles is defined, check if user has any matching role
-    // 
-    let isAllowed = userPermissions.includes(item?.name?.toLowerCase());
-    return isAllowed;
-    // if(isAllowed){
-    //   return isAllowed
-    // }else if(item.allowedRoles && item.allowedRoles.length > 0){
-    //   return item.allowedRoles.some(role => userRoles.includes(role));
-    // }
-    
-  };
-
-  const filterItems = (items) => {
+  const filterItems = (items, isChildren=false) => {
+     const hasAccess = (item) => {
+      if(isChildren){
+        if(item.name.toLowerCase() == 'accepted orders' ||  item.name.toLowerCase() == 'delivered orders'){
+          if(userRoles.includes('delivery')){
+            return true;
+          }
+        }else{
+          return true;
+        }
+      }
+      if(item?.name?.toLowerCase() == 'dashboard') return true;
+      
+      return userPermissions.includes(item?.name?.toLowerCase());
+      
+    };
     return items
       .filter(hasAccess)
       .map(item => ({
         ...item,
-        // children: item.children ? filterItems(item.children) : undefined,
-        children: item.children,
+        children: item.children ? filterItems(item.children,true) : undefined,
+        // children: item.children,
       }))
       .filter(item => !(item.children && item.children.length === 0)); // Remove empty groups
   };

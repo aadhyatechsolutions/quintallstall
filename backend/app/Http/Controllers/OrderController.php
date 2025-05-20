@@ -166,8 +166,10 @@ class OrderController extends Controller
             }
 
             $order->save();
+           
             $updatedOrder = Order::with([
                 'orderItems.product.seller',
+                'orderItems.product.apmc',
                 'shippingDetails',
                 'payment',
                 'buyer'
