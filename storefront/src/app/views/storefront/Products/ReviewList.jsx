@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -42,6 +42,13 @@ const ReviewList = ({ productId }) => {
     message: "",
     severity: "success",
   });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Check login status on component mount and when token might change
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token);
+  }, []);
 
   const filteredReviews = reviews?.filter(
     (review) => String(review.product_id) === String(productId)
@@ -265,44 +272,46 @@ const ReviewList = ({ productId }) => {
                 </Box>
               </Box>
               {/* button for edit and delete */}
-              <Box
-                sx={{
-                  top: 16,
-                  right: 16,
-                  display: "flex",
-                  gap: 0.5,
-                  justifyContent: "end",
-                }}
-              >
-                <IconButton
-                  aria-label="edit"
-                  size="small"
-                  onClick={() => handleEditOpen(review)}
+              {isLoggedIn && (
+                <Box
                   sx={{
-                    color: theme.palette.text.secondary,
-                    "&:hover": {
-                      color: theme.palette.primary.main,
-                      backgroundColor: theme.palette.action.hover,
-                    },
+                    top: 16,
+                    right: 16,
+                    display: "flex",
+                    gap: 0.5,
+                    justifyContent: "end",
                   }}
                 >
-                  <EditIcon fontSize="small" />
-                </IconButton>
-                <IconButton
-                  aria-label="delete"
-                  size="small"
-                  onClick={() => handleDeleteClick(review.id)}
-                  sx={{
-                    color: theme.palette.text.secondary,
-                    "&:hover": {
-                      color: theme.palette.error.main,
-                      backgroundColor: theme.palette.action.hover,
-                    },
-                  }}
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </Box>
+                  <IconButton
+                    aria-label="edit"
+                    size="small"
+                    onClick={() => handleEditOpen(review)}
+                    sx={{
+                      color: theme.palette.text.secondary,
+                      "&:hover": {
+                        color: theme.palette.primary.main,
+                        backgroundColor: theme.palette.action.hover,
+                      },
+                    }}
+                  >
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    aria-label="delete"
+                    size="small"
+                    onClick={() => handleDeleteClick(review.id)}
+                    sx={{
+                      color: theme.palette.text.secondary,
+                      "&:hover": {
+                        color: theme.palette.error.main,
+                        backgroundColor: theme.palette.action.hover,
+                      },
+                    }}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+              )}
             </Paper>
           </Grid>
         ))}
