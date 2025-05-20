@@ -25,7 +25,13 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 const CURRENCY = "Rs";
 
 const Checkout = () => {
-  const { cart, clearCart, removeFromCart, increaseQuantity, decreaseQuantity } = useCartStore();
+  const {
+    cart,
+    clearCart,
+    removeFromCart,
+    increaseQuantity,
+    decreaseQuantity,
+  } = useCartStore();
   const { placeOrder } = useOrderStore();
   const navigate = useNavigate();
 
@@ -122,11 +128,11 @@ const Checkout = () => {
       const orderPayload = {
         shipping_address,
         payment_method: paymentMethod, // Using selected payment method
-        amount
+        amount,
       };
 
       const { success, data, error } = await placeOrder(orderPayload);
-      
+
       if (success) {
         setOrderSuccess(true);
         clearCart();
@@ -210,7 +216,12 @@ const Checkout = () => {
               <Typography
                 variant="h6"
                 fontWeight="medium"
-                sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  color: "#b6131a",
+                }}
               >
                 <ShoppingCartIcon /> Cart Items
               </Typography>
@@ -233,7 +244,12 @@ const Checkout = () => {
               <Typography
                 variant="h6"
                 fontWeight="medium"
-                sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  color: "#b6131a",
+                }}
               >
                 <LocalShippingIcon /> Shipping Information
               </Typography>
@@ -264,24 +280,35 @@ const Checkout = () => {
         </Grid>
 
         {/* Right Column - Order Summary */}
-        <Grid size={{ xs: 12, sm: 4, md: 4 }} >
-          <Paper elevation={1} sx={{ borderRadius: 2, mb: 4 }} >
+        <Grid size={{ xs: 12, sm: 4, md: 4 }}>
+          <Paper elevation={1} sx={{ borderRadius: 2, mb: 4 }}>
             <CardContent>
               <Typography
                 variant="h6"
                 fontWeight="medium"
-                sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  color: "#b6131a",
+                }}
               >
                 <PaymentIcon /> Payment Method
               </Typography>
               <Divider sx={{ mb: 2 }} />
               {/* Payment Method Selection Box */}
-              <Box sx={{ padding: 2, borderRadius: 2, backgroundColor: "#f5f5f5" }}>
+              <Box
+                sx={{ padding: 2, borderRadius: 2, backgroundColor: "#f5f5f5" }}
+              >
                 <RadioGroup
                   value={paymentMethod}
                   onChange={handlePaymentMethodChange}
                 >
-                  <FormControlLabel value="cod" control={<Radio />} label="Cash on Delivery (COD)" />
+                  <FormControlLabel
+                    value="cod"
+                    control={<Radio />}
+                    label="Cash on Delivery (COD)"
+                  />
                   {/* <FormControlLabel value="card" control={<Radio />} label="Credit Card" /> */}
                   {/* <FormControlLabel value="paypal" control={<Radio />} label="PayPal" /> */}
                 </RadioGroup>
@@ -295,7 +322,12 @@ const Checkout = () => {
               <Typography
                 variant="h6"
                 fontWeight="medium"
-                sx={{ display: "flex", alignItems: "center", gap: 1, color: "#b6131a" }}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  color: "#b6131a",
+                }}
               >
                 <PaymentIcon /> Order Summary
               </Typography>

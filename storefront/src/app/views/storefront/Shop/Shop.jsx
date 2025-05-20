@@ -32,11 +32,10 @@ const Shop = () => {
       fetchUsers();
     }
   }, [users, userStatus, fetchUsers]);
-  
+
   const handleSellerClick = (seller_id) => {
     navigate(`/products?seller=${seller_id}`);
   };
-
 
   if (userStatus === "loading") {
     return (
@@ -46,7 +45,7 @@ const Shop = () => {
         </Typography>
         <Grid container spacing={4}>
           {[...Array(4)].map((_, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={index}>
               <Skeleton variant="rectangular" height={300} />
             </Grid>
           ))}
@@ -82,7 +81,11 @@ const Shop = () => {
 
       <Grid container spacing={4} justifyContent="center">
         {users.map((user) => (
-          <Grid key={user.id} size={{xs:12,sm:6,md:4,lg:3}} sx={{ width: '25%' }}>
+          <Grid
+            key={user.id}
+            size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
+            sx={{ width: "25%" }}
+          >
             <Card
               sx={{
                 height: "100%",
@@ -128,8 +131,12 @@ const Shop = () => {
               </CardMedia>
 
               <CardContent sx={{ flexGrow: 1 }}>
-                <Typography gutterBottom variant="h5" component="div" onClick={() => handleSellerClick(user.id)} 
-                sx={{ cursor: "pointer", color: "primary.main", }}  
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  onClick={() => handleSellerClick(user.id)}
+                  sx={{ cursor: "pointer", color: "primary.main" }}
                 >
                   {user.business_name || `${user.first_name} ${user.last_name}`}
                 </Typography>

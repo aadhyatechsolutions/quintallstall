@@ -26,7 +26,6 @@ import {
   TextField,
 } from "@mui/material";
 
-
 import {
   ShoppingCart,
   FavoriteBorder,
@@ -42,13 +41,16 @@ import { useParams } from "react-router-dom";
 import { useProduct } from "../../../../hooks/useProducts";
 import { useCartStore } from "../../../../store/cartStore";
 import { handleAddToCartWithAuthCheck } from "../../../../utils/authCartHandler";
+import { useReviews } from "../../../../hooks/reviewHooks";
+import ReviewForm from "./ReviewForm";
+import ReviewList from "./ReviewList";
 
 const ProductDetails = () => {
   const theme = useTheme();
   const { id } = useParams();
   const { data: product, isLoading } = useProduct(id);
   const [activeTab, setActiveTab] = useState(0);
-
+  const { data: reviews } = useReviews();
   const cart = useCartStore((state) => state.cart) || [];
   const addToCart = useCartStore((state) => state.addToCart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
@@ -92,13 +94,42 @@ const ProductDetails = () => {
     );
   }
 
-  const ratingsData = [
-    { label: '5 Star', value: 68 },
-    { label: '4 Star', value: 67 },
-    { label: '3 Star', value: 42 },
-    { label: '2 Star', value: 30 },
-    { label: '1 Star', value: 24 },
+  // Step 1: Filter reviews for current product
+  const filteredReviews = (reviews ?? []).filter(
+    (review) => String(review.product_id) === String(product.id)
+  );
+
+  // Step 2: Compute total and average rating
+  const totalReviews = filteredReviews?.length || 0;
+
+  const averageRating =
+    totalReviews > 0
+      ? (
+          filteredReviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+        ).toFixed(1)
+      : 0;
+
+  // Step 3: Count stars
+  const starCounts = [5, 4, 3, 2, 1].map((star) => {
+    const count = filteredReviews.filter((r) => r.rating === star).length;
+    return { label: `${star} Star`, count };
+  });
+
+  // Step 4: Convert counts to percentages
+  const ratingsData = starCounts.map((item) => ({
+    label: item.label,
+    value:
+      totalReviews > 0 ? ((item.count / totalReviews) * 100).toFixed(1) : 0,
+  }));
+
+  const ratingsDataOld = [
+    { label: "5 Star", value: 68 },
+    { label: "4 Star", value: 67 },
+    { label: "3 Star", value: 42 },
+    { label: "2 Star", value: 30 },
+    { label: "1 Star", value: 24 },
   ];
+
   const isOutOfStock = product?.stock_level === "out_of_stock";
 
   // Tab content components
@@ -117,29 +148,55 @@ const ProductDetails = () => {
       icon: <InfoIcon fontSize="small" />,
       content: (
         <Box>
-          <Typography variant="h6" gutterBottom>Product Details</Typography>
+          <Typography variant="h6" gutterBottom>
+            Product Details
+          </Typography>
           <TableContainer>
-            <Table size="small" aria-label="product details" sx={{ border: '1px solid #ccc' }}>
+            <Table
+              size="small"
+              aria-label="product details"
+              sx={{ border: "1px solid #ccc" }}
+            >
               <TableBody>
                 <TableRow>
-                  <TableCell sx={{ border: '1px solid #ccc' }}><strong>SKU</strong></TableCell>
-                  <TableCell sx={{ border: '1px solid #ccc' }}>{product.sku}</TableCell>
+                  <TableCell sx={{ border: "1px solid #ccc" }}>
+                    <strong>SKU</strong>
+                  </TableCell>
+                  <TableCell sx={{ border: "1px solid #ccc" }}>
+                    {product.sku}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell sx={{ border: '1px solid #ccc' }}><strong>Category</strong></TableCell>
-                  <TableCell sx={{ border: '1px solid #ccc' }}>{product.category.name}</TableCell>
+                  <TableCell sx={{ border: "1px solid #ccc" }}>
+                    <strong>Category</strong>
+                  </TableCell>
+                  <TableCell sx={{ border: "1px solid #ccc" }}>
+                    {product.category.name}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell sx={{ border: '1px solid #ccc' }}><strong>Quality Grade</strong></TableCell>
-                  <TableCell sx={{ border: '1px solid #ccc' }}>{product.quality}</TableCell>
+                  <TableCell sx={{ border: "1px solid #ccc" }}>
+                    <strong>Quality Grade</strong>
+                  </TableCell>
+                  <TableCell sx={{ border: "1px solid #ccc" }}>
+                    {product.quality}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell sx={{ border: '1px solid #ccc' }}><strong>Additional Details</strong></TableCell>
-                  <TableCell sx={{ border: '1px solid #ccc' }}>{product.ud_field || "N/A"}</TableCell>
+                  <TableCell sx={{ border: "1px solid #ccc" }}>
+                    <strong>Additional Details</strong>
+                  </TableCell>
+                  <TableCell sx={{ border: "1px solid #ccc" }}>
+                    {product.ud_field || "N/A"}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell sx={{ border: '1px solid #ccc' }}><strong>AMPC Name</strong></TableCell>
-                  <TableCell sx={{ border: '1px solid #ccc' }}>{product.apmc.name}</TableCell>
+                  <TableCell sx={{ border: "1px solid #ccc" }}>
+                    <strong>AMPC Name</strong>
+                  </TableCell>
+                  <TableCell sx={{ border: "1px solid #ccc" }}>
+                    {product.apmc.name}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -161,28 +218,22 @@ const ProductDetails = () => {
       icon: <ReviewIcon fontSize="small" />,
       content: (
         <Box>
-          {/* Summary Box */}
-          {/* <Stack direction="row" spacing={1} alignItems="center" mb={2}>
-            <Rating value={product?.rating || 0} precision={0.1} readOnly />
-            <Typography variant="body2">
-              ({product?.reviews || 0} reviews)
-            </Typography>
-          </Stack> */}
-          {/* <Typography variant="body1" color="text.secondary" mb={3}>
-            {product.reviews
-              ? "Read what our customers say about this product"
-              : "No reviews yet. Be the first to review!"}
-          </Typography> */}
-    
           <Grid container spacing={4}>
             {/* Rating Breakdown */}
-            <Grid size={{xs:12, md:6}}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Typography variant="h6" gutterBottom>
                 Customer reviews
               </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                {averageRating} out of 5 ({totalReviews} review
+                {totalReviews !== 1 ? "s" : ""})
+              </Typography>
               <Box mt={2}>
                 {ratingsData.map((row, index) => (
-                  <Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <Box
+                    key={index}
+                    sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                  >
                     <Typography sx={{ width: 70 }}>{row.label}</Typography>
                     <Box sx={{ flexGrow: 1, mx: 1 }}>
                       <LinearProgress
@@ -191,9 +242,9 @@ const ProductDetails = () => {
                         sx={{
                           height: 10,
                           borderRadius: 5,
-                          backgroundColor: '#e5e7eb',
-                          '& .MuiLinearProgress-bar': {
-                            backgroundColor: '#8b0c1c',
+                          backgroundColor: "#e5e7eb",
+                          "& .MuiLinearProgress-bar": {
+                            backgroundColor: "#8b0c1c",
                           },
                         }}
                       />
@@ -203,45 +254,20 @@ const ProductDetails = () => {
                 ))}
               </Box>
             </Grid>
-    
+
             {/* Review Form */}
-            <Grid size={{xs:12,md:6}}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Typography variant="h6" gutterBottom>
                 Add a review
               </Typography>
-    
-              <Stack spacing={2}>
-                <Rating defaultValue={0} />
-    
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField placeholder="Name" fullWidth variant="filled" />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField placeholder="Email Address" fullWidth variant="filled" />
-                  </Grid>
-                </Grid>
-    
-                <TextField placeholder="Give your review a title" fullWidth variant="filled" />
-                <TextField
-                  placeholder="Leave a comment here"
-                  fullWidth
-                  multiline
-                  minRows={5}
-                  variant="filled"
-                />
-    
-                <Box>
-                  <Button variant="contained" sx={{ backgroundColor: '#2d4405' }}>
-                    Submit
-                  </Button>
-                </Box>
-              </Stack>
+              <ReviewForm productId={id} />
             </Grid>
           </Grid>
+          <Divider sx={{ my: 4 }} />
+          <ReviewList productId={id} />
         </Box>
       ),
-    },    
+    },
   ];
 
   return (
@@ -260,7 +286,9 @@ const ProductDetails = () => {
             >
               <CardMedia
                 component="img"
-                image={`${apiConfig.MEDIA_URL}${product?.image || "placeholder.jpg"}`}
+                image={`${apiConfig.MEDIA_URL}${
+                  product?.image || "placeholder.jpg"
+                }`}
                 alt={product?.name}
                 sx={{
                   width: "100%",
@@ -285,7 +313,9 @@ const ProductDetails = () => {
                   }}
                 >
                   <img
-                    src={`${apiConfig.MEDIA_URL}${product?.image || "placeholder.jpg"}`}
+                    src={`${apiConfig.MEDIA_URL}${
+                      product?.image || "placeholder.jpg"
+                    }`}
                     alt={`Thumbnail ${item}`}
                     style={{
                       width: "100%",
@@ -305,7 +335,12 @@ const ProductDetails = () => {
             </Typography>
 
             <Stack direction="row" spacing={1} alignItems="center" mb={2}>
-              <Rating value={product?.rating || 4.2} precision={0.1} readOnly size="small" />
+              <Rating
+                value={product?.rating || 4.2}
+                precision={0.1}
+                readOnly
+                size="small"
+              />
               <Typography variant="body2" color="text.secondary">
                 {product?.reviews || 0} Ratings & Reviews
               </Typography>
@@ -345,7 +380,12 @@ const ProductDetails = () => {
               )}
             </Typography>
 
-            <Typography color="error.main" fontWeight={600} mb={0.1} sx={{ fontSize: "0.85rem", py: 0.75 }}>
+            <Typography
+              color="error.main"
+              fontWeight={600}
+              mb={0.1}
+              sx={{ fontSize: "0.85rem", py: 0.75 }}
+            >
               Item Weight: {product.unit ? `Per / ${product.unit}` : "N/A"}
             </Typography>
             <Typography
@@ -369,16 +409,18 @@ const ProductDetails = () => {
             </Typography>
             <Divider sx={{ my: 2 }} />
             <Typography variant="body2" color="text.secondary" mb={1}>
-                <strong>Store Information</strong>
-              </Typography>
-            <Box sx={{
-              backgroundColor: "#f5f5f5",
-              p: 2,
-              borderRadius: 2,
-              mt: 2,
-            }}>
+              <strong>Store Information</strong>
+            </Typography>
+            <Box
+              sx={{
+                backgroundColor: "#f5f5f5",
+                p: 2,
+                borderRadius: 2,
+                mt: 2,
+              }}
+            >
               <Typography variant="body2" color="text.secondary" mb={1}>
-                <strong>SKU  :</strong> {product.sku}
+                <strong>SKU :</strong> {product.sku}
               </Typography>
               <Typography variant="body2" color="text.secondary" mb={1}>
                 <strong>Category:</strong> {product.category.name}
@@ -391,7 +433,7 @@ const ProductDetails = () => {
               </Typography>
             </Box>
           </Grid>
-         
+
           {/* Actions */}
           <Grid>
             <Paper elevation={0} sx={{ p: 2, border: "1px solid #f0f0f0" }}>
@@ -416,10 +458,10 @@ const ProductDetails = () => {
                 Seller Information
               </Typography>
               <Typography variant="body2" gutterBottom>
-               Name: <strong>{product.seller.first_name}</strong>
+                Name: <strong>{product.seller.first_name}</strong>
               </Typography>
               <Typography variant="body2" color="text.secondary">
-              {product.return_policy}
+                {product.return_policy}
               </Typography>
 
               <Divider sx={{ my: 2 }} />
@@ -454,7 +496,14 @@ const ProductDetails = () => {
                 >
                   −
                 </Button>
-                <Typography sx={{ minWidth: 28, textAlign: "center", fontWeight: 500, color: isOutOfStock ? "text.disabled" : "text.primary" }}>
+                <Typography
+                  sx={{
+                    minWidth: 28,
+                    textAlign: "center",
+                    fontWeight: 500,
+                    color: isOutOfStock ? "text.disabled" : "text.primary",
+                  }}
+                >
                   {quantity}
                 </Typography>
                 <Button
