@@ -46,7 +46,7 @@ const NavActions = ({ isLargeScreen }) => {
   // Option 1: Using Zustand store directly
   const wishlistItems = Array.isArray(wishlist?.items) ? wishlist.items : [];
   const wishlistCount = wishlistItems.length;
-  console.log(wishlistCount);
+  // console.log(wishlistCount);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");

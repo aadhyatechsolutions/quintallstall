@@ -41,6 +41,7 @@ import { useParams } from "react-router-dom";
 import { useProduct } from "../../../../hooks/useProducts";
 import { useCartStore } from "../../../../store/cartStore";
 import { handleAddToCartWithAuthCheck } from "../../../../utils/authCartHandler";
+import { useReviews } from "../../../../hooks/reviewHooks";
 import ReviewForm from "./ReviewForm";
 import ReviewList from "./ReviewList";
 
@@ -49,7 +50,7 @@ const ProductDetails = () => {
   const { id } = useParams();
   const { data: product, isLoading } = useProduct(id);
   const [activeTab, setActiveTab] = useState(0);
-
+  const { data: reviews } = useReviews();
   const cart = useCartStore((state) => state.cart) || [];
   const addToCart = useCartStore((state) => state.addToCart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
@@ -93,13 +94,42 @@ const ProductDetails = () => {
     );
   }
 
-  const ratingsData = [
+  // Step 1: Filter reviews for current product
+  const filteredReviews = (reviews ?? []).filter(
+    (review) => String(review.product_id) === String(product.id)
+  );
+
+  // Step 2: Compute total and average rating
+  const totalReviews = filteredReviews?.length || 0;
+
+  const averageRating =
+    totalReviews > 0
+      ? (
+          filteredReviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+        ).toFixed(1)
+      : 0;
+
+  // Step 3: Count stars
+  const starCounts = [5, 4, 3, 2, 1].map((star) => {
+    const count = filteredReviews.filter((r) => r.rating === star).length;
+    return { label: `${star} Star`, count };
+  });
+
+  // Step 4: Convert counts to percentages
+  const ratingsData = starCounts.map((item) => ({
+    label: item.label,
+    value:
+      totalReviews > 0 ? ((item.count / totalReviews) * 100).toFixed(1) : 0,
+  }));
+
+  const ratingsDataOld = [
     { label: "5 Star", value: 68 },
     { label: "4 Star", value: 67 },
     { label: "3 Star", value: 42 },
     { label: "2 Star", value: 30 },
     { label: "1 Star", value: 24 },
   ];
+
   const isOutOfStock = product?.stock_level === "out_of_stock";
 
   // Tab content components
@@ -193,6 +223,10 @@ const ProductDetails = () => {
             <Grid size={{ xs: 12, md: 6 }}>
               <Typography variant="h6" gutterBottom>
                 Customer reviews
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                {averageRating} out of 5 ({totalReviews} review
+                {totalReviews !== 1 ? "s" : ""})
               </Typography>
               <Box mt={2}>
                 {ratingsData.map((row, index) => (

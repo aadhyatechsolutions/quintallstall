@@ -102,7 +102,7 @@ export const useWishlistStore = create(
         try {
           set({ syncStatus: "syncing", lastSyncError: null });
           const data = await fetchWishlistItems();
-          console.log("Fetched wishlist data:", data);
+          // console.log("Fetched wishlist data:", data);
           set({ wishlist: data, syncStatus: "idle" });
         } catch (error) {
           console.error("Load wishlist failed:", error);
