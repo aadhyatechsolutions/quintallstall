@@ -12,6 +12,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\VehicleCommissionController;
 use App\Http\Controllers\PlatformCommissionController;
+use App\Http\Controllers\WageCostCommissionController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\CoinController;
 use App\Http\Controllers\ReviewController;
@@ -133,6 +134,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('vehicle-types', VehicleTypeController::class);
     Route::resource('vehicle-commissions', VehicleCommissionController::class);
     Route::resource('platform-commissions',PlatformCommissionController::class);
+    Route::resource('wage-cost-commissions',WageCostCommissionController::class);
 });
 Route::post('/contact-us', [ContactUsController::class, 'send']);
 
