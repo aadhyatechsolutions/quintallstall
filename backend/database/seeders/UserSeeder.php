@@ -133,5 +133,19 @@ class UserSeeder extends Seeder
         ]);
         $david->roles()->attach($deliveryRole->id);
         $david->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
+
+        $david1 = User::create([
+            'first_name' => 'David1',
+            'last_name' => 'Lee1',
+            'business_name' => 'Delivery Business1',
+            'phone_number' => '5678901235',
+            'email' => 'david.lee@delivery.comm',
+            'password' => bcrypt('password'),
+            'profile_image' => $getProfileImage('delivery'),
+            'address_id' => Address::inRandomOrder()->first()->id,
+            'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
+        ]);
+        $david1->roles()->attach($deliveryRole->id);
+        $david1->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
     }
 }

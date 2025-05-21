@@ -4,6 +4,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import AdminStatCards from "./shared/AdminStatCards";
 import WholesalerStatCard from "./shared/WholesalerStatCard";
 import RetailerStatCard from "./shared/RetailerStatCard";
+import DeliveryStatCard from "./shared/DeliveryStatCards";
 import useAuth from "app/hooks/useAuth";
 // STYLED COMPONENTS
 const ContentBox = styled("div")(({ theme }) => ({
@@ -23,6 +24,7 @@ export default function Analytics() {
             {userRoleSlug === "admin" && <AdminStatCards />}
             {userRoleSlug === "wholesaler" && <WholesalerStatCard />}
             {userRoleSlug === "retailer" && <RetailerStatCard />}
+            {userRoleSlug === "delivery" && <DeliveryStatCard />}
           </Grid>
         </Grid>
       </ContentBox>
