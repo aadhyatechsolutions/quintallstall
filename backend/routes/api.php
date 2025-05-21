@@ -130,8 +130,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/purchased-coins', [PurchaseCoinController::class, 'getAllCoins']);
     Route::post('/purchase-coins', [PurchaseCoinController::class, 'store']);
 });
+
+Route::resource('vehicle-types', VehicleTypeController::class);
+
 Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('vehicle-types', VehicleTypeController::class);
     Route::resource('vehicle-commissions', VehicleCommissionController::class);
     Route::resource('platform-commissions',PlatformCommissionController::class);
     Route::resource('wage-cost-commissions',WageCostCommissionController::class);

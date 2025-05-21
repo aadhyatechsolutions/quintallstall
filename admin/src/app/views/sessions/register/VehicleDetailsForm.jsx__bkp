@@ -1,37 +1,20 @@
-import {
-  TextField,
-  Box,
-  Button,
-  Grid,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  FormHelperText,
-} from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import React, { useEffect } from "react";
-import useVehicleTypeStore from "../../../../store/vehicleType/vehicleTypeStore";
+import { TextField, Box, Button, Grid } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
-  const { vehicleTypes, fetchVehicleTypes } = useVehicleTypeStore();
-
-  useEffect(() => {
-    fetchVehicleTypes();
-  }, [fetchVehicleTypes]);
-
   const validationSchema = Yup.object().shape({
-    vehicleTypeId: Yup.string().required("Vehicle type is required!"),
+    vehicleType: Yup.string().required("Vehicle type is required!"),
     vehicleNo: Yup.string().required("Vehicle number is required!"),
     permitNumber: Yup.string().required("Permit number is required!"),
     insuranceNumber: Yup.string().required("Insurance number is required!"),
   });
 
+
   const handleSubmit = async (values) => {
+    setStep('account');
     setFormData(values);
-    setStep("account");
   };
 
   return (
@@ -39,7 +22,7 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
       initialValues={formData}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
-      enableReinitialize
+      enableReinitialize={true}
     >
       {({
         values,
@@ -51,35 +34,23 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
         isSubmitting,
       }) => (
         <form onSubmit={handleSubmit}>
-          {/* Vehicle Type Dropdown */}
-          <FormControl
+          {/* Vehicle Type */}
+          <TextField
             fullWidth
             size="small"
+            type="text"
+            name="vehicleType"
+            label="Vehicle Type"
+            variant="outlined"
+            onBlur={handleBlur}
+            value={values.vehicleType}
+            onChange={handleChange}
+            helperText={touched.vehicleType && errors.vehicleType}
             error={Boolean(errors.vehicleType && touched.vehicleType)}
             sx={{ mb: 3 }}
-          >
-            <InputLabel id="vehicleType-label">Vehicle Type</InputLabel>
-            <Select
-              labelId="vehicleType-label"
-              id="vehicleTypeId"
-              name="vehicleTypeId"
-              value={values.vehicleTypeId}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              label="Vehicle Type"
-            >
-              {vehicleTypes.map((type) => (
-                <MenuItem key={type.id} value={type.id}>
-                  {type.type}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>
-              {touched.vehicleTypeId  && errors.vehicleTypeId }
-            </FormHelperText>
-          </FormControl>
+          />
 
-          {/* Other fields */}
+          {/* Vehicle Number */}
           <TextField
             fullWidth
             size="small"
@@ -95,6 +66,7 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
             sx={{ mb: 3 }}
           />
 
+          {/* Permit Number */}
           <TextField
             fullWidth
             size="small"
@@ -110,6 +82,7 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
             sx={{ mb: 3 }}
           />
 
+          {/* Insurance Number */}
           <TextField
             fullWidth
             size="small"
@@ -131,7 +104,7 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
                 fullWidth
                 variant="outlined"
                 color="secondary"
-                onClick={() => setStep("address")}
+                onClick={() => setStep('address')}
               >
                 Back
               </Button>

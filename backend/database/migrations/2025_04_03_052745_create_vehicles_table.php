@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');  // Foreign key to the users table
-            $table->string('vehicle_type');
+            $table->foreignId('vehicle_type_id')->constrained('vehicle_types')->onDelete('restrict');
             $table->string('vehicle_no');
             $table->string('permit_number');
             $table->string('insurance_number');

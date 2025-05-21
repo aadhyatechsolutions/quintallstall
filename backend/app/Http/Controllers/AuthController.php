@@ -45,7 +45,7 @@ class AuthController extends Controller
                 'ifsc_code' => 'nullable|string|required_if:role,wholeseller,retailer,delivery',
                 'account_type' => 'nullable|string|required_if:role,wholeseller,retailer,delivery',
                 'branch_name' => 'nullable|string|required_if:role,wholeseller,retailer,delivery',
-                'vehicle_type' => 'required_if:role,delivery|string',
+                'vehicle_type_id' => 'required_if:role,delivery|exists:vehicle_types,id',
                 'vehicle_no' => 'required_if:role,delivery|string',
                 'permit_number' => 'required_if:role,delivery|string',
                 'insurance_number' => 'required_if:role,delivery|string',
@@ -97,19 +97,18 @@ class AuthController extends Controller
                     'status' => 'Inactive',
                 ]);
             }
-            
-            if ($request->role === 'delivery') {
+             
+            $user->save();
+
+            if ($validated['role'] === 'delivery') {
+                  
                 $vehicle = Vehicle::create([
                     'user_id' => $user->id,
-                    'vehicle_type' => $validated['vehicle_type'],
+                    'vehicle_type_id' => $validated['vehicle_type_id'],
                     'vehicle_no' => $validated['vehicle_no'],
                     'permit_number' => $validated['permit_number'],
                     'insurance_number' => $validated['insurance_number'],
                 ]);
-
-                
-                $user->vehicle_id = $vehicle->id;
-                $user->save();
             }
 
             $role = Role::where('slug', $validated['role'])->firstOrFail();

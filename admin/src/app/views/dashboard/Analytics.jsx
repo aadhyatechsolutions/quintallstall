@@ -22,6 +22,7 @@ export default function Analytics() {
         <Grid container spacing={3}>
           <Grid size={{ md: 8, xs: 12 }}>
             {userRoleSlug === "admin" && <AdminStatCards />}
+            {userRoleSlug === "staff" && <AdminStatCards />}
             {userRoleSlug === "wholesaler" && <WholesalerStatCard />}
             {userRoleSlug === "retailer" && <RetailerStatCard />}
             {userRoleSlug === "delivery" && <DeliveryStatCard />}
