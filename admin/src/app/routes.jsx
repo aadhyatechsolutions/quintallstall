@@ -57,9 +57,9 @@ import ComissionMasterEdit from "./components/Comissions/ComissionMaster/Edit";
 import PlatformComission from "./components/Comissions/PlatformComission";
 import WageCostComission from "./components/Comissions/WageCostComission";
 
-import VehicleMasterCreate from "./components/Comissions/VehicleMaster/Create";
-import VehicleMasterView from "./components/Comissions/VehicleMaster/View";
-import VehicleMasterEdit from "./components/Comissions/VehicleMaster/Edit";
+import VehicleTypeCreate from "../features/vehicleType/VehicleTypeCreate";
+import VehicleTypeView from "../features/vehicleType/VehicleTypeView";
+import VehicleTypeEdit from "../features/vehicleType/VehicleTypeEdit";
 
 import BlogCreate from "./components/Frontend/Blogs/Create";
 import BlogView from "./components/Frontend/Blogs/View";
@@ -162,9 +162,9 @@ const routes = [
       { path: "/comissions/platform-comission", element: <PlatformComission />, },
       { path: "/comissions/wage-cost-comission", element: <WageCostComission />, },
 
-      { path: "/comissions/vehicle-master/create", element: <VehicleMasterCreate />, },
-      { path: "/comissions/vehicle-master/view", element: <VehicleMasterView />, },
-      { path: "/comissions/vehicle-master/edit/:id", element: <VehicleMasterEdit />, },
+      { path: "/comissions/vehicle-type/create", element: <VehicleTypeCreate />, },
+      { path: "/comissions/vehicle-type/view", element: <VehicleTypeView />, },
+      { path: "/comissions/vehicle-type/edit/:id", element: <VehicleTypeEdit />, },
 
       { path: "/frontend/blogs/create", element: <BlogCreate /> },
       { path: "/frontend/blogs/view", element: <BlogView /> },

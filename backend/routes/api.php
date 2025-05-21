@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\CoinController;
 use App\Http\Controllers\ReviewController;
@@ -126,7 +127,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/purchased-coins', [PurchaseCoinController::class, 'getAllCoins']);
     Route::post('/purchase-coins', [PurchaseCoinController::class, 'store']);
 });
-
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('vehicle-types', VehicleTypeController::class);
+});
 Route::post('/contact-us', [ContactUsController::class, 'send']);
 
 Route::get('test', [TestController::class,'test']);

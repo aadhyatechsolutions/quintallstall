@@ -115,7 +115,7 @@ const navigations = [
   },
 
   {
-    name: "Comissions",
+    name: "Commissions",
     icon: "account_circle",
     badge: { color: "secondary" },
    
@@ -132,12 +132,12 @@ const navigations = [
       { name: "Platform Comission", level: 2, path: "/comissions/platform-comission", icon: "assignment"},
       { name: "Wage Cost Comission", level: 2, path: "/comissions/wage-cost-comission", icon: "assignment"},
       { 
-        name: "Vehicle Master", 
+        name: "Vehicle Types", 
         icon: "apps",
         level: 2,
         children: [
-          { name: "Create", path: "/comissions/vehicle-master/create", iconText: "A" },
-          { name: "View", path: "/comissions/vehicle-master/view", iconText: "A" },
+          { name: "Create", path: "/comissions/vehicle-type/create", iconText: "A" },
+          { name: "View", path: "/comissions/vehicle-type/view", iconText: "A" },
         ] 
       },
     ]

@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(BankAccountSeeder::class);
         $this->call(ApmcSeeder::class);
+        $this->call(VehicleTypeSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(VehicleSeeder::class);
         $this->call(CategorySeeder::class);

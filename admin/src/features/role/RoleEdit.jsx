@@ -32,7 +32,7 @@ import {
     "wholesaler",
     "retailer",
     'delivery',
-    "commission",
+    "commissions",
     "frontend",
     "settings",
     "coin",
