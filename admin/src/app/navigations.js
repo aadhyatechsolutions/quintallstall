@@ -129,8 +129,8 @@ const navigations = [
           { name: "View", path: "/commissions/vehicle-commission/view", iconText: "A" },
         ] 
       },
-      { name: "Platform Comission", level: 2, path: "/comissions/platform-comission", icon: "assignment"},
-      { name: "Wage Cost Comission", level: 2, path: "/comissions/wage-cost-comission", icon: "assignment"},
+      { name: "Platform Comission", level: 2, path: "/commissions/platform-commission", icon: "assignment"},
+      { name: "Wage Cost Comission", level: 2, path: "/commissions/wage-cost-commission", icon: "assignment"},
       { 
         name: "Vehicle Types", 
         icon: "apps",

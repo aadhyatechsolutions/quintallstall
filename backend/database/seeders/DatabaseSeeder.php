@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ReviewSeeder::class);
         $this->call(BlogSeeder::class);
         $this->call(VehicleCommissionSeeder::class);
+        $this->call(PlatformCommissionSeeder::class);
+        
         
     }
 }

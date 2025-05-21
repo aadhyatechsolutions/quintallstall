@@ -31,9 +31,8 @@ export default function PlatformComission() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(setPlatformPrice(Number(platformPrice)));  // Dispatch the updated price to Redux
-    // After submitting, stay on the same page and show the updated price
-    navigate("/comissions/platform-comission");  // Re-navigate to refresh the view
+    dispatch(setPlatformPrice(Number(platformPrice))); 
+    navigate("/comissions/platform-comission");
   };
 
   return (

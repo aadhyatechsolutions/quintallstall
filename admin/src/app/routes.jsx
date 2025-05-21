@@ -54,7 +54,7 @@ import VehicleCommissionCreate from "../features/commission/VehicleCommissionCre
 import VehicleCommissionView from "../features/commission/VehicleCommissionView";
 import VehicleCommissionEdit from "../features/commission/VehicleCommissionEdit";
 
-import PlatformComission from "./components/Comissions/PlatformComission";
+import PlatformComission from "../features/commission/PlatformCommission";
 import WageCostComission from "./components/Comissions/WageCostComission";
 
 import VehicleTypeCreate from "../features/vehicleType/VehicleTypeCreate";
@@ -159,8 +159,8 @@ const routes = [
       { path: "/commissions/vehicle-commission/view", element: <VehicleCommissionView />, },
       { path: "/commissions/vehicle-commission/edit/:id", element: <VehicleCommissionEdit />, },
 
-      { path: "/comissions/platform-comission", element: <PlatformComission />, },
-      { path: "/comissions/wage-cost-comission", element: <WageCostComission />, },
+      { path: "/commissions/platform-commission", element: <PlatformComission />, },
+      { path: "/commissions/wage-cost-commission", element: <WageCostComission />, },
 
       { path: "/comissions/vehicle-type/create", element: <VehicleTypeCreate />, },
       { path: "/comissions/vehicle-type/view", element: <VehicleTypeView />, },
