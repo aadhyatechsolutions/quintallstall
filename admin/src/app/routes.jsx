@@ -50,9 +50,9 @@ import Reviews from "./components/Orders/Reviews";
 
 import WholeSellerReport from "./components/Report/WholeSellerReport";
 
-import ComissionMasterCreate from "./components/Comissions/ComissionMaster/Create";
-import ComissionMasterView from "./components/Comissions/ComissionMaster/View";
-import ComissionMasterEdit from "./components/Comissions/ComissionMaster/Edit";
+import VehicleCommissionCreate from "../features/commission/VehicleCommissionCreate";
+import VehicleCommissionView from "../features/commission/VehicleCommissionView";
+import VehicleCommissionEdit from "../features/commission/VehicleCommissionEdit";
 
 import PlatformComission from "./components/Comissions/PlatformComission";
 import WageCostComission from "./components/Comissions/WageCostComission";
@@ -155,9 +155,9 @@ const routes = [
 
       { path: "/report/wholeseller-report", element: <WholeSellerReport /> },
 
-      { path: "/comissions/comission-master/create", element: <ComissionMasterCreate />, },
-      { path: "/comissions/comission-master/view", element: <ComissionMasterView />, },
-      { path: "/comissions/comission-master/edit/:id", element: <ComissionMasterEdit />, },
+      { path: "/commissions/vehicle-commission/create", element: <VehicleCommissionCreate />, },
+      { path: "/commissions/vehicle-commission/view", element: <VehicleCommissionView />, },
+      { path: "/commissions/vehicle-commission/edit/:id", element: <VehicleCommissionEdit />, },
 
       { path: "/comissions/platform-comission", element: <PlatformComission />, },
       { path: "/comissions/wage-cost-comission", element: <WageCostComission />, },

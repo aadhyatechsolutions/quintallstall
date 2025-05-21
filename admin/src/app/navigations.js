@@ -121,12 +121,12 @@ const navigations = [
    
     children: [
       { 
-        name: "Comission Master", 
+        name: "Vehicle Commission", 
         icon: "apps",
         level: 2,
         children: [
-          { name: "Create", path: "/comissions/comission-master/create", iconText: "A" },
-          { name: "View", path: "/comissions/comission-master/view", iconText: "A" },
+          { name: "Create", path: "/commissions/vehicle-commission/create", iconText: "A" },
+          { name: "View", path: "/commissions/vehicle-commission/view", iconText: "A" },
         ] 
       },
       { name: "Platform Comission", level: 2, path: "/comissions/platform-comission", icon: "assignment"},
