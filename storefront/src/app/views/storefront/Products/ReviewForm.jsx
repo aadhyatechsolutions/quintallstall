@@ -165,7 +165,7 @@ const ReviewForm = ({ productId }) => {
           onClick={handleSubmit}
           disabled={isPending}
           variant="contained"
-          sx={{ backgroundColor: "#d32f2f" }}
+          sx={{ backgroundColor: "#a81724" }}
         >
           {isPending ? <CircularProgress size={24} /> : "Submit"}
         </Button>

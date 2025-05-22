@@ -42,9 +42,9 @@ import { useProduct } from "../../../../hooks/useProducts";
 import { useCartStore } from "../../../../store/cartStore";
 import { handleAddToCartWithAuthCheck } from "../../../../utils/authCartHandler";
 import { useReviews } from "../../../../hooks/reviewHooks";
+import { useWishlistStore } from "../../../../store/wishlistStore";
 import ReviewForm from "./ReviewForm";
 import ReviewList from "./ReviewList";
-
 const ProductDetails = () => {
   const theme = useTheme();
   const { id } = useParams();
@@ -55,6 +55,12 @@ const ProductDetails = () => {
   const addToCart = useCartStore((state) => state.addToCart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const [quantity, setQuantity] = useState(1);
+  const addToWishlist = useWishlistStore((state) => state.addToWishlist);
+
+  const handleAddToWishlist = (e) => {
+    e.stopPropagation();
+    addToWishlist(product);
+  };
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -528,7 +534,6 @@ const ProductDetails = () => {
               <Button
                 fullWidth
                 variant="contained"
-                color="error"
                 size="large"
                 startIcon={<ShoppingCart />}
                 disabled={isOutOfStock}
@@ -540,17 +545,22 @@ const ProductDetails = () => {
                     replace: true,
                   })
                 }
-                sx={{ mb: 2, py: 1.5, fontWeight: 600 }}
+                sx={{
+                  mb: 2,
+                  py: 1.5,
+                  fontWeight: 600,
+                  backgroundColor: "#a81724",
+                  "&:hover": {
+                    backgroundColor: "#7a0f18",
+                  },
+                }}
               >
                 {isOutOfStock ? "Sold Out" : "Add to Cart"}
               </Button>
 
               <Stack direction="row" spacing={1} mt={2}>
-                <IconButton>
+                <IconButton onClick={handleAddToWishlist}>
                   <FavoriteBorder />
-                </IconButton>
-                <IconButton>
-                  <Share />
                 </IconButton>
               </Stack>
             </Paper>

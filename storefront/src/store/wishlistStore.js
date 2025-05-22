@@ -15,6 +15,11 @@ export const useWishlistStore = create(
 
       addToWishlist: async (product) => {
         try {
+          // Validate product exists and has an ID
+          if (!product?.id) {
+            throw new Error("Invalid product: missing ID");
+          }
+
           set({ syncStatus: "syncing", lastSyncError: null });
 
           const wishlist = get().wishlist || { items: [] };
@@ -23,18 +28,31 @@ export const useWishlistStore = create(
             : [];
 
           const existingIndex = items.findIndex(
-            (item) => item.product.id === product.id
+            (item) => item.product?.id === product.id
           );
 
           if (existingIndex === -1) {
-            const { success, message, item } = await addWishlistItem({
+            const response = await addWishlistItem({
               product_id: product.id,
             });
 
-            if (!success)
-              throw new Error(message || "Failed to add item to wishlist");
+            if (!response.success) {
+              throw new Error(
+                response.message || "Failed to add item to wishlist"
+              );
+            }
 
-            items.push({ id: item.id, product });
+            // Handle different possible response structures
+            const wishlistItemId =
+              response.item?.id || response.item?.wishlist_item?.id;
+            if (!wishlistItemId) {
+              throw new Error("Invalid response: missing wishlist item ID");
+            }
+
+            items.push({
+              id: wishlistItemId, // The ID returned from the API
+              product: product, // The full product object
+            });
           }
 
           set({ wishlist: { ...wishlist, items }, syncStatus: "idle" });
@@ -47,7 +65,6 @@ export const useWishlistStore = create(
         }
       },
 
-      // Optimistic local removal - update state immediately
       removeFromWishlistLocal: (id) => {
         const wishlist = get().wishlist || { items: [] };
         const items = Array.isArray(wishlist.items) ? wishlist.items : [];
@@ -55,12 +72,11 @@ export const useWishlistStore = create(
         set({ wishlist: { ...wishlist, items: updatedItems } });
       },
 
-      // Remove item with optimistic update and rollback on failure
       removeFromWishlist: async (id) => {
         const wishlist = get().wishlist || { items: [] };
         const items = Array.isArray(wishlist.items) ? [...wishlist.items] : [];
 
-        // Optimistically update UI
+        // Optimistic update
         set({
           wishlist: {
             ...wishlist,
@@ -72,9 +88,8 @@ export const useWishlistStore = create(
 
         try {
           const response = await deleteWishlistItem(id);
-
           if (!response.success) {
-            // Rollback to previous items if API call fails
+            // Rollback on failure
             set({
               wishlist: { ...wishlist, items },
               syncStatus: "error",
@@ -82,13 +97,10 @@ export const useWishlistStore = create(
             });
             return false;
           }
-
-          // Success
           set({ syncStatus: "idle" });
           return true;
         } catch (error) {
           console.error("Remove from wishlist failed:", error);
-          // Rollback to previous items on error
           set({
             wishlist: { ...wishlist, items },
             syncStatus: "error",
@@ -102,7 +114,6 @@ export const useWishlistStore = create(
         try {
           set({ syncStatus: "syncing", lastSyncError: null });
           const data = await fetchWishlistItems();
-          // console.log("Fetched wishlist data:", data);
           set({ wishlist: data, syncStatus: "idle" });
         } catch (error) {
           console.error("Load wishlist failed:", error);

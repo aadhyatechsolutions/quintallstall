@@ -56,7 +56,10 @@ const SpecialOfferSlider = () => {
 
   // Filter only products with a valid discount price
   const discountedProducts = products.filter(
-    (p) => p.status === "active" && p.discount_price && parseFloat(p.discount_price) > 0
+    (p) =>
+      p.status === "active" &&
+      p.discount_price &&
+      parseFloat(p.discount_price) > 0
   );
 
   const settings = {
@@ -138,7 +141,7 @@ const SpecialOfferSlider = () => {
         >
           <Slider {...settings}>
             {discountedProducts.map((product) => (
-              <Box key={product.id}>
+              <Box key={product.id} sx={{ paddingBottom: "10px" }}>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <ProductCard product={product} isSpecialOffer />
                 </Box>
