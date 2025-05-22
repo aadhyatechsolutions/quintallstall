@@ -61,8 +61,8 @@ import VehicleTypeCreate from "../features/vehicleType/VehicleTypeCreate";
 import VehicleTypeView from "../features/vehicleType/VehicleTypeView";
 import VehicleTypeEdit from "../features/vehicleType/VehicleTypeEdit";
 
-import BlogCreate from "./components/Frontend/Blogs/Create";
-import BlogView from "./components/Frontend/Blogs/View";
+import BlogCreate from "../features/blog/BlogCreate";
+import BlogView from "../features/blog/BlogView";
 
 import BlogCategoryCreate from "./components/Frontend/BlogCategory/Create";
 import BlogCategoryView from "./components/Frontend/BlogCategory/View";
