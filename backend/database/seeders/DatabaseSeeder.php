@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(BlogSeeder::class);
         $this->call(VehicleCommissionSeeder::class);
         $this->call(PlatformCommissionSeeder::class);
+        $this->call(SpecialOfferSeeder::class);
         
         
     }

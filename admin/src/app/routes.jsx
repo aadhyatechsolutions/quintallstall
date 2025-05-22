@@ -68,9 +68,9 @@ import BlogCategoryCreate from "./components/Frontend/BlogCategory/Create";
 import BlogCategoryView from "./components/Frontend/BlogCategory/View";
 import BlogCategoryEdit from "./components/Frontend/BlogCategory/Edit";
 
-import SpecialOfferCreate from "./components/Frontend/SpecialOffer/Create";
-import SpecialOfferView from "./components/Frontend/SpecialOffer/View";
-import SpecialOfferEdit from "./components/Frontend/SpecialOffer/Edit";
+import SpecialOfferCreate from "../features/specialOffer/SpecialOfferCreate";
+import SpecialOfferView from "../features/specialOffer/SpecialOfferView";
+import SpecialOfferEdit from "../features/specialOffer/SpecialOfferEdit";
 
 import CoinCreate from "../features/coin/CoinCreate";
 import CoinView from "../features/coin/CoinView";

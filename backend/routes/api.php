@@ -31,7 +31,7 @@ use App\Http\Controllers\WalletController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\PurchaseCoinController;
 use App\Http\Controllers\ContactUsController;
-
+use App\Http\Controllers\SpecialOfferController;
 use App\Http\Controllers\TestController;
 
 /*
@@ -138,6 +138,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('platform-commissions',PlatformCommissionController::class);
     Route::resource('wage-cost-commissions',WageCostCommissionController::class);
 });
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('special-offers', [SpecialOfferController::class, 'store']);
+    Route::put('special-offers/{special_offer}', [SpecialOfferController::class, 'update']);
+    Route::delete('special-offers/{special_offer}', [SpecialOfferController::class, 'destroy']);
+});
+
+Route::get('special-offers', [SpecialOfferController::class, 'index']);
+Route::get('special-offers/{special_offer}', [SpecialOfferController::class, 'show']);
+
 Route::post('/contact-us', [ContactUsController::class, 'send']);
 
 Route::get('test', [TestController::class,'test']);
