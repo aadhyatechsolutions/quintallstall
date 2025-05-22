@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
         $this->call(VehicleCommissionSeeder::class);
         $this->call(PlatformCommissionSeeder::class);
         $this->call(SpecialOfferSeeder::class);
-        
+        $this->call(WageCostCommissionSeeder::class);
+        $this->call(TaxSeeder::class);
         
     }
 }

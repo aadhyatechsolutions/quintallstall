@@ -39,9 +39,8 @@ class UserController extends Controller
                 'city' => 'required|string',
                 'state' => 'required|string',
                 'postal_code' => 'required|string',
-                'shop_number' => 'required|string',
+                'shop_number' => 'nullable|string',
                 'bank_account_number' => 'required|string', 
-                'routing_number' => 'required|string', 
                 'ifsc_code' => 'required|string',
                 'account_type' => 'required|string',
                 'branch_name' => 'required|string',
@@ -67,7 +66,6 @@ class UserController extends Controller
         // Create a bank account for the user
         $bankAccount = BankAccount::create([
             'account_number' => Crypt::encryptString($validated['bank_account_number']),
-            'routing_number' => Crypt::encryptString($validated['routing_number']),
             'ifsc_code' => $validated['ifsc_code'],
             'account_type' => $validated['account_type'],
             'branch_name' => $validated['branch_name']
@@ -83,7 +81,6 @@ class UserController extends Controller
             'password' => Hash::make($validated['password']),
             'address_id' => $address->id,
             'bank_account_id' => $bankAccount->id,
-            'vehicle_id' => null,
             'profile_image' => $profileImagePath,
         ]);
 
@@ -96,7 +93,7 @@ class UserController extends Controller
         
         if ($validated['role'] === 'delivery') {
             $user->vehicles()->create([
-                'vehicle_type' => $validated['vehicle']['vehicle_type'] ?? '',
+                'vehicle_type_id' => $validated['vehicle']['vehicle_type_id'] ?? '',
                 'vehicle_no' => $validated['vehicle']['vehicle_no'] ?? '',
                 'permit_number' => $validated['vehicle']['permit_number'] ?? '',
                 'insurance_number' => $validated['vehicle']['insurance_number'] ?? '',
@@ -108,7 +105,7 @@ class UserController extends Controller
         return response()->json([
             'message' => 'User created successfully',
             'success' => true,
-            'user' => $user->load('roles')->load('apmcs')->makeHidden(['password', 'bank_account_number', 'routing_number']),
+            'user' => $user->load('roles')->load('apmcs')->makeHidden(['password', 'bank_account_number']),
         ], 201);
 
         } 
@@ -193,7 +190,6 @@ class UserController extends Controller
                 'postal_code' => 'nullable|string',
                 'shop_number' => 'nullable|string',
                 'bank_account_number' => 'nullable|string',
-                'routing_number' => 'nullable|string',
                 'ifsc_code' => 'nullable|string',
                 'account_type' => 'nullable|string',
                 'branch_name' => 'nullable|string',
@@ -236,10 +232,9 @@ class UserController extends Controller
             }
 
             // Update the user's bank account details only if provided
-            if (isset($validated['bank_account_number']) || isset($validated['routing_number']) || isset($validated['ifsc_code']) || isset($validated['account_type']) || isset($validated['branch_name'])) {
+            if (isset($validated['bank_account_number']) || isset($validated['ifsc_code']) || isset($validated['account_type']) || isset($validated['branch_name'])) {
                 $user->bankAccount->update([
                     'account_number' => $validated['bank_account_number'] ? Crypt::encryptString($validated['bank_account_number']) : $user->bankAccount->account_number,
-                    'routing_number' => $validated['routing_number'] ? Crypt::encryptString($validated['routing_number']) : $user->bankAccount->routing_number,
                     'ifsc_code' => $validated['ifsc_code'] ?? $user->bankAccount->ifsc_code,
                     'account_type' => $validated['account_type'] ?? $user->bankAccount->account_type,
                     'branch_name' => $validated['branch_name'] ?? $user->bankAccount->branch_name,
@@ -296,8 +291,7 @@ class UserController extends Controller
                 'success' => true,
                 'user' => $user->load(['roles', 'apmcs', 'vehicles'])->makeHidden([
                     'password',
-                    'bank_account_number',
-                    'routing_number',
+                    'bank_account_number'
                 ]),
             ], 200);
 

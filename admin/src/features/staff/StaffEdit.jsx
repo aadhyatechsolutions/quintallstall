@@ -127,7 +127,24 @@ export default function EditStaff() {
               <TextField fullWidth label="Email" name="email" value={formData.email} onChange={handleChange} required type="email" />
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField fullWidth label="Phone Number" name="phone_number" value={formData.phone_number} onChange={handleChange} required inputProps={{ maxLength: 10 }} />
+              <TextField 
+                fullWidth 
+                label="Phone Number" 
+                name="phone_number" 
+                value={formData.phone_number} 
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d{0,10}$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
+                required
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*',
+                  maxLength: 10
+                }}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField fullWidth label="Password" name="password" value={formData.password} onChange={handleChange} type="password" />
