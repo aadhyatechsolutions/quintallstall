@@ -30,7 +30,10 @@ export const addWishlistItem = async ({ product_id }) => {
       { product_id },
       getAuthHeader()
     );
-    return { success: true, item: data.item };
+    return {
+      success: true,
+      item: data.wishlist_item || data.item || data.data,
+    };
   } catch (error) {
     return {
       success: false,

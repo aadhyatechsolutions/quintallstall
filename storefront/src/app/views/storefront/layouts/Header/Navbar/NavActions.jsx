@@ -44,14 +44,18 @@ const NavActions = ({ isLargeScreen }) => {
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   // Option 1: Using Zustand store directly
-  const wishlistItems = Array.isArray(wishlist?.items) ? wishlist.items : [];
-  const wishlistCount = wishlistItems.length;
+  // const wishlistItems = Array.isArray(wishlist?.items) ? wishlist.items : [];
+  // const wishlistCount = wishlistItems.length;
+  const wishlistCount = wishlist?.items?.length || 0;
+
   // console.log(wishlistCount);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
-    loadWishlist(); // Load wishlist when component mounts
+    if (token) {
+      loadWishlist(); // Load wishlist when component mounts
+    }
   }, [loadWishlist]);
 
   const handleHover = (event) => {

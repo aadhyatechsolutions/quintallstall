@@ -348,7 +348,7 @@ const ProductCard = ({ product, isSpecialOffer = false }) => {
                     ? theme.palette.grey[800]
                     : stockConfig.text === "Low Stock"
                     ? theme.palette.warning.main
-                    : theme.palette.error.main,
+                    : "#a81724",
                   "&:hover": {
                     bgcolor: stockConfig.disabled
                       ? theme.palette.grey[400]

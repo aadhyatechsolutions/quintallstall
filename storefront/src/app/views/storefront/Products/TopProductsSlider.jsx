@@ -20,7 +20,7 @@ const NextArrow = ({ onClick }) => (
       position: "absolute",
       right: -20,
       top: "50%",
-      marginLeft:"30x",
+      marginLeft: "30x",
       transform: "translateY(-50%)",
       zIndex: 2,
       backgroundColor: "#fff",
@@ -74,32 +74,35 @@ const TopProductsSlider = () => {
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     responsive: [
-      { 
-        breakpoint: 1200, 
-        settings: { 
+      {
+        breakpoint: 1200,
+        settings: {
           slidesToShow: 3,
-          arrows: true
-        } 
+          arrows: true,
+        },
       },
-      { 
-        breakpoint: 900, 
-        settings: { 
+      {
+        breakpoint: 900,
+        settings: {
           slidesToShow: 2,
-          arrows: true
-        } 
+          arrows: true,
+        },
       },
-      { 
-        breakpoint: 600, 
-        settings: { 
+      {
+        breakpoint: 600,
+        settings: {
           slidesToShow: 1,
-          arrows: false 
-        } 
+          arrows: false,
+        },
       },
     ],
   };
 
   return (
-    <Container maxWidth="xl" sx={{ py: 6, px: { xs: 2, sm: 3 }, position: "relative" }}>
+    <Container
+      maxWidth="xl"
+      sx={{ py: 6, px: { xs: 2, sm: 3 }, position: "relative" }}
+    >
       <Typography
         variant="h4"
         align="center"
@@ -125,19 +128,21 @@ const TopProductsSlider = () => {
       </Typography>
 
       {!isLoading && topRandomProducts.length > 0 && (
-        <Box sx={{ 
-          position: "relative",
-          "& .slick-slide": {
-            padding: "0 8px",
-            boxSizing: "border-box"
-          },
-          "& .slick-list": {
-            margin: "0 -8px" 
-          }
-        }}>
+        <Box
+          sx={{
+            position: "relative",
+            "& .slick-slide": {
+              padding: "0 8px",
+              boxSizing: "border-box",
+            },
+            "& .slick-list": {
+              margin: "0 -8px",
+            },
+          }}
+        >
           <Slider {...settings}>
             {topRandomProducts.map((product) => (
-              <Box key={product.id}>
+              <Box key={product.id} sx={{ paddingBottom: "10px" }}>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <ProductCard product={product} />
                 </Box>

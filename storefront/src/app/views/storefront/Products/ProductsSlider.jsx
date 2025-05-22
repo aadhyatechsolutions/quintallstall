@@ -275,7 +275,6 @@ const ProductSlider = () => {
                       >
                         / {product.unit}
                       </Typography>
-                      
                     </Stack>
 
                     <Button

@@ -21,16 +21,21 @@ import { useWishlist } from "../../../../../hooks/wishlistHooks";
 import { deleteWishlistItem } from "../../../../../utils/wishlistService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useWishlistStore } from "../../../../../store/wishlistStore";
 
 const Wishlist = () => {
   const theme = useTheme();
   const { data, isLoading, error } = useWishlist();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { removeFromWishlist } = useWishlistStore();
 
   const deleteMutation = useMutation({
     mutationFn: deleteWishlistItem,
-    onSuccess: () => queryClient.invalidateQueries(["wishlist"]),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries(["wishlist"]);
+      removeFromWishlist(id); // Update Zustand store
+    },
     onError: (error) =>
       console.error("Failed to remove wishlist item:", error.message),
   });
