@@ -203,7 +203,17 @@ export default function ContactDetailsForm({ formData, setFormData, setStep, set
               variant="outlined"
               onBlur={handleBlur}
               value={values.phoneNumber}
-              onChange={handleChange}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^\d{0,10}$/.test(value)) {
+                  handleChange(e);
+                }
+              }}
+              inputProps={{
+                inputMode: 'numeric',
+                pattern: '[0-9]*',
+                maxLength: 10
+              }}
               helperText={touched.phoneNumber && errors.phoneNumber}
               error={Boolean(errors.phoneNumber && touched.phoneNumber)}
               sx={{ mb: 3 }}

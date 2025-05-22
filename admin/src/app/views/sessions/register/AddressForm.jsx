@@ -17,10 +17,10 @@ const AddressForm = ({formData, setFormData, setStep, profileImage }) => {
     city: Yup.string().required("City is required!"),
     state: Yup.string().required("State is required!"),
     postalCode: Yup.string()
-      .matches(/^[0-9]{6}$/, "Zip code must be 6 digits")
-      .required("Zip code is required!"),
+      .matches(/^[0-9]{6}$/, "Pin code must be 6 digits")
+      .required("Pin code is required!"),
     shopNumber: Yup.string()
-    .matches(/^[0-9]{5}$/, "Shop number must be 5 digits")
+    .matches(/^[a-zA-Z0-9]{0,4}$/, "Shop number must be 5 digits")
   });
 
   const handleSubmit = async (values, {resetForm}) => {
@@ -29,7 +29,7 @@ const AddressForm = ({formData, setFormData, setStep, profileImage }) => {
       setStep('vehicle')
     }else if (values.role === 'wholesaler' || values.role === 'retailer'){
       setStep('account')
-    }else if(values.role === 'user'){
+    }else if(values.role === 'user' || values.role === 'admin'){
       const snakeCaseData = convertObjectKeysToSnakeCase(values);
       try {
         const response = await register(snakeCaseData, profileImage); 
@@ -169,11 +169,21 @@ const AddressForm = ({formData, setFormData, setStep, profileImage }) => {
             size="small"
             type="text"
             name="postalCode"
-            label="Zip Code"
+            label="Pin Code"
             variant="outlined"
             onBlur={handleBlur}
             value={values.postalCode}
-            onChange={handleChange}
+            inputProps={{
+              inputMode: 'numeric',
+              pattern: '[0-9]*',
+              maxLength: 6
+            }}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^\d{0,6}$/.test(value)) {
+                handleChange(e);
+              }
+            }}
             helperText={touched.postalCode && errors.postalCode}
             error={Boolean(errors.postalCode && touched.postalCode)}
             sx={{ mb: 3 }}
@@ -190,7 +200,15 @@ const AddressForm = ({formData, setFormData, setStep, profileImage }) => {
               variant="outlined"
               onBlur={handleBlur}
               value={values.shopNumber}
-              onChange={handleChange}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^[a-zA-Z0-9]{0,4}$/.test(value)) {
+                  handleChange(e);
+                }
+              }} 
+              inputProps={{
+                maxLength: 4
+              }}
               helperText={touched.shopNumber && errors.shopNumber}
               error={Boolean(errors.shopNumber && touched.shopNumber)}
               sx={{ mb: 3 }}
@@ -217,7 +235,7 @@ const AddressForm = ({formData, setFormData, setStep, profileImage }) => {
                 loading={isSubmitting}
                 fullWidth
               >
-                {values.role === "user" ? "Register" : "Next"}
+                {values.role === "user" || values.role === "admin" ? "Register" : "Next"}
               </LoadingButton>
             </Grid>
           </Grid>

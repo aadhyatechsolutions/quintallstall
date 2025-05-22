@@ -11,10 +11,10 @@ const BankDetailsForm = ({ formData, setFormData, initialValues, setStep, profil
 
   const validationSchema = Yup.object().shape({
     bankAccountNumber: Yup.string()
-      .matches(/^\d{9,18}$/, "Bank account number must be 9-18 digits")
+      .matches(/^\d{0,18}$/, "Bank account number must be 9-18 digits")
       .required("Bank account number is required!"),
     ifscCode: Yup.string()
-      .matches(/^[A-Za-z]{4}0[A-Z0-9]{6}$/, "Invalid IFSC Code format")
+      .matches(/^[A-Z]{4}0[A-Z0-9]{0,6}$/, "Invalid IFSC Code format")
       .required("IFSC Code is required!"),
     accountType: Yup.string()
       .required("Account type is required!"),
@@ -84,7 +84,17 @@ const handleBackButton = ()=>{
             variant="outlined"
             onBlur={handleBlur}
             value={values.bankAccountNumber}
-            onChange={handleChange}
+            inputProps={{
+              inputMode: 'numeric',
+              pattern: '[0-9]*',
+              maxLength: 18 // You can set a max depending on the bank, or allow up to 18
+            }}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^\d{0,18}$/.test(value)) {
+                handleChange(e);
+              }
+            }}
             helperText={touched.bankAccountNumber && errors.bankAccountNumber}
             error={Boolean(errors.bankAccountNumber && touched.bankAccountNumber)}
             sx={{ mb: 3 }}
@@ -101,11 +111,21 @@ const handleBackButton = ()=>{
             variant="outlined"
             onBlur={handleBlur}
             value={values.ifscCode}
-            onChange={handleChange}
+            onChange={(e) => {
+              const value = e.target.value.toUpperCase();
+              if (/^[A-Z]{0,4}$/.test(value) || /^[A-Z]{4}0[A-Z0-9]{0,6}$/.test(value)) {
+                handleChange({ target: { name: "ifscCode", value } });
+              }
+            }}
+            inputProps={{
+              maxLength: 11,
+              inputMode: 'text',
+              pattern: '^[A-Z]{4}0[A-Z0-9]{6}$'
+            }}
             helperText={touched.ifscCode && errors.ifscCode}
             error={Boolean(errors.ifscCode && touched.ifscCode)}
             sx={{ mb: 3 }}
-            placeholder="Ex: ABCD0123456"
+            placeholder="e.g. SBIN0001234"
           />
 
           <FormControl fullWidth size="small" sx={{ mb: 3 }}>
