@@ -183,7 +183,17 @@ export default function CreateApmc() {
                 label="Pincode"
                 name="pincode"
                 value={formData.pincode}
-                onChange={handleChange}
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*',
+                  maxLength: 6
+                }}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d{0,6}$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 required
               />
             </Grid>

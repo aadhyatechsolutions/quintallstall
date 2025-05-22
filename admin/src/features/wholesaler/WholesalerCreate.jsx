@@ -53,7 +53,6 @@ export default function CreateWholesaler() {
     postal_code: "",
     shop_number: "",
     bank_account_number: "",
-    routing_number: "",
     ifsc_code: "",
     account_type: "",
     branch_name: "",
@@ -181,8 +180,18 @@ export default function CreateWholesaler() {
                 label="Phone Number"
                 name="phone_number"
                 value={formData.phone_number}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d{0,10}$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 required
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*',
+                  maxLength: 10
+                }}
               />
             </Grid>
 
@@ -259,10 +268,20 @@ export default function CreateWholesaler() {
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
-                label="Postal Code"
+                label="Pin Code"
                 name="postal_code"
                 value={formData.postal_code}
-                onChange={handleChange}
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*',
+                  maxLength: 6
+                }}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d{0,6}$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 required
               />
             </Grid>
@@ -274,8 +293,16 @@ export default function CreateWholesaler() {
                 label="Shop Number"
                 name="shop_number"
                 value={formData.shop_number}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[a-zA-Z0-9]{0,4}$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 required
+                inputProps={{
+                  maxLength: 4
+                }}
               />
             </Grid>
 
@@ -285,18 +312,17 @@ export default function CreateWholesaler() {
                 label="Bank Account Number"
                 name="bank_account_number"
                 value={formData.bank_account_number}
-                onChange={handleChange}
-                required
-              />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Routing Number"
-                name="routing_number"
-                value={formData.routing_number}
-                onChange={handleChange}
+                inputProps={{
+                  inputMode: 'numeric',
+                  pattern: '[0-9]*',
+                  maxLength: 18 // You can set a max depending on the bank, or allow up to 18
+                }}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d{0,18}$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 required
               />
             </Grid>
@@ -306,8 +332,19 @@ export default function CreateWholesaler() {
                 fullWidth
                 label="IFSC Code"
                 name="ifsc_code"
+                placeholder="e.g. SBIN0001234"
                 value={formData.ifsc_code}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value.toUpperCase();
+                  if (/^[A-Z]{0,4}$/.test(value) || /^[A-Z]{4}0[A-Z0-9]{0,6}$/.test(value)) {
+                    handleChange({ target: { name: "ifsc_code", value } });
+                  }
+                }}
+                inputProps={{
+                  maxLength: 11,
+                  inputMode: 'text',
+                  pattern: '^[A-Z]{4}0[A-Z0-9]{6}$'
+                }}
                 required
               />
             </Grid>

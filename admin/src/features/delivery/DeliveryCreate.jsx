@@ -21,7 +21,8 @@ import {
   import useUserStore from "../../store/user/userStore";
   import useRoleStore from "../../store/role/roleStore";
   import useApmcStore from "../../store/apmc/apmcStore";
-  import useVehicleStore from "../../store/vehicle/vehicleStore";
+  // import useVehicleStore from "../../store/vehicle/vehicleStore";
+  import useVehicleTypeStore from "../../store/vehicleType/vehicleTypeStore";
 
   
   const Container = styled("div")(({ theme }) => ({
@@ -38,7 +39,8 @@ import {
     const { createUser, error:userError} = useUserStore();
     const { fetchRoles, roles, loading: roleLoading, error: roleError } = useRoleStore();
     const { apmcs, fetchApmcs, loading: apmcLoading, error: apmcError } = useApmcStore();
-    const { fetchVehicleTypes, vehicleTypes, vehicleTypesLoading } = useVehicleStore();
+    // const { fetchVehicleTypes, vehicleTypes, vehicleTypesLoading } = useVehicleStore();
+    const { vehicleTypes, fetchVehicleTypes } = useVehicleTypeStore();
   
     const [formData, setFormData] = useState({
       first_name: "",
@@ -60,7 +62,7 @@ import {
       branch_name: "",
       role: "delivery", 
       profile_image: null,
-      vehicle_type: "",
+      vehicle_type_id: "",
       vehicle_no: "",
       permit_number: "",
       insurance_number: "",
@@ -100,7 +102,7 @@ import {
       for (const key in formData) {
         if (formData.hasOwnProperty(key)) {
           if (
-            ["vehicle_type", "vehicle_no", "permit_number", "insurance_number"].includes(key)
+            ["vehicle_type_id", "vehicle_no", "permit_number", "insurance_number"].includes(key)
           ) {
             data.append(`vehicle[${key}]`, formData[key]);
           } else if (key !== "profile_image") {
@@ -194,8 +196,18 @@ import {
                   label="Phone Number"
                   name="phone_number"
                   value={formData.phone_number}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d{0,10}$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   required
+                  inputProps={{
+                    inputMode: 'numeric',
+                    pattern: '[0-9]*',
+                    maxLength: 10
+                  }}
                 />
               </Grid>
   
@@ -272,25 +284,25 @@ import {
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Postal Code"
+                  label="Pin Code"
                   name="postal_code"
                   value={formData.postal_code}
-                  onChange={handleChange}
+                  inputProps={{
+                    inputMode: 'numeric',
+                    pattern: '[0-9]*',
+                    maxLength: 6
+                  }}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d{0,6}$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   required
                 />
               </Grid>
   
               {/* Bank Information */}
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Shop Number"
-                  name="shop_number"
-                  value={formData.shop_number}
-                  onChange={handleChange}
-                  required
-                />
-              </Grid>
   
               <Grid item xs={12} md={6}>
                 <TextField
@@ -298,18 +310,17 @@ import {
                   label="Bank Account Number"
                   name="bank_account_number"
                   value={formData.bank_account_number}
-                  onChange={handleChange}
-                  required
-                />
-              </Grid>
-  
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Routing Number"
-                  name="routing_number"
-                  value={formData.routing_number}
-                  onChange={handleChange}
+                  inputProps={{
+                    inputMode: 'numeric',
+                    pattern: '[0-9]*',
+                    maxLength: 18 // You can set a max depending on the bank, or allow up to 18
+                  }}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d{0,18}$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   required
                 />
               </Grid>
@@ -320,7 +331,17 @@ import {
                   label="IFSC Code"
                   name="ifsc_code"
                   value={formData.ifsc_code}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value.toUpperCase();
+                    if (/^[A-Z]{0,4}$/.test(value) || /^[A-Z]{4}0[A-Z0-9]{0,6}$/.test(value)) {
+                      handleChange({ target: { name: "ifsc_code", value } });
+                    }
+                  }}
+                  inputProps={{
+                    maxLength: 11,
+                    inputMode: 'text',
+                    pattern: '^[A-Z]{4}0[A-Z0-9]{6}$'
+                  }}
                   required
                 />
               </Grid>
@@ -360,20 +381,16 @@ import {
                   <InputLabel id="vehicle-type-label">Vehicle Type</InputLabel>
                   <Select
                     labelId="vehicle-type-label"
-                    name="vehicle_type"
-                    value={formData.vehicle_type}
+                    name="vehicle_type_id"
+                    value={formData.vehicle_type_id}
                     onChange={handleChange}
                     label="Vehicle Type"
                   >
-                    {vehicleTypesLoading ? (
-                      <MenuItem disabled>Loading...</MenuItem>
-                    ) : (
-                      vehicleTypes.map((type, index) => (
-                        <MenuItem key={type.value} value={type.value}>
-                          {type.label}
-                        </MenuItem>
-                      ))
-                    )}
+                    {vehicleTypes.map((type) => (
+                      <MenuItem key={type.id} value={type.id}>
+                        {type.type}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
@@ -383,8 +400,14 @@ import {
                   fullWidth
                   label="Vehicle Number"
                   name="vehicle_no"
+                  placeholder="e.g. MH 12 AB 1234"
                   value={formData.vehicle_no}
                   onChange={handleChange}
+                  inputProps={{
+                    maxLength: 13,
+                    pattern: '^[A-Z]{2}\\s\\d{2}\\s?[A-Z]{1,2}\\s?\\d{1,4}$',
+                    style: { textTransform: 'uppercase' },
+                  }}
                   required
                 />
               </Grid>
@@ -394,8 +417,14 @@ import {
                   fullWidth
                   label="Permit Number"
                   name="permit_number"
+                  placeholder="e.g. MH/TRANS/2021/12345"
                   value={formData.permit_number}
                   onChange={handleChange}
+                  inputProps={{
+                    maxLength: 20,
+                    pattern: '^[A-Z]{2}[-/]?[A-Z]*[-/]?\\d{4}[-/]?\\d{1,6}$',
+                    style: { textTransform: 'uppercase' },
+                  }}
                   required
                 />
               </Grid>
@@ -405,8 +434,14 @@ import {
                   fullWidth
                   label="Insurance Number"
                   name="insurance_number"
+                  placeholder="e.g. OG-19-1234-5678-00000000"
                   value={formData.insurance_number}
                   onChange={handleChange}
+                  inputProps={{
+                    maxLength: 20,
+                    pattern: '^[A-Za-z0-9/-]{8,20}$',
+                    style: { textTransform: 'uppercase' },
+                  }}
                   required
                 />
               </Grid>
