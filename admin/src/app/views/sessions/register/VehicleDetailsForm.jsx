@@ -87,9 +87,15 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
             name="vehicleNo"
             label="Vehicle Number"
             variant="outlined"
+            placeholder="e.g. MH 12 AB 1234"
             onBlur={handleBlur}
             value={values.vehicleNo}
             onChange={handleChange}
+            inputProps={{
+              maxLength: 13,
+              pattern: '^[A-Z]{2}\\s\\d{2}\\s?[A-Z]{1,2}\\s?\\d{1,4}$',
+              style: { textTransform: 'uppercase' },
+            }}
             helperText={touched.vehicleNo && errors.vehicleNo}
             error={Boolean(errors.vehicleNo && touched.vehicleNo)}
             sx={{ mb: 3 }}
@@ -100,11 +106,17 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
             size="small"
             type="text"
             name="permitNumber"
+            placeholder="e.g. MH/TRANS/2021/12345"
             label="Permit Number"
             variant="outlined"
             onBlur={handleBlur}
             value={values.permitNumber}
             onChange={handleChange}
+            inputProps={{
+              maxLength: 20,
+              pattern: '^[A-Z]{2}[-/]?[A-Z]*[-/]?\\d{4}[-/]?\\d{1,6}$',
+              style: { textTransform: 'uppercase' },
+            }}
             helperText={touched.permitNumber && errors.permitNumber}
             error={Boolean(errors.permitNumber && touched.permitNumber)}
             sx={{ mb: 3 }}
@@ -116,10 +128,16 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
             type="text"
             name="insuranceNumber"
             label="Insurance Number"
+            placeholder="e.g. OG-19-1234-5678-00000000"
             variant="outlined"
             onBlur={handleBlur}
             value={values.insuranceNumber}
             onChange={handleChange}
+            inputProps={{
+              maxLength: 20,
+              pattern: '^[A-Za-z0-9/-]{8,20}$',
+              style: { textTransform: 'uppercase' },
+            }}
             helperText={touched.insuranceNumber && errors.insuranceNumber}
             error={Boolean(errors.insuranceNumber && touched.insuranceNumber)}
             sx={{ mb: 3 }}
