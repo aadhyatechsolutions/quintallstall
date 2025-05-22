@@ -348,6 +348,20 @@ const Checkout = () => {
                 </Typography>
               </Box>
 
+              <Box display="flex" justifyContent="space-between" mb={1.5}>
+                <Typography variant="body2">Wage cost</Typography>
+                <Typography variant="body2">
+                  {/* {CURRENCY} {orderDetails.shipping.toFixed(2)} */}
+                </Typography>
+              </Box>
+
+              <Box display="flex" justifyContent="space-between" mb={1.5}>
+                <Typography variant="body2">Platform cost</Typography>
+                <Typography variant="body2">
+                  {/* {CURRENCY} {orderDetails.shipping.toFixed(2)} */}
+                </Typography>
+              </Box>
+
               <Divider sx={{ my: 2 }} />
 
               {/* Total */}
