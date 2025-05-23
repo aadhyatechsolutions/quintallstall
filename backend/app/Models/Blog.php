@@ -22,4 +22,8 @@ class Blog extends Model
         'tags' => 'array',
         'date' => 'date',
     ];
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class, 'blog_category_id');
+    }
 }

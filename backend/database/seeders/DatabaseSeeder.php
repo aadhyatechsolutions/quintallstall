@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CoinSeeder::class);
         $this->call(ReviewSeeder::class);
+        $this->call(BlogCategorySeeder::class);
         $this->call(BlogSeeder::class);
         $this->call(VehicleCommissionSeeder::class);
         $this->call(PlatformCommissionSeeder::class);

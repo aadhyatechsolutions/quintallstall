@@ -64,9 +64,9 @@ import VehicleTypeEdit from "../features/vehicleType/VehicleTypeEdit";
 import BlogCreate from "../features/blog/BlogCreate";
 import BlogView from "../features/blog/BlogView";
 
-import BlogCategoryCreate from "./components/Frontend/BlogCategory/Create";
-import BlogCategoryView from "./components/Frontend/BlogCategory/View";
-import BlogCategoryEdit from "./components/Frontend/BlogCategory/Edit";
+import BlogCategoryCreate from "../features/blogCategory/BlogCategoryCreate";
+import BlogCategoryView from "../features/blogCategory/BlogCategoryView";
+import BlogCategoryEdit from "../features/blogCategory/BlogCategoryEdit";
 
 import SpecialOfferCreate from "../features/specialOffer/SpecialOfferCreate";
 import SpecialOfferView from "../features/specialOffer/SpecialOfferView";

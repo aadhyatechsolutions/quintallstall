@@ -13,16 +13,22 @@ return new class extends Migration
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('blog_category_id')->nullable();
+            $table->foreign('blog_category_id')->references('id')->on('blog_categories')->onDelete('set null');
+
             $table->string('title');
             $table->text('excerpt');
-            $table->json('content'); // Nested JSON (introduction, features[], conclusion)
+            $table->json('content');
             $table->string('image');
             $table->date('date');
             $table->string('author');
             $table->string('read_time');
-            $table->json('tags'); // Stored as array
+            $table->json('tags'); 
             $table->timestamps();
         });
+
+
     }
 
     /**

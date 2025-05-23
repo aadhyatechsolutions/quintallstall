@@ -23,7 +23,7 @@ use App\Http\Controllers\ShippingDetailController;
 use App\Http\Controllers\PaymentController;
 
 use App\Http\Controllers\CartController;
-
+use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WishlistController;
@@ -77,6 +77,7 @@ Route::resource('order-items', OrderItemController::class);
 Route::resource('shipping-details', ShippingDetailController::class);
 Route::resource('payments', PaymentController::class);
 Route::resource('coins', CoinController::class);
+Route::resource('blog-categories', BlogCategoryController::class);
 Route::resource('blogs', BlogController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
