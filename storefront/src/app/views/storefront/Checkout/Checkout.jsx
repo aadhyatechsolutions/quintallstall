@@ -249,7 +249,7 @@ const Checkout = () => {
 
       <Grid container spacing={3}>
         {/* Left Column - Cart Items and Shipping Info */}
-        <Grid item xs={12} md={8}>
+        <Grid size={{xs:12 , md:8}}>
           {/* Cart Items */}
           <Paper elevation={1} sx={{ mb: 4, borderRadius: 2 }}>
             <CardContent>
@@ -297,7 +297,7 @@ const Checkout = () => {
               <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
                 {formFields.map(({ label, name, type }) => (
-                  <Grid item xs={12} sm={6} key={name}>
+                  <Grid size={{xs:12,sm:6}} key={name}>
                     <TextField
                       fullWidth
                       label={label}

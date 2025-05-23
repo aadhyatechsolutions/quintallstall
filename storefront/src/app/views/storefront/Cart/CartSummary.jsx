@@ -8,12 +8,15 @@ import {
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 const CartSummary = ({ total }) => {
   const navigate = useNavigate(); // Hook for navigation
 
   const handleCheckoutClick = () => {
     navigate("/checkout"); // Redirect to checkout page
+  };
+  const handleReturnToShopping = () => {
+    navigate("/");
   };
 
   return (
@@ -42,7 +45,7 @@ const CartSummary = ({ total }) => {
           Apply
         </Button>
       </Stack> */}
-
+       <Typography>Cart Total</Typography>
       <Divider sx={{ my: 2 }} />
 
       <Stack spacing={1} mb={2}>
@@ -70,6 +73,21 @@ const CartSummary = ({ total }) => {
         onClick={handleCheckoutClick}
       >
         Continue to checkout
+      </Button>
+      <Button
+        fullWidth
+        variant="contained"
+        sx={{
+          background: "#2b4a04",
+          color: "#fff",
+          textTransform: "none",
+          mt: 2,
+          "&:hover": { background: "#3f6313" },
+        }}
+        startIcon={<ArrowBackIcon />}
+        onClick={handleReturnToShopping}
+      >
+        Return To Shopping
       </Button>
     </Box>
   );
