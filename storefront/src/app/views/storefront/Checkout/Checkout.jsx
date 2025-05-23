@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Grid,
@@ -21,6 +21,7 @@ import CartItem from "../Cart/CartItem";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import PaymentIcon from "@mui/icons-material/Payment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import useCommissionStore from "../../../../store/useCommissionStore";
 
 const CURRENCY = "Rs";
 
@@ -32,9 +33,23 @@ const Checkout = () => {
     increaseQuantity,
     decreaseQuantity,
   } = useCartStore();
+  
   const { placeOrder } = useOrderStore();
   const navigate = useNavigate();
+  const {
+    platformCommission,
+    wageCost,
+    wageCommissionRate,
+    taxes,
+    isLoading: commissionLoading,
+    fetchCommissions,
+  } = useCommissionStore();
 
+  useEffect(() => {
+    fetchCommissions();
+  }, [fetchCommissions]);
+
+  
   // Form state
   const [formData, setFormData] = useState({
     name: "",
@@ -66,10 +81,35 @@ const Checkout = () => {
       (sum, item) => sum + (item.product?.price || 0) * (item.quantity || 0),
       0
     );
+    
+    // Calculate commissions and taxes
+    // const platformCommissionAmount = (subtotal * (platformCommission || 0)) / 100;
+    const platformCommissionAmount = platformCommission;
+    // const wageCommissionAmount = wageCost > 0 ? wageCost : (subtotal * (wageCommissionRate || 0)) / 100;
+    const wageCommissionAmount = wageCommissionRate;
+    
+    // Calculate taxes (GST example)
+    const cgstAmount = (subtotal * (taxes?.cgst || 0)) / 100;
+    const sgstAmount = (subtotal * (taxes?.sgst || 0)) / 100;
+    const igstAmount = (subtotal * (taxes?.igst || 0)) / 100;
+    const totalTaxes = cgstAmount + sgstAmount + igstAmount;
+    
     const shipping = 0; // You can add shipping calculation here
-    const total = subtotal + shipping;
-    return { subtotal, shipping, total };
+    
+    // Calculate total with all fees
+    const total = subtotal + shipping + platformCommissionAmount + wageCommissionAmount + totalTaxes;
+    
+    return { 
+      subtotal: subtotal || 0,
+      shipping: shipping || 0,
+      platformCommission: platformCommissionAmount || 0,
+      wageCommission: wageCommissionAmount || 0,
+      taxes: totalTaxes || 0,
+      taxDetails: { cgst: cgstAmount, sgst: sgstAmount, igst: igstAmount },
+      total: total || 0
+    };
   };
+
 
   const orderDetails = calculateOrderDetails();
 
@@ -347,6 +387,58 @@ const Checkout = () => {
                   {CURRENCY} {orderDetails.shipping.toFixed(2)}
                 </Typography>
               </Box>
+
+            {/* Wage Cost/Commission */}
+              {(wageCost > 0 || wageCommissionRate > 0) && (
+                <Box display="flex" justifyContent="space-between" mb={1.5}>
+                  <Typography variant="body2">
+                    {wageCost > 0 ? "Fixed Wage Cost" : `Wage Commission (${wageCommissionRate}%)`}
+                  </Typography>
+                  <Typography variant="body2">
+                    {CURRENCY} {orderDetails.wageCommission.toFixed(2)}
+                  </Typography>
+                </Box>
+              )}
+
+              {/* Platform Commission */}
+              {platformCommission > 0 && (
+                <Box display="flex" justifyContent="space-between" mb={1.5}>
+                  <Typography variant="body2">Platform Fee</Typography>
+                  <Typography variant="body2">
+                    {CURRENCY} {orderDetails.platformCommission.toFixed(2)}
+                  </Typography>
+                </Box>
+              )}
+
+              {/* Taxes */}
+              {(taxes?.cgst > 0 || taxes?.sgst > 0 || taxes?.igst > 0) && (
+                <>
+                  {taxes.cgst > 0 && (
+                    <Box display="flex" justifyContent="space-between" mb={1.5}>
+                      <Typography variant="body2">CGST ({taxes.cgst}%)</Typography>
+                      <Typography variant="body2">
+                        {CURRENCY} {orderDetails.taxDetails.cgst.toFixed(2)}
+                      </Typography>
+                    </Box>
+                  )}
+                  {taxes.sgst > 0 && (
+                    <Box display="flex" justifyContent="space-between" mb={1.5}>
+                      <Typography variant="body2">SGST ({taxes.sgst}%)</Typography>
+                      <Typography variant="body2">
+                        {CURRENCY} {orderDetails.taxDetails.sgst.toFixed(2)}
+                      </Typography>
+                    </Box>
+                  )}
+                  {taxes.igst > 0 && (
+                    <Box display="flex" justifyContent="space-between" mb={1.5}>
+                      <Typography variant="body2">IGST ({taxes.igst}%)</Typography>
+                      <Typography variant="body2">
+                        {CURRENCY} {orderDetails.taxDetails.igst.toFixed(2)}
+                      </Typography>
+                    </Box>
+                  )}
+                </>
+              )}
 
               <Divider sx={{ my: 2 }} />
 
