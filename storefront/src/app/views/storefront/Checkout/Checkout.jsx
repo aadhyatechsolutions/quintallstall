@@ -308,8 +308,13 @@ const Checkout = () => {
                         const { value } = e.target;
 
                         if (name === "zip") {
-                          // Only allow up to 6 numeric digits
+                          // ZIP Code: Allow only 0–6 digits
                           if (/^\d{0,6}$/.test(value)) {
+                            handleInputChange(e);
+                          }
+                        } else if (name === "phone") {
+                          // Phone Number: Allow only 0–10 digits
+                          if (/^\d{0,10}$/.test(value)) {
                             handleInputChange(e);
                           }
                         } else {
@@ -328,12 +333,19 @@ const Checkout = () => {
                               inputMode: "numeric",
                               pattern: "\\d{6}",
                             }
+                          : name === "phone"
+                          ? {
+                              maxLength: 10,
+                              inputMode: "numeric",
+                              pattern: "\\d{10}",
+                            }
                           : {}
                       }
                     />
                   </Grid>
                 ))}
               </Grid>
+
 
               </form>
             </CardContent>
