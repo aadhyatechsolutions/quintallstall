@@ -70,20 +70,18 @@ class OrderController extends Controller
 
             // Calculate subtotal (product prices)
             $subtotal = $cart->items->sum(fn($item) => $item->quantity * $item->price);
-
             // Get cost components
             $wageRow = DB::table('wage_cost_commission')->latest('id')->first();
             $platformRow = DB::table('platform_commissions')->latest('id')->first();
             $taxRow = DB::table('taxes')->latest('id')->first();
 
-            $wageCost = $wageRow->commission ?? 0;
+            $wageCost = $wageRow->cost ?? 0;
             $platformCost = $platformRow->platform_price ?? 0;
 
             $taxRate = ($taxRow->cgst ?? 0) + ($taxRow->sgst ?? 0) + ($taxRow->igst ?? 0);
             $taxAmount = $subtotal * ($taxRate / 100);
             
             $finalAmount = round($subtotal + $wageCost + $platformCost + $taxAmount, 2);
-            return $finalAmount;
             // Verify frontend amount (optional, but recommended)
             if (round($request->amount, 2) != $finalAmount) {
                 return response()->json(['message' => 'Amount mismatch.'], 422);
