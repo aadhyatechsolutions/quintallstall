@@ -15,7 +15,7 @@ class ContactUsController extends Controller
             'subject' => 'required|string',
             'message' => 'required|string',
         ]);
-
+        $receiver = env('CONTACT_MAIL_RECEIVER');
         Mail::to(env('CONTACT_MAIL_RECEIVER'))->send(new \App\Mail\ContactMail($validated));
 
         return response()->json([
