@@ -11,8 +11,6 @@ class PlatformCommissionSeeder extends Seeder
     {
         PlatformCommission::insert([
             ['platform_price' => 100.00, 'created_at' => now(), 'updated_at' => now()],
-            ['platform_price' => 150.50, 'created_at' => now(), 'updated_at' => now()],
-            ['platform_price' => 200.75, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

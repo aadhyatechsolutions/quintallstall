@@ -82,7 +82,6 @@ class OrderController extends Controller
             $taxAmount = $subtotal * ($taxRate / 100);
             
             $finalAmount = round($subtotal + $wageCost + $platformCost + $taxAmount, 2);
-            return $finalAmount;
             // Verify frontend amount (optional, but recommended)
             if (round($request->amount, 2) != $finalAmount) {
                 return response()->json(['message' => 'Amount mismatch.'], 422);
