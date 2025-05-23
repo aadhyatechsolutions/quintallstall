@@ -101,7 +101,7 @@ const NavActions = ({ isLargeScreen }) => {
           <Stack direction="row" alignItems="center" sx={{ cursor: "pointer" }}>
             <Phone sx={{ fontSize: "1.3rem", mr: 1 }} />
             <Typography variant="body1" sx={{ fontSize: "1rem" }}>
-              +9 888 104 2340
+              +91 888 104 2340
             </Typography>
           </Stack>
         </Tooltip>
