@@ -16,7 +16,7 @@ class ContactUsController extends Controller
             'message' => 'required|string',
         ]);
 
-        Mail::to(env('MAIL_FROM_ADDRESS'))->send(new \App\Mail\ContactMail($validated));
+        Mail::to(env('CONTACT_MAIL_RECEIVER'))->send(new \App\Mail\ContactMail($validated));
 
         return response()->json([
             'message' => 'Message sent successfully!',
