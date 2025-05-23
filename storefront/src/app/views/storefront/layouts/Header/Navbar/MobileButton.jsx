@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, IconButton, Badge } from "@mui/material";
 import {
   FavoriteBorder,
@@ -7,19 +7,39 @@ import {
 } from "@mui/icons-material";
 import { useCartStore } from "../../../../../../store/cartStore";
 import { useNavigate } from "react-router-dom";
+import { useWishlistStore } from "../../../../../../store/wishlistStore";
+
 const MobileButton = ({ handleDrawerToggle }) => {
   const cart = useCartStore((state) => state.cart);
-   // Ensure cart is an array, and safely access cart items
-   const cartItems = Array.isArray(cart?.items) ? cart.items : [];
-   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { wishlist, loadWishlist } = useWishlistStore();
+
+  // Ensure cart is an array, and safely access cart items
+  const cartItems = Array.isArray(cart?.items) ? cart.items : [];
+  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  
   const handleCartOnClick = () => {
     navigate("/cart");
   };
+
+  // wishlist
+  const wishlistCount = wishlist?.items?.length || 0;
+  
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token);
+    if (token) {
+      loadWishlist();
+    }
+  }, [loadWishlist]);
+
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-      <IconButton sx={{ color: "black", p: "8px" }}>
-        <Badge badgeContent={4} color="error">
+      <IconButton sx={{ color: "black", p: "8px" }}
+       onClick={() => navigate("/wishlist")}
+      >
+        <Badge badgeContent={wishlistCount} color="error">
           <FavoriteBorder />
         </Badge>
       </IconButton>

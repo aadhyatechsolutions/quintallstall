@@ -22,6 +22,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import PaymentIcon from "@mui/icons-material/Payment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import useCommissionStore from "../../../../store/useCommissionStore";
+import EmptyCart from "../Cart/EmptyCart";
 
 const CURRENCY = "Rs";
 
@@ -211,24 +212,12 @@ const Checkout = () => {
   }
 
   // Empty cart state
-  if (cart.length === 0) {
+  if (!cart.items || cart.items.length === 0) {
     return (
-      <Box textAlign="center" mt={4}>
-        <Alert severity="warning" sx={{ mb: 3 }}>
-          Your cart is empty.
-        </Alert>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate("/products")}
-          sx={{ borderRadius: 2, px: 4, py: 1.5, fontSize: "1rem" }}
-        >
-          Continue Shopping
-        </Button>
-      </Box>
+      <EmptyCart/>
     );
   }
-
+ 
   // Main checkout form
   return (
     <Box sx={{ maxWidth: 1200, mx: "auto", p: { xs: 2, md: 4 } }}>
