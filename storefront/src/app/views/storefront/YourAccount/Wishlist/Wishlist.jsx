@@ -31,14 +31,13 @@ const Wishlist = () => {
   const { removeFromWishlist } = useWishlistStore();
 
   const deleteMutation = useMutation({
-    mutationFn: deleteWishlistItem,
+    mutationFn: deleteWishlistItem, // ✅ Call 1
     onSuccess: (_, id) => {
       queryClient.invalidateQueries(["wishlist"]);
-      removeFromWishlist(id); // Update Zustand store
+      removeFromWishlist(id); // ✅ This triggers Call 2
     },
-    onError: (error) =>
-      console.error("Failed to remove wishlist item:", error.message),
   });
+  
 
   const handleRemove = (id) => deleteMutation.mutate(id);
   const handleCardClick = (productId) => navigate(`/products/${productId}`);

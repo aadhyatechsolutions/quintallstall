@@ -72,43 +72,20 @@ export const useWishlistStore = create(
         set({ wishlist: { ...wishlist, items: updatedItems } });
       },
 
-      removeFromWishlist: async (id) => {
+      removeFromWishlist: (id) => {
         const wishlist = get().wishlist || { items: [] };
         const items = Array.isArray(wishlist.items) ? [...wishlist.items] : [];
-
-        // Optimistic update
+      
         set({
           wishlist: {
             ...wishlist,
             items: items.filter((item) => item.id !== id),
           },
-          syncStatus: "syncing",
+          syncStatus: "idle",
           lastSyncError: null,
         });
-
-        try {
-          const response = await deleteWishlistItem(id);
-          if (!response.success) {
-            // Rollback on failure
-            set({
-              wishlist: { ...wishlist, items },
-              syncStatus: "error",
-              lastSyncError: response.message,
-            });
-            return false;
-          }
-          set({ syncStatus: "idle" });
-          return true;
-        } catch (error) {
-          console.error("Remove from wishlist failed:", error);
-          set({
-            wishlist: { ...wishlist, items },
-            syncStatus: "error",
-            lastSyncError: error.message,
-          });
-          return false;
-        }
       },
+      
 
       loadWishlist: async () => {
         try {

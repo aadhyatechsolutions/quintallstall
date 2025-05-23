@@ -86,7 +86,7 @@ const Checkout = () => {
     // const platformCommissionAmount = (subtotal * (platformCommission || 0)) / 100;
     const platformCommissionAmount = platformCommission;
     // const wageCommissionAmount = wageCost > 0 ? wageCost : (subtotal * (wageCommissionRate || 0)) / 100;
-    const wageCommissionAmount = wageCommissionRate;
+    const wageCommissionAmount = wageCost;
     
     // Calculate taxes (GST example)
     const cgstAmount = (subtotal * (taxes?.cgst || 0)) / 100;
@@ -167,7 +167,7 @@ const Checkout = () => {
 
       const orderPayload = {
         shipping_address,
-        payment_method: paymentMethod, // Using selected payment method
+        payment_method: paymentMethod,
         amount,
       };
 
@@ -295,25 +295,46 @@ const Checkout = () => {
               </Typography>
               <Divider sx={{ mb: 3 }} />
               <form onSubmit={handleSubmit}>
-                <Grid container spacing={2}>
-                  {formFields.map(({ label, name, type }) => (
-                    <Grid item xs={12} sm={6} key={name}>
-                      <TextField
-                        fullWidth
-                        label={label}
-                        name={name}
-                        type={type}
-                        value={formData[name]}
-                        onChange={handleInputChange}
-                        error={!!errors[name]}
-                        helperText={errors[name]}
-                        required
-                        variant="outlined"
-                        size="small"
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
+              <Grid container spacing={2}>
+                {formFields.map(({ label, name, type }) => (
+                  <Grid item xs={12} sm={6} key={name}>
+                    <TextField
+                      fullWidth
+                      label={label}
+                      name={name}
+                      type={type}
+                      value={formData[name]}
+                      onChange={(e) => {
+                        const { value } = e.target;
+
+                        if (name === "zip") {
+                          // Only allow up to 6 numeric digits
+                          if (/^\d{0,6}$/.test(value)) {
+                            handleInputChange(e);
+                          }
+                        } else {
+                          handleInputChange(e);
+                        }
+                      }}
+                      error={!!errors[name]}
+                      helperText={errors[name]}
+                      required
+                      variant="outlined"
+                      size="small"
+                      inputProps={
+                        name === "zip"
+                          ? {
+                              maxLength: 6,
+                              inputMode: "numeric",
+                              pattern: "\\d{6}",
+                            }
+                          : {}
+                      }
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+
               </form>
             </CardContent>
           </Paper>
