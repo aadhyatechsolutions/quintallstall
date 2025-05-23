@@ -17,11 +17,22 @@ export const placeOrder = async (orderPayload) => {
       orderPayload,
       getAuthHeader()
     );
-    return {
-      success: true,
-      data: response.data,
-      status: response.status,
-    };
+
+    const orderId = response.data?.order_id;
+
+    if (orderId) {
+      return {
+        success: true,
+        data: response.data,
+        status: response.status,
+      };
+    } else {
+      return {
+        success: false,
+        // error: "Missing order_id in response",
+        status: response.status,
+      };
+    }
   } 
   catch (error) {
     console.error("Failed to place order:", error);
