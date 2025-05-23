@@ -21,6 +21,9 @@ return new class extends Migration
             $table->foreign('delivery_user_id')->references('id')->on('users')->onDelete('set null');
             
             $table->decimal('total_amount', 10, 2);
+            $table->decimal('wage_cost', 10, 2)->default(0);
+            $table->decimal('platform_cost', 10, 2)->default(0);
+            $table->decimal('tax', 10, 2)->default(0);
             $table->text('shipping_address');
             $table->timestamps();
         });

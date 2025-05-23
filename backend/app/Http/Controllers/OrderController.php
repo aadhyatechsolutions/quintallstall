@@ -68,19 +68,35 @@ class OrderController extends Controller
                 return response()->json(['message' => 'Cart is empty.'], 400);
             }
 
-            // Calculate total from backend
-            $totalAmount = $cart->items->sum(fn($item) => $item->quantity * $item->price);
+            // Calculate subtotal (product prices)
+            $subtotal = $cart->items->sum(fn($item) => $item->quantity * $item->price);
 
+            // Get cost components
+            $wageRow = DB::table('wage_cost_commission')->latest('id')->first();
+            $platformRow = DB::table('platform_commissions')->latest('id')->first();
+            $taxRow = DB::table('taxes')->latest('id')->first();
+
+            $wageCost = $wageRow->commission ?? 0;
+            $platformCost = $platformRow->platform_price ?? 0;
+
+            $taxRate = ($taxRow->cgst ?? 0) + ($taxRow->sgst ?? 0) + ($taxRow->igst ?? 0);
+            $taxAmount = $subtotal * ($taxRate / 100);
+            
+            $finalAmount = round($subtotal + $wageCost + $platformCost + $taxAmount, 2);
+            return $finalAmount;
             // Verify frontend amount (optional, but recommended)
-            if (round($request->amount, 2) != round($totalAmount, 2)) {
+            if (round($request->amount, 2) != $finalAmount) {
                 return response()->json(['message' => 'Amount mismatch.'], 422);
             }
 
             // Create order
             $order = Order::create([
                 'buyer_id' => $user->id,
-                'order_status' => 'pending', // Default
-                'total_amount' => $totalAmount,
+                'order_status' => 'pending',
+                'total_amount' => $finalAmount,
+                'wage_cost' => $wageCost,
+                'platform_cost' => $platformCost,
+                'tax' => $taxAmount,
                 'shipping_address' => $request->shipping_address,
             ]);
 
@@ -95,35 +111,33 @@ class OrderController extends Controller
                 ]);
             }
 
-            // Handle Payment
+            // Handle payment
             if ($request->payment_method === 'cod') {
-                // COD: no transaction, pending status
                 $payment = Payment::create([
                     'order_id' => $order->id,
                     'payment_method' => 'cod',
-                    'amount' => $totalAmount,
+                    'amount' => $finalAmount,
                     'transaction_id' => null,
                     'payment_status' => 'pending',
                     'paid_at' => null,
                     'error_message' => null,
                 ]);
             } else {
-                // Online Payment: you should verify payment here with gateway (placeholder)
-                // For now, mock success
-                $verified = true; // simulate payment gateway response
+                // Simulate online payment verification
+                $verified = true; // This would normally come from the payment gateway
                 $transactionId = uniqid('txn_');
 
                 $payment = Payment::create([
                     'order_id' => $order->id,
                     'payment_method' => $request->payment_method,
-                    'amount' => $totalAmount,
+                    'amount' => $finalAmount,
                     'transaction_id' => $transactionId,
                     'payment_status' => $verified ? 'success' : 'failed',
                     'paid_at' => now(),
                     'error_message' => $verified ? null : 'Payment verification failed',
                 ]);
 
-                // Update order status based on payment
+                // Update order status
                 $order->update([
                     'order_status' => $verified ? 'completed' : 'failed',
                 ]);
