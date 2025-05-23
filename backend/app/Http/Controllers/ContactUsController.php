@@ -17,6 +17,7 @@ class ContactUsController extends Controller
         ]);
         $receiver = config('app.contact_mail_receiver'); 
         Mail::to($receiver)->send(new \App\Mail\ContactMail($validated));
+        
 
         return response()->json([
             'message' => 'Message sent successfully!',
