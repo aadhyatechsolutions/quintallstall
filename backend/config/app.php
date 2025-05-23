@@ -4,7 +4,22 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
 return [
-
+    'default' => env('MAIL_MAILER', 'smtp'),
+    'mailers' => [
+        'smtp' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_USERNAME','me@aadhyatechsolutions.in'),
+            'password' => env('MAIL_PASSWORD', 'gpqh umik gxas tayv'),
+        ],
+    ],
+     'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', 'me@aadhyatechsolutions.in'),
+        'name' => env('MAIL_FROM_NAME', 'QuinstallStall'),
+    ],
+    'contact_mail_receiver' => env('CONTACT_MAIL_RECEIVER', 'krishaadhyatech@gmail.com'),
     /*
     |--------------------------------------------------------------------------
     | Application Name
