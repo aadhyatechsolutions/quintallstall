@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log; 
 
 class ContactUsController extends Controller
 {
@@ -15,8 +16,9 @@ class ContactUsController extends Controller
             'subject' => 'required|string',
             'message' => 'required|string',
         ]);
-
-        Mail::to(env('CONTACT_MAIL_RECEIVER'))->send(new \App\Mail\ContactMail($validated));
+        
+        Log::info('Sending mail to: ' . env('CONTACT_MAIL_RECEIVER')); 
+        Mail::to("mayur@aadhyatechsolution.com")->send(new \App\Mail\ContactMail($validated));
 
         return response()->json([
             'message' => 'Message sent successfully!',
