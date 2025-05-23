@@ -1,204 +1,237 @@
-import {
-  Stack,
-  Box,
-  styled,
-  Button,
-  Icon,
-  TextField,
-  Grid,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Snackbar,
-  Alert,
-} from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  TextField,
+  Button,
+  MenuItem,
+  Grid,
+  Box,
+  Typography,
+} from "@mui/material";
 import { SimpleCard } from "app/components";
+import { useNavigate } from "react-router-dom";
 import useBlogStore from "../../store/blog/blogStore";
-import useCategoryStore from "../../store/category/categoryStore"; // if applicable
-
-const Container = styled("div")(({ theme }) => ({
-  margin: "30px",
-  [theme.breakpoints.down("sm")]: { margin: "16px" },
-  "& .breadcrumb": {
-    marginBottom: "30px",
-    [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-  },
-}));
+import useBlogCategoryStore from "../../store/blogCategory/blogCategoryStore";
 
 export default function BlogCreate() {
   const navigate = useNavigate();
-  const { addBlog } = useBlogStore();
-  const { fetchCategories, categories } = useCategoryStore(); // optional
+  const { createBlog } = useBlogStore();
+  const { blogCategories, fetchBlogCategories } = useBlogCategoryStore();
 
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     title: "",
-    content: "",
-    category: "",
-    status: "draft",
-    author: "", // set default if needed
+    blog_category_id: "",    // updated key here
+    excerpt: "",
+    content: {
+      introduction: "",
+      features: [],
+      conclusion: "",
+    },
+    tags: [],
+    author: "",
     image: null,
   });
 
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
-
   useEffect(() => {
-    fetchCategories(); // optional
-  }, []);
+    fetchBlogCategories();
+  }, [fetchBlogCategories]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (["introduction", "conclusion"].includes(name)) {
+      setForm((prev) => ({
+        ...prev,
+        content: {
+          ...prev.content,
+          [name]: value,
+        },
+      }));
+    } else if (name === "tags") {
+      setForm((prev) => ({ ...prev, tags: value.split(",") }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleFeatureChange = (index, value) => {
+    const newFeatures = [...form.content.features];
+    newFeatures[index] = value;
+    setForm((prev) => ({
+      ...prev,
+      content: {
+        ...prev.content,
+        features: newFeatures,
+      },
+    }));
+  };
+
+  const addFeature = () => {
+    setForm((prev) => ({
+      ...prev,
+      content: {
+        ...prev.content,
+        features: [...prev.content.features, ""],
+      },
+    }));
+  };
+
+  const removeFeature = (index) => {
+    const newFeatures = form.content.features.filter((_, i) => i !== index);
+    setForm((prev) => ({
+      ...prev,
+      content: {
+        ...prev.content,
+        features: newFeatures,
+      },
+    }));
   };
 
   const handleImageChange = (e) => {
-    setFormData((prev) => ({ ...prev, image: e.target.files[0] }));
+    setForm((prev) => ({ ...prev, image: e.target.files[0] }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let data = new FormData();
-    for (const key in formData) {
-      data.append(key, formData[key]);
+    const formData = new FormData();
+    formData.append("title", form.title);
+    formData.append("blog_category_id", form.blog_category_id); // changed here
+    formData.append("excerpt", form.excerpt);
+    formData.append("content", JSON.stringify(form.content));
+    formData.append("tags", JSON.stringify(form.tags));
+    formData.append("author", form.author);
+    if (form.image) {
+      formData.append("image", form.image);
     }
 
-    try {
-      await addBlog(data);
-      setSnackbar({
-        open: true,
-        message: "Blog created successfully!",
-        severity: "success",
-      });
-      setTimeout(() => navigate("/features/blog/list"), 1500);
-    } catch (err) {
-      setSnackbar({
-        open: true,
-        message: err.message || "Failed to create blog",
-        severity: "error",
-      });
-    }
+    await createBlog(formData);
+    navigate("/frontend/blogs/view");
   };
 
   return (
-    <Container>
+    <Box m={3}>
       <SimpleCard title="Create Blog">
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            {/* Title */}
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Title"
                 name="title"
-                value={formData.title}
+                value={form.title}
                 onChange={handleChange}
-                required
               />
             </Grid>
 
-            {/* Category (optional) */}
-            <Grid item xs={12} md={6}>
-              <FormControl fullWidth>
-                <InputLabel>Category</InputLabel>
-                <Select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  label="Category"
-                >
-                  {categories.map((cat) => (
-                    <MenuItem key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                select
+                label="Category"
+                name="blog_category_id" // changed here
+                value={form.blog_category_id}
+                onChange={handleChange}
+              >
+                {blogCategories.map((cat) => (
+                  <MenuItem key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
 
-            {/* Content */}
+            {/* Excerpt field */}
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                multiline
-                rows={6}
-                label="Content"
-                name="content"
-                value={formData.content}
+                label="Excerpt"
+                name="excerpt"
+                value={form.excerpt}
                 onChange={handleChange}
-                required
+                multiline
+                rows={2}
               />
             </Grid>
 
-            {/* Status */}
-            <Grid item xs={12} md={6}>
-              <FormControl fullWidth>
-                <InputLabel>Status</InputLabel>
-                <Select
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  label="Status"
-                >
-                  <MenuItem value="draft">Draft</MenuItem>
-                  <MenuItem value="published">Published</MenuItem>
-                </Select>
-              </FormControl>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Introduction"
+                name="introduction"
+                value={form.content.introduction}
+                onChange={handleChange}
+                multiline
+              />
             </Grid>
 
-            {/* Image Upload */}
             <Grid item xs={12}>
-              <Button
-                variant="outlined"
-                component="label"
-                startIcon={<Icon>upload</Icon>}
-              >
+              <Typography variant="subtitle1">Features</Typography>
+              {form.content.features.map((feature, index) => (
+                <Box key={index} display="flex" mb={1}>
+                  <TextField
+                    fullWidth
+                    value={feature}
+                    onChange={(e) => handleFeatureChange(index, e.target.value)}
+                  />
+                  <Button onClick={() => removeFeature(index)}>Remove</Button>
+                </Box>
+              ))}
+              <Button onClick={addFeature}>Add Feature</Button>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Conclusion"
+                name="conclusion"
+                value={form.content.conclusion}
+                onChange={handleChange}
+                multiline
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Tags (comma-separated)"
+                name="tags"
+                value={form.tags.join(",")}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Author"
+                name="author"
+                value={form.author}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Button variant="contained" component="label">
                 Upload Image
-                <input
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
+                <input type="file" hidden onChange={handleImageChange} />
               </Button>
-              {formData.image && (
-                <Box sx={{ mt: 1, color: "text.secondary" }}>
-                  {formData.image instanceof File
-                    ? `Selected: ${formData.image.name}`
-                    : "Using existing image"}
+              {form.image && (
+                <Box mt={2}>
+                  <img
+                    src={URL.createObjectURL(form.image)}
+                    alt="preview"
+                    style={{ width: 100, height: 100, objectFit: "cover" }}
+                  />
                 </Box>
               )}
             </Grid>
 
-            {/* Submit Button */}
             <Grid item xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                startIcon={<Icon>save</Icon>}
-              >
-                Save Blog
+              <Button type="submit" variant="contained" color="primary">
+                Create Blog
               </Button>
             </Grid>
           </Grid>
         </form>
       </SimpleCard>
-
-      {/* Snackbar */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
-      </Snackbar>
-    </Container>
+    </Box>
   );
 }

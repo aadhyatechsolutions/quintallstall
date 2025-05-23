@@ -62,6 +62,7 @@ import VehicleTypeView from "../features/vehicleType/VehicleTypeView";
 import VehicleTypeEdit from "../features/vehicleType/VehicleTypeEdit";
 
 import BlogCreate from "../features/blog/BlogCreate";
+import BlogEdit from "../features/blog/BlogEdit";
 import BlogView from "../features/blog/BlogView";
 
 import BlogCategoryCreate from "../features/blogCategory/BlogCategoryCreate";
@@ -167,6 +168,7 @@ const routes = [
       { path: "/comissions/vehicle-type/edit/:id", element: <VehicleTypeEdit />, },
 
       { path: "/frontend/blogs/create", element: <BlogCreate /> },
+       { path: "/frontend/blogs/edit/:id", element: <BlogEdit /> },
       { path: "/frontend/blogs/view", element: <BlogView /> },
 
       { path: "/frontend/blog-category/create", element: <BlogCategoryCreate />, },

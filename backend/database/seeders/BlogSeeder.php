@@ -77,9 +77,7 @@ class BlogSeeder extends Seeder
                     'conclusion' => "Adding this veggie to your diet can bring surprising health benefits."
                 ],
                 'image' => 'blogs/' . $imageFile,
-                'date' => now()->subDays(10 - $index)->toDateString(),
                 'author' => $blog['author'],
-                'read_time' => rand(3, 7) . ' min',
                 'tags' => $blog['tags'],
                 'blog_category_id' => $category->id,
             ]);
