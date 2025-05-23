@@ -21,9 +21,7 @@ return new class extends Migration
             $table->text('excerpt');
             $table->json('content');
             $table->string('image');
-            $table->date('date');
             $table->string('author');
-            $table->string('read_time');
             $table->json('tags'); 
             $table->timestamps();
         });

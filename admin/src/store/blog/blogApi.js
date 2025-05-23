@@ -34,7 +34,7 @@ export const createBlog = async (blogData) => {
 
 export const updateBlog = async (blogId, blogData) => {
   try {
-    const { data, status } = await axiosInstance.put(`/blogs/${blogId}`, blogData);
+    const { data, status } = await axiosInstance.post(`/blogs/${blogId}`, blogData);
     if (status !== 200) {
       throw new Error('Failed to update blog');
     }

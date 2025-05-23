@@ -33,7 +33,7 @@ export default function BlogView() {
   };
 
   const handleEdit = (id) => {
-    navigate(`/features/blog/edit/${id}`);
+    navigate(`/frontend/blogs/edit/${id}`);
   };
 
   const columns = [

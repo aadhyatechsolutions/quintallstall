@@ -9,26 +9,43 @@ class BlogController extends Controller
 {
     public function index()
     {
-        return response()->json(Blog::latest()->get());
+        $blogs = Blog::with('category')->latest()->get();
+
+        return response()->json($blogs);
     }
 
     public function store(Request $request)
-    {
+    {   
         $data = $request->validate([
             'title' => 'required|string',
             'excerpt' => 'required|string',
-            'content' => 'required|array',
-            'image' => 'required|url',
-            'date' => 'required|date',
+            'content' => 'required|string', // JSON string
+            'image' => 'required|image',    // uploaded image file validation
             'author' => 'required|string',
-            'read_time' => 'required|string',
-            'tags' => 'required|array',
+            'tags' => 'required|string',    // will decode to array
+            'blog_category_id' => 'required|integer|exists:blog_categories,id', // validate category exists
         ]);
+
+        // Decode JSON string content and tags
+        $data['content'] = json_decode($data['content'], true);
+        $data['tags'] = json_decode($data['tags'], true);
+
+        if (!is_array($data['tags'])) {
+            return response()->json(['message' => 'Tags must be a valid JSON array.'], 422);
+        }
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('blogs', 'public');
+            $data['image'] = $path;
+        }
 
         $blog = Blog::create($data);
 
         return response()->json($blog, 201);
     }
+
+
 
     public function show(Blog $blog)
     {
@@ -38,15 +55,29 @@ class BlogController extends Controller
     public function update(Request $request, Blog $blog)
     {
         $data = $request->validate([
-            'title' => 'sometimes|required|string',
-            'excerpt' => 'sometimes|required|string',
-            'content' => 'sometimes|required|array',
-            'image' => 'sometimes|required|url',
-            'date' => 'sometimes|required|date',
-            'author' => 'sometimes|required|string',
-            'read_time' => 'sometimes|required|string',
-            'tags' => 'sometimes|required|array',
+            'title' => 'required|string',
+            'excerpt' => 'required|string',
+            'content' => 'required|string', // JSON string
+            'image' => 'sometimes|image',  // optional image on update
+            'author' => 'required|string',
+            'tags' => 'required|string',    // JSON string to decode
+            'blog_category_id' => 'required|integer|exists:blog_categories,id',
         ]);
+
+        // Decode JSON strings
+        $data['content'] = json_decode($data['content'], true);
+        $data['tags'] = json_decode($data['tags'], true);
+
+        // Validate tags is array
+        if (!is_array($data['tags'])) {
+            return response()->json(['message' => 'Tags must be a valid JSON array.'], 422);
+        }
+
+        // Handle optional image upload
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('blogs', 'public');
+            $data['image'] = $path;
+        }
 
         $blog->update($data);
 

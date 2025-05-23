@@ -13,8 +13,8 @@ class Blog extends Model
         'image',
         'date',
         'author',
-        'read_time',
         'tags',
+        'blog_category_id',
     ];
 
     protected $casts = [
