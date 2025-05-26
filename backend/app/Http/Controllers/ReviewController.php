@@ -53,7 +53,12 @@ class ReviewController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $review = Review::findOrFail($id); // Find review by ID
+        $user = Auth::user();
+        $review = Review::where('id', $id)->where('user_id', $user->id)->first();
+
+        if (!$review) {
+            return response()->json(['message' => 'Review not found or unauthorized'], 404);
+        }
 
         $validated = $request->validate([
             'product_id' => 'nullable|exists:products,id',
