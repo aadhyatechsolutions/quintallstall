@@ -68,6 +68,12 @@ Route::put('/staff/{id}', [UserController::class, 'updateStaff']);
 // Route::resource('products', ProductController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('reviews', ReviewController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/reviews/user/{productId}', [ReviewController::class, 'getByUser']);
+    Route::post('/reviews/user', [ReviewController::class, 'createByUser']);
+    Route::put('/reviews/user/{productId}', [ReviewController::class, 'updateByUser']);
+    Route::delete('/reviews/user/{productId}', [ReviewController::class, 'destroyByUser']);
+});
 
 Route::get('products/role/{slug}', [ProductController::class, 'getProductsByRoleSlug']);
 Route::put('/products/{id}/status', [ProductController::class, 'updateStatus']);

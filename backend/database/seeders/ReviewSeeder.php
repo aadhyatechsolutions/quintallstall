@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Review;
 use App\Models\Product;
+use App\Models\User;
 
 class ReviewSeeder extends Seeder
 {
@@ -15,10 +16,12 @@ class ReviewSeeder extends Seeder
     public function run(): void
     {
         $products = Product::all();
+        $users = User::all();
 
         foreach ($products as $product) {
             Review::create([
                 'product_id' => $product->id,
+                'user_id' => $users->random()->id ?? null,
                 'name' => 'John Doe',
                 'email' => 'john@example.com',
                 'rating' => rand(3, 5),
@@ -27,6 +30,7 @@ class ReviewSeeder extends Seeder
 
             Review::create([
                 'product_id' => $product->id,
+                'user_id' => $users->random()->id ?? null,
                 'name' => 'Jane Smith',
                 'email' => 'jane@example.com',
                 'rating' => rand(1, 5),
