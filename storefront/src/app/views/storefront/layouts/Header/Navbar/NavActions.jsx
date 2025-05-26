@@ -21,6 +21,7 @@ import { useState, useRef, useEffect } from "react";
 import { useCartStore } from "../../../../../../store/cartStore";
 import CartPopover from "../../../Cart/CartDialog/CartPopover";
 import { useWishlistStore } from "../../../../../../store/wishlistStore";
+import { useUserStore } from "../../../../../../store/userStore";
 
 const NavActions = ({ isLargeScreen }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -32,13 +33,19 @@ const NavActions = ({ isLargeScreen }) => {
   const open = Boolean(anchorEl);
   const { cart } = useCartStore();
   const { wishlist, loadWishlist } = useWishlistStore();
-
+  const fetchCurrentUser = useUserStore((state) => state.fetchCurrentUser);
   // Check login status on component mount and when token might change
+ 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    setIsLoggedIn(!!token);
+    (async () => {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        setIsLoggedIn(true);
+        await fetchCurrentUser();
+      }
+    })();
   }, []);
-
+  
   // Ensure cart is an array, and safely access cart items
   const cartItems = Array.isArray(cart?.items) ? cart.items : [];
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);

@@ -26,10 +26,11 @@ import {
   useDeleteReview,
   useUpdateReview,
 } from "../../../../hooks/reviewHooks";
+import { useUserStore } from "../../../../store/userStore";
 
 const ReviewList = ({ productId }) => {
   const theme = useTheme();
-  const { data: reviews, isLoading, isError } = useReviews();
+  const { data: reviews, isLoading, isError } = useReviews(productId);
   const deleteReviewMutation = useDeleteReview();
   const updateReviewMutation = useUpdateReview();
 
@@ -43,6 +44,8 @@ const ReviewList = ({ productId }) => {
     severity: "success",
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const currentUser = useUserStore((state) => state.currentUser);
+  const fetchCurrentUser = useUserStore((state) => state.fetchCurrentUser);
 
   // Check login status on component mount and when token might change
   useEffect(() => {
@@ -50,9 +53,11 @@ const ReviewList = ({ productId }) => {
     setIsLoggedIn(!!token);
   }, []);
 
-  const filteredReviews = reviews?.filter(
-    (review) => String(review.product_id) === String(productId)
-  );
+  const userId = currentUser?.id;
+  const filteredReviews = reviews;
+
+  // console.log("filteredReviews",filteredReviews);
+  
 
   // Edit handlers
   const handleEditOpen = (review) => {
@@ -272,7 +277,7 @@ const ReviewList = ({ productId }) => {
                 </Box>
               </Box>
               {/* button for edit and delete */}
-              {isLoggedIn && (
+              {isLoggedIn && userId === review.user_id && (
                 <Box
                   sx={{
                     top: 16,

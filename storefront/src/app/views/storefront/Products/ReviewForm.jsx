@@ -18,18 +18,18 @@ const ReviewForm = ({ productId }) => {
     isPending,
     isSuccess,
     isError,
-  } = useSubmitReview();
+  } = useSubmitReview(productId);
   const [showSuccess, setShowSuccess] = useState(false);
   const [errors, setErrors] = useState({
-    name: false,
-    email: false,
+    // name: false,
+    // email: false,
     rating: false,
     comment: false,
   });
 
   const [form, setForm] = useState({
-    name: "",
-    email: "",
+    // name: "",
+    // email: "",
     rating: 0,
     comment: "",
   });
@@ -57,8 +57,8 @@ const ReviewForm = ({ productId }) => {
 
   const validateForm = () => {
     const newErrors = {
-      name: form.name.trim() === "",
-      email: !validateEmail(form.email),
+      // name: form.name.trim() === "",
+      // email: !validateEmail(form.email),
       rating: form.rating === 0,
       comment: form.comment.trim() === "",
     };
@@ -121,7 +121,7 @@ const ReviewForm = ({ productId }) => {
       </Box>
 
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, sm: 6 }}>
+        {/* <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             name="name"
             onChange={handleChange}
@@ -132,8 +132,8 @@ const ReviewForm = ({ productId }) => {
             error={errors.name}
             helperText={errors.name ? "Please enter your name" : ""}
           />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
+        </Grid> */}
+        {/* <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             name="email"
             onChange={handleChange}
@@ -144,7 +144,7 @@ const ReviewForm = ({ productId }) => {
             error={errors.email}
             helperText={errors.email ? "Please enter a valid email" : ""}
           />
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <TextField

@@ -50,7 +50,7 @@ const ProductDetails = () => {
   const { id } = useParams();
   const { data: product, isLoading } = useProduct(id);
   const [activeTab, setActiveTab] = useState(0);
-  const { data: reviews } = useReviews();
+  const { data: reviews } = useReviews(id);
   const cart = useCartStore((state) => state.cart) || [];
   const addToCart = useCartStore((state) => state.addToCart);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
@@ -100,10 +100,12 @@ const ProductDetails = () => {
     );
   }
 
+  
   // Step 1: Filter reviews for current product
   const filteredReviews = (reviews ?? []).filter(
     (review) => String(review.product_id) === String(product.id)
   );
+
 
   // Step 2: Compute total and average rating
   const totalReviews = filteredReviews?.length || 0;

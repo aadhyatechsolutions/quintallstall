@@ -27,6 +27,9 @@ const Shop = () => {
   const navigate = useNavigate();
   const { users, userStatus, fetchUsers } = useUserStore();
 
+  console.log("users",users);
+  
+
   useEffect(() => {
     if (users.length === 0 && userStatus !== "loading") {
       fetchUsers();

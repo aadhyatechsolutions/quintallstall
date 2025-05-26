@@ -2,18 +2,44 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../utils/axiosInstance";
 
+
+const getAuthHeader = () => {
+  const token = localStorage.getItem("accessToken");
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  };
+};
+
 // 🔹 Get all reviews
 const fetchReviews = async () => {
   const { data } = await axiosInstance.get("/reviews");
   return data.reviews;
 };
 
-export const useReviews = () => {
+export const useReviews1 = () => {
   return useQuery({
     queryKey: ["reviews"],
     queryFn: fetchReviews,
   });
 };
+
+// 🔹 Get reviews by product ID
+const fetchReviewsByProduct = async ({ queryKey }) => {
+  const [, productId] = queryKey;
+  const { data } = await axiosInstance.get(`/reviews/product/${productId}`);
+  return data.reviews;
+};
+
+export const useReviews = (productId) =>
+  useQuery({
+    queryKey: ["reviews", productId],
+    queryFn: fetchReviewsByProduct,
+    enabled: !!productId,
+  });
+
 
 // 🔹 Get review by ID
 const fetchReviewById = async ({ queryKey }) => {
@@ -30,13 +56,14 @@ export const useReview = (id) =>
   });
 
 // 🔹 Submit new review
-export const useSubmitReview = () => {
+export const useSubmitReview = (productId) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (newReview) => axiosInstance.post("/reviews", newReview),
+    mutationFn: (newReview) =>
+      axiosInstance.post("/reviews", newReview, getAuthHeader()),
     onSuccess: () => {
-      queryClient.invalidateQueries(["reviews"]);
+      queryClient.invalidateQueries(["reviews", productId]);
     },
   });
 };
@@ -47,7 +74,7 @@ export const useUpdateReview = () => {
 
   return useMutation({
     mutationFn: ({ id, ...updated }) =>
-      axiosInstance.put(`/reviews/${id}`, updated),
+      axiosInstance.put(`/reviews/${id}`, updated,getAuthHeader()),
     onSuccess: () => {
       queryClient.invalidateQueries(["reviews"]);
     },
@@ -59,7 +86,7 @@ export const useDeleteReview = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id) => axiosInstance.delete(`/reviews/${id}`),
+    mutationFn: (id) => axiosInstance.delete(`/reviews/${id}`,getAuthHeader()),
     onSuccess: () => {
       queryClient.invalidateQueries(["reviews"]);
     },
