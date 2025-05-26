@@ -22,19 +22,19 @@ class RoleSeeder extends Seeder
             'name' => 'Wholesaler',
             'slug' => 'wholesaler',
             'description' => 'Administrator role',
-            'permissions' => '["products","orders","wholesaler","coin","wallet"]'
+            'permissions' => '["products","orders","coin","wallet"]'
         ]);
         Role::create([
             'name' => 'Retailer',
             'slug' => 'retailer',
             'description' => 'Administrator role',
-            'permissions' => '["products","orders","retailer","coin","wallet"]'
+            'permissions' => '["products","orders","coin","wallet"]'
         ]);
         Role::create([
             'name' => 'Delivery',
             'slug' => 'delivery',
             'description' => 'Administrator role',
-            'permissions' => '["orders","delivery"]'
+            'permissions' => '["orders"]'
         ]);
         Role::create([
             'name' => 'Staff',

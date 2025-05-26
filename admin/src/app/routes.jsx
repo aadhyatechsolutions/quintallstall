@@ -73,6 +73,9 @@ import SpecialOfferCreate from "../features/specialOffer/SpecialOfferCreate";
 import SpecialOfferView from "../features/specialOffer/SpecialOfferView";
 import SpecialOfferEdit from "../features/specialOffer/SpecialOfferEdit";
 
+import OfferCreate from "../features/offer/OfferCreate";
+import OfferView from "../features/offer/OfferView";
+
 import CoinCreate from "../features/coin/CoinCreate";
 import CoinView from "../features/coin/CoinView";
 import CoinEdit from "../features/coin/CoinEdit";
@@ -179,6 +182,8 @@ const routes = [
       { path: "/frontend/special-offer/view", element: <SpecialOfferView /> },
       { path: "/frontend/special-offer/edit/:id", element: <SpecialOfferEdit />, },
 
+      { path: "/settings/offer/create", element: <OfferCreate />, },
+      { path: "/settings/offer/view", element: <OfferView />, },
       { path: "/settings/coin-settings/create", element: <CoinCreate />, },
       { path: "/settings/coin-settings/view", element: <CoinView /> },
       { path: "/settings/coin-settings/edit/:id", element: <CoinEdit />, },
