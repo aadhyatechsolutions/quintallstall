@@ -39,3 +39,9 @@ export const deleteApmc = async (apmcId) => {
     throw new Error(error.response?.data?.message || 'Failed to delete APMC');
   }
 };
+
+export const fetchApmcById = async (id) => {
+  const response = await axiosInstance.get(`/apmcs/${id}`);
+  return response.data;
+};
+

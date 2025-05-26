@@ -40,3 +40,8 @@ export const deleteCategory = async (categoryId) => {
     throw new Error(error.response?.data?.message || 'Failed to delete category');
   }
 };
+
+export const fetchCategoryById = async (id) => {
+  const response = await axiosInstance.get(`/categories/${id}/`);
+  return response.data;
+};

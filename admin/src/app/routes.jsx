@@ -11,6 +11,7 @@ import materialRoutes from "app/views/material-kit/MaterialRoutes";
 
 import AMPCList from "../features/apmc/ApmcList";
 import AMPCCreate from "../features/apmc/ApmcCreate";
+import AMPCView from "../features/apmc/ApmcView";
 import AMPCEdit from "../features/apmc/ApmcEdit";
 
 import ProductList from "../features/product/ProductList";
@@ -21,6 +22,7 @@ import ProductReview from "../features/product/ProductReview";
 
 import CategoryCreate from "../features/category/CategoryCreate";
 import CategoryList from "../features/category/CategoryList";
+import CategoryView from "../features/category/CategoryView";
 import CategoryEdit from "../features/category/CategoryEdit";
 
 import WholeSalerCreate from "../features/wholesaler/WholesalerCreate";
@@ -120,6 +122,7 @@ const routes = [
 
       { path: "/features/apmc/list", element: <AMPCList /> },
       { path: "/features/apmc/create", element: <AMPCCreate /> },
+      { path: "/features/apmc/view/:id", element: <AMPCView /> },
       { path: "/features/apmc/edit/:id", element: <AMPCEdit /> },
 
       { path: "/features/product/list", element: <ProductList /> },
@@ -130,6 +133,7 @@ const routes = [
 
       { path: "/features/category/list", element: <CategoryList /> },
       { path: "/features/category/create", element: <CategoryCreate /> },
+      { path: "/features/category/view/:id", element: <CategoryView /> },
       { path: "/features/category/edit/:id", element: <CategoryEdit /> },
 
       { path: "/features/wholesaler/create", element: <WholeSalerCreate />, },

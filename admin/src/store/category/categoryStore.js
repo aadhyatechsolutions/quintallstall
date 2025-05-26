@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import { fetchCategories, updateCategory, deleteCategory, createCategory } from './categoryApi';
+import { fetchCategories, updateCategory, deleteCategory, createCategory, fetchCategoryById } from './categoryApi';
 
 const useCategoryStore = create((set) => ({
   categories: [],
+  currentCategory: null,
   loading: false,
   error: null,
 
@@ -57,6 +58,17 @@ const useCategoryStore = create((set) => ({
     } catch (err) {
       set({ error: err.message, loading: false });
       throw err;
+    }
+  },
+  fetchCategoryById: async (id) => {
+    set({ loading: true, error: null });
+    try {
+      const data = await fetchCategoryById(id);
+      set({ currentCategory: data.category });
+    } catch (err) {
+      set({ error: err.message });
+    } finally {
+      set({ loading: false });
     }
   },
 }));

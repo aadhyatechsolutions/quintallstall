@@ -28,7 +28,9 @@ export default function ApmcView() {
       deleteApmc(id); // Delete the APMC after confirmation
     }
   };
-
+  const handleView = (id) =>{
+      navigate(`/features/apmc/view/${id}`); 
+  }
   const handleEdit = (id) => {
     navigate(`/features/apmc/edit/${id}`); // Navigate to edit page for selected APMC
   };
@@ -55,9 +57,18 @@ export default function ApmcView() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      width: 225,
       renderCell: (params) => (
         <Box>
+           <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

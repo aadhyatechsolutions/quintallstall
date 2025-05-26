@@ -26,7 +26,9 @@ export default function CategoryView() {
   const handleDelete = (id) => {
     deleteCategory(id); 
   };
-
+  const handleView = (id) => {
+    navigate(`/features/category/view/${id}`);
+  };
   const handleEdit = (id) => {
     navigate(`/features/category/edit/${id}`);
   };
@@ -46,9 +48,18 @@ export default function CategoryView() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      width: 225,
       renderCell: (params) => (
         <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Review;
 use App\Models\Product;
@@ -19,23 +18,19 @@ class ReviewSeeder extends Seeder
         $users = User::all();
 
         foreach ($products as $product) {
-            Review::create([
-                'product_id' => $product->id,
-                'user_id' => $users->random()->id ?? null,
-                'name' => 'John Doe',
-                'email' => 'john@example.com',
-                'rating' => rand(3, 5),
-                'comment' => 'This is a sample review for product ' . $product->name,
-            ]);
+            // Get two random users
+            $randomUsers = $users->random(min(2, $users->count()));
 
-            Review::create([
-                'product_id' => $product->id,
-                'user_id' => $users->random()->id ?? null,
-                'name' => 'Jane Smith',
-                'email' => 'jane@example.com',
-                'rating' => rand(1, 5),
-                'comment' => 'Another opinion about product ' . $product->name,
-            ]);
+            foreach ($randomUsers as $user) {
+                Review::create([
+                    'product_id' => $product->id,
+                    'user_id' => $user->id,
+                    'name' => $user->first_name,
+                    'email' => $user->email,
+                    'rating' => rand(1, 5),
+                    'comment' => 'Review by ' . $user->name . ' on product ' . $product->name,
+                ]);
+            }
         }
     }
 }

@@ -104,6 +104,15 @@ export default function BlogView() {
             variant="contained"
             color="primary"
             size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
             onClick={() => handleEdit(params.row.id)}
             style={{ marginRight: 8 }}
           >

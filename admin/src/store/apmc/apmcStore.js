@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import { fetchApmcs, createApmc, updateApmc, deleteApmc } from './apmcApi'; 
+import { fetchApmcs, createApmc, updateApmc, deleteApmc, fetchApmcById } from './apmcApi'; 
 
 const useApmcStore = create((set) => ({
   apmcs: [],
+  currentApmc: null,
   loading: false,
   error: null,
 
@@ -60,6 +61,17 @@ const useApmcStore = create((set) => ({
     } catch (err) {
       set({ error: err.message, loading: false });
       throw err;
+    } finally {
+      set({ loading: false });
+    }
+  },
+  fetchApmcById: async (id) => {
+    set({ loading: true, error: null });
+    try {
+      const data = await fetchApmcById(id);
+      set({ currentApmc: data.apmc });
+    } catch (err) {
+      set({ error: err.message });
     } finally {
       set({ loading: false });
     }

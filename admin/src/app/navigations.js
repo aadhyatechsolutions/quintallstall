@@ -18,7 +18,7 @@ const navigations = [
     badge: { color: "secondary" },
     children: [
       { 
-        name: "AMPC", 
+        name: "APMC", 
         icon: "apps",
         level: 2,
         children: [
