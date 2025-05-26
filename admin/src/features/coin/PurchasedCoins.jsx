@@ -5,6 +5,7 @@ import { SimpleCard } from "app/components";
 import usePurchaseCoinStore from "../../store/purchaseCoin/purchaseCoinStore";
 import { format } from "date-fns";
 import useAuth from "app/hooks/useAuth";
+import { useNavigate } from "react-router-dom"; 
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -18,10 +19,14 @@ const Container = styled("div")(({ theme }) => ({
 export default function PurchasedCoinsView() {
   const { allPurchasedCoins, fetchAllPurchasedCoins, error, loading } = usePurchaseCoinStore();
   const { user } = useAuth();
+  const navigate = useNavigate();
   useEffect(() => {
     fetchAllPurchasedCoins();
   }, [fetchAllPurchasedCoins]);
-
+  
+  const handleView = (id) => {
+    navigate(`/settings/coin-settings/view/${id}`);
+  };
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
     { field: "coin_type", headerName: "Coin Type", width: 150 },
@@ -30,17 +35,35 @@ export default function PurchasedCoinsView() {
     { field: "totalValue", headerName: "Total Value", width: 130 },
     { field: "purchased_by", headerName: "Purchased By", width: 180 },
     {
-        field: "date",
-        headerName: "Purchase Date",
-        width: 180,
-        valueFormatter: (params) => {
-            const dateValue = params;
-            if (!dateValue) return "N/A";
+      field: "date",
+      headerName: "Purchase Date",
+      width: 180,
+      valueFormatter: (params) => {
+          const dateValue = params;
+          if (!dateValue) return "N/A";
 
-            const parsedDate = new Date(dateValue);
-            return isNaN(parsedDate.getTime()) ? "Invalid Date" : format(parsedDate, "dd/MM/yyyy");
+          const parsedDate = new Date(dateValue);
+          return isNaN(parsedDate.getTime()) ? "Invalid Date" : format(parsedDate, "dd/MM/yyyy");
+      },
+    },
+     {
+          field: "actions",
+          headerName: "Actions",
+          width: 150,
+          renderCell: (params) => (
+            <Box>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => handleView(params.row.id)}
+                style={{ marginRight: 8 }}
+              >
+                View
+              </Button>
+            </Box>
+          ),
         },
-        }
   ];
   const isAdmin = user?.roles?.some(role => role.slug === "admin");
   const filteredPurchasedCoins = isAdmin

@@ -49,6 +49,7 @@ class BlogController extends Controller
 
     public function show(Blog $blog)
     {
+        $blog->load('category');
         return response()->json($blog);
     }
 

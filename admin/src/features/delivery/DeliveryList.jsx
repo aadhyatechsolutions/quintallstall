@@ -30,7 +30,9 @@ export default function deliveryView() {
       deleteUser(id);
     }
   };
-
+  const handleView = (id) => {
+    navigate(`/features/delivery/view/${id}`); 
+  };
   const handleEdit = (id) => {
     navigate(`/features/delivery/edit/${id}`); 
   };
@@ -58,6 +60,15 @@ export default function deliveryView() {
       width: 200,
       renderCell: (params) => (
         <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

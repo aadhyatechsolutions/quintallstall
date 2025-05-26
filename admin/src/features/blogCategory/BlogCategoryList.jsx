@@ -38,7 +38,7 @@ export default function BlogCategoryView() {
   };
 
   const handleView = (id) => {
-    navigate(`/features/blogCategory/view/${id}`);
+    navigate(`/frontend/blog-category/view/${id}`);
   };
 
   const handleEdit = (id) => {
@@ -55,6 +55,15 @@ export default function BlogCategoryView() {
       width: 225,
       renderCell: (params) => (
         <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

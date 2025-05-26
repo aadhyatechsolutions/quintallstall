@@ -29,7 +29,7 @@ export default function BlogView() {
   };
 
   const handleView = (id) => {
-    navigate(`/features/blog/view/${id}`);
+    navigate(`/frontend/blogs/view/${id}`);
   };
 
   const handleEdit = (id) => {
@@ -107,7 +107,7 @@ export default function BlogView() {
             onClick={() => handleView(params.row.id)}
             style={{ marginRight: 8 }}
           >
-            Edit
+            View
           </Button>
           <Button
             variant="contained"

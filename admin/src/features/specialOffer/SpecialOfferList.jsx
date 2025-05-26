@@ -22,7 +22,9 @@ export default function SpecialOffersView() {
   const handleDelete = (id) => {
     deleteSpecialOffer(id);
   };
-
+  const handleView = (id) => {
+    navigate(`/frontend/special-offer/view/${id}`);
+  };
   const handleEdit = (id) => {
     navigate(`/frontend/special-offer/edit/${id}`);
   };
@@ -56,6 +58,15 @@ export default function SpecialOffersView() {
       width: 200,
       renderCell: (params) => (
         <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

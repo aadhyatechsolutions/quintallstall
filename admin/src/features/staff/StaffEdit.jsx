@@ -98,7 +98,7 @@ export default function EditStaff() {
         message: "Staff updated successfully!",
         severity: "success",
       });
-      setTimeout(() => navigate("/settings/staff/view"), 1500);
+      setTimeout(() => navigate("/settings/staff/list"), 1500);
     } catch (err) {
       setSnackbar({
         open: true,

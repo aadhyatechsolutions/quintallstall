@@ -27,7 +27,9 @@ export default function VehicleTypeView() {
   useEffect(() => {
     fetchVehicleTypes();
   }, [fetchVehicleTypes]);
-
+  const handleView = (id) => {
+    navigate(`/comissions/vehicle-type/view/${id}`);
+  };
   const handleEdit = (id) => {
     navigate(`/comissions/vehicle-type/edit/${id}`);
   };
@@ -47,9 +49,18 @@ export default function VehicleTypeView() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: 225,
       renderCell: (params) => (
         <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Breadcrumb, SimpleCard } from "app/components";
 import useProductStore from "../../store/product/productStore";
 import { useNavigate } from "react-router-dom"; 
+import {apiConfig} from 'app/config';
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -19,7 +20,7 @@ export default function View() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProductsBySlug('wholesaler');
+    fetchProductsBySlug('retailer');
   }, [fetchProductsBySlug]);
 
   const handleDelete = (id) => {
@@ -34,6 +35,9 @@ export default function View() {
       console.error("Failed to update status:", err);
     }
   };
+  const handleView = (id) => {
+    navigate(`/features/product/view/${id}`);
+  };
   const handleEdit = (id) => {
     navigate(`/features/product/edit/${id}`);
   };
@@ -46,14 +50,14 @@ export default function View() {
     { field: "price", headerName: "Price", width: 100 }, 
     { field: "quantity", headerName: "Quantity", width: 100 },
     { field: "unit", headerName: "Unit", width: 100 },
-    { field: "user", headerName: "Vendor Name", width: 150 },   
+    { field: "seller", headerName: "Vendor Name", width: 150 },   
     { field: "role", headerName: "Vendor Type", width: 150 }, 
     {
       field: 'image',
       headerName: 'Image',
       width: 150,
       renderCell: (params) => (
-        <img src={params.value} alt="Product" style={{ width: 50, height: 50, objectFit: 'cover' }} />
+        <img src={`${apiConfig.MEDIA_URL}${params.value}`} alt="Product" style={{ width: 50, height: 50, objectFit: 'cover' }} />
       ),
     },
     {
@@ -79,9 +83,18 @@ export default function View() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      width: 225,
       renderCell: (params) => (
         <Box>
+           <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"
@@ -112,8 +125,8 @@ export default function View() {
     price: product.price,
     quantity: product.quantity,
     unit: product.unit,    
-    user: product.user?.first_name,
-    role: product.user?.roles[0]?.name || "No role",
+    seller: product.seller?.first_name,
+    role: product.seller?.roles[0]?.name || "No role",
     image: product.image,
     status: product.status,
   }));

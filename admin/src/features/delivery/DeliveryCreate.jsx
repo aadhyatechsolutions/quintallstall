@@ -125,7 +125,7 @@ import {
             severity: "success",
           });
     
-          setTimeout(() => navigate("/features/delivery/view"), 1500);
+          setTimeout(() => navigate("/features/delivery/list"), 1500);
         }else{
           setSnackbar({
             open: true,

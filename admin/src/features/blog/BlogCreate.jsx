@@ -103,7 +103,7 @@ export default function BlogCreate() {
     }
 
     await createBlog(formData);
-    navigate("/frontend/blogs/view");
+    navigate("/frontend/blogs/list");
   };
 
   return (

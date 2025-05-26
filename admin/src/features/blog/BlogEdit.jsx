@@ -125,7 +125,7 @@ export default function BlogEdit() {
     }
     formData.append("_method", 'PUT');
     await updateBlog(id, formData);
-    navigate("/frontend/blogs/view");
+    navigate("/frontend/blogs/list");
     
   };
 

@@ -1,5 +1,5 @@
 import { Box, styled, Button } from "@mui/material";
-import React, { useEffect } from "react";
+import React, {useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Breadcrumb, SimpleCard } from "app/components";
 import useOrderStore from "../../store/order/orderStore";
@@ -18,11 +18,31 @@ const Container = styled("div")(({ theme }) => ({
 export default function OrderView() {
   const { orders, loading, error, fetchOrders, deleteOrder, updateOrderStatus } = useOrderStore();
   const { user } = useAuth();
+  const [estimatedTimeMap, setEstimatedTimeMap] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
+  useEffect(() => {
+    const fetchETAs = async () => {
+      const timeMap = {};
+
+      for (const order of orders) {
+        const origin = formatAddress(order.order_items[0].product.apmc);
+        const destination = order.shipping_address?.replace(/\n/g, " ").replace(/\s+/g, " ").trim();
+
+        const eta = await getEstimatedTime(origin, destination);
+        timeMap[order.id] = eta;
+      }
+
+      setEstimatedTimeMap(timeMap);
+    };
+
+    if (orders.length > 0) {
+      fetchETAs();
+    }
+  }, [orders]);
 
   const handleDelete = (id) => {
     deleteOrder(id);
@@ -44,19 +64,49 @@ export default function OrderView() {
     }
   };
 
-  
- const handleViewMap = async (row) => {
-    try {
-      
-      navigate("/orders/order-map",{
-        state: {
-          origin: row.pickup_address,
-          destination: row.shipping_address,
+  // inside your component
+
+  const getEstimatedTime = (origin, destination) => {
+    return new Promise((resolve, reject) => {
+      if (!window.google) return resolve("N/A");
+
+      const directionsService = new window.google.maps.DirectionsService();
+
+      directionsService.route(
+        {
+          origin,
+          destination,
+          travelMode: window.google.maps.TravelMode.DRIVING,
+        },
+        (result, status) => {
+          if (status === window.google.maps.DirectionsStatus.OK) {
+            const durationText = result.routes[0].legs[0].duration.text;
+            resolve(durationText);
+          } else {
+            resolve("N/A");
+            console.error("Directions request failed due to " + status);
+          }
         }
-      });
-    } catch (err) {
-      console.error("Error Viewing map:", err);
-    }
+      );
+    });
+  };
+
+
+  const handleViewMap = async (row) => {
+      try {
+        
+        navigate("/orders/order-map",{
+          state: {
+            origin: row.pickup_address,
+            destination: row.shipping_address,
+          }
+        });
+      } catch (err) {
+        console.error("Error Viewing map:", err);
+      }
+  };
+  const handleView = (id) => {
+    navigate(`/orders/view/${id}`); 
   };
 
   const formatAddress = (address) => {
@@ -104,7 +154,14 @@ export default function OrderView() {
     },
     { field: "pickup_address", headerName: "Pickup Address", width: 300 },
     { field: "shipping_address", headerName: "Shipping Address", width: 300 },
-
+    {
+      field: "estimated_time",
+      headerName: "Estimated Time",
+      width: 200,
+      renderCell: (params) => (
+        <span>{estimatedTimeMap[params.row.id] || "Calculating..."}</span>
+      ),
+    },
     {
       field: "order_status",
       headerName: "Status",
@@ -142,6 +199,7 @@ export default function OrderView() {
       )
     },
     { field: "paid_at", headerName: "Payment Date", width: 150 },
+   
     
   ];
 
@@ -156,7 +214,7 @@ export default function OrderView() {
       {
         field: "accept_order",
         headerName: "Actions",
-        width: 200,
+        width: 275,
         renderCell: (params) => {
           if (params.row.order_status === "pending") {
             return (
@@ -179,6 +237,15 @@ export default function OrderView() {
                 >
                   Map
                 </Button>
+                 <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() => handleView(params.row.id)}
+                  style={{ marginRight: 8 }}
+                >
+                  View
+                </Button>
               </Box>
             );
           }
@@ -186,6 +253,26 @@ export default function OrderView() {
         }
       },
     )
+  }else{
+    columns.push(
+   {
+      field: "actions",
+      headerName: "Actions",
+      width: 225,
+      renderCell: (params) => (
+        <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
+        </Box>
+      ),
+    })
   }
   
   const rows = filteredOrders.map((order) => ({
@@ -206,7 +293,7 @@ export default function OrderView() {
   if (error) {
     return <div>{error}</div>;
   }
-
+  
   return (
     <Container>
       <Box className="breadcrumb">

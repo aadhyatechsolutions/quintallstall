@@ -76,7 +76,7 @@ export default function CreateApmc() {
         severity: "success",
       });
 
-      setTimeout(() => navigate("/features/apmc/view"), 1500); 
+      setTimeout(() => navigate("/features/apmc/list"), 1500); 
     } catch (err) {
       setSnackbar({
         open: true,

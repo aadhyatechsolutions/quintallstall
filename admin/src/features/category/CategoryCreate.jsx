@@ -70,7 +70,7 @@ export default function CreateCategory() {
         severity: "success",
       });
 
-      setTimeout(() => navigate("/features/category/view"), 1500); // Navigate to the category view page
+      setTimeout(() => navigate("/features/category/list"), 1500); // Navigate to the category view page
     } catch (err) {
       setSnackbar({
         open: true,

@@ -31,9 +31,12 @@ export default function deliveryView() {
     }
   };
 
-  const handleEdit = (id) => {
-    navigate(`/features/delivery/edit/${id}`); 
+  const handleView = (id) => {
+    navigate(`/delivery/delivery-kyc/view/${id}`); 
   };
+
+
+  
 
   const columns = [
     { field: "id", headerName: "ID", width: 150 },
@@ -65,6 +68,24 @@ export default function deliveryView() {
             </a>
             ) : ("N/A"),
     },
+    {
+          field: "actions",
+          headerName: "Actions",
+          width: 200,
+          renderCell: (params) => (
+            <Box>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => handleView(params.row.id)}
+                style={{ marginRight: 8 }}
+              >
+                View
+              </Button>
+            </Box>
+          ),
+        },
   ];
 
   const rows = users.map((user) => ({

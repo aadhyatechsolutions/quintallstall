@@ -105,7 +105,7 @@ import {
           message: "Role updated successfully!",
           severity: "success",
         });
-        setTimeout(() => navigate("/settings/role/view"), 1500);
+        setTimeout(() => navigate("/settings/role/list"), 1500);
       } catch (err) {
         setSnackbar({
           open: true,

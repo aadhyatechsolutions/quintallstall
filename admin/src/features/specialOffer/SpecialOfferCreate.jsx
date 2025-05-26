@@ -63,7 +63,7 @@ export default function SpecialOfferCreate() {
         message: "Special offer created successfully!",
         severity: "success",
       });
-      setTimeout(() => navigate("/frontend/special-offer/view"), 1500);
+      setTimeout(() => navigate("/frontend/special-offer/list"), 1500);
     } catch (err) {
       setSnackbar({
         open: true,

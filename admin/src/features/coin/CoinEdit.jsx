@@ -80,7 +80,7 @@ export default function EditCoin() {
         message: "Coin updated successfully!",
         severity: "success",
       });
-      setTimeout(() => navigate("/settings/coin-settings/view"), 1500);
+      setTimeout(() => navigate("/settings/coin-settings/list"), 1500);
     } catch (err) {
       setSnackbar({
         open: true,

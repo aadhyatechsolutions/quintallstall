@@ -20,7 +20,7 @@ export const fetchOrderById = async (id) => {
     if (status !== 200) {
       throw new Error('Failed to fetch order');
     }
-    return data.order;
+    return data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Failed to fetch order');
   }

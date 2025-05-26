@@ -22,7 +22,8 @@ export default function CoinView() {
   useEffect(() => {
     fetchCoins();
   }, [fetchCoins]);
-
+  
+  
   const handleDelete = (id) => {
     deleteCoin(id);
   };
@@ -36,7 +37,9 @@ export default function CoinView() {
       console.error("Failed to update status:", err);
     }
   };
-
+  const handleView = (id) => {
+    navigate(`/settings/coin-settings/view/${id}`);
+  };
   const handleEdit = (id) => {
     navigate(`/settings/coin-settings/edit/${id}`);  // Route for coin editing
   };
@@ -72,6 +75,15 @@ export default function CoinView() {
       width: 150,
       renderCell: (params) => (
         <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

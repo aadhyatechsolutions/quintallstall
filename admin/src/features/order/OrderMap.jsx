@@ -16,12 +16,16 @@ export default function OrderMap() {
   const { state } = useLocation();
 
   const [directions, setDirections] = useState(null);
+   const [duration, setDuration] = useState(null);
   const cleanAddress = (address) => address?.replace(/\n/g, " ").replace(/\s+/g, " ").trim();
   const origin = cleanAddress(state.origin);
   const destination = cleanAddress(state.destination);
 
   return (
-    
+    <>
+      <div style={{ marginBottom: "10px", fontWeight: "bold", fontSize: "16px" }}>
+        {duration ? `Estimated Time: ${duration}` : "Calculating route..."}
+      </div>
       <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={7}>
         {!directions && (
           <DirectionsService
@@ -33,6 +37,10 @@ export default function OrderMap() {
             callback={(res) => {
               if (res !== null && res.status === "OK") {
                 setDirections(res);
+                const leg = res.routes[0]?.legs[0];
+                if (leg?.duration) {
+                  setDuration(leg.duration.text);
+                }
               } else {
                 console.error("Directions request failed:", res);
               }
@@ -41,5 +49,6 @@ export default function OrderMap() {
         )}
         {directions && <DirectionsRenderer directions={directions} />}
       </GoogleMap>
+    </>
   );
 }
