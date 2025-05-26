@@ -84,7 +84,6 @@ const Shop = () => {
           <Grid
             key={user.id}
             size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
-            sx={{ width: "25%" }}
           >
             <Card
               sx={{

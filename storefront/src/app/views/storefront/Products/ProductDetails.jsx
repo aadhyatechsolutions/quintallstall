@@ -341,14 +341,15 @@ const ProductDetails = () => {
             </Typography>
 
             <Stack direction="row" spacing={1} alignItems="center" mb={2}>
-              <Rating
+              {/* <Rating
                 value={product?.rating || 4.2}
                 precision={0.1}
                 readOnly
                 size="small"
-              />
+              /> */}
               <Typography variant="body2" color="text.secondary">
-                {product?.reviews || 0} Ratings & Reviews
+                {averageRating} out of 5 ({totalReviews} review
+                  {totalReviews !== 1 ? "s" : ""})
               </Typography>
               <Chip
                 label="Verified"

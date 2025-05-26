@@ -8,7 +8,7 @@ const EmptyCart = () => {
   return (
     <Box
       sx={{
-        height: "60vh",
+        height: "70vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

@@ -22,6 +22,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import PaymentIcon from "@mui/icons-material/Payment";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import useCommissionStore from "../../../../store/useCommissionStore";
+import EmptyCart from "../Cart/EmptyCart";
 
 const CURRENCY = "Rs";
 
@@ -211,24 +212,12 @@ const Checkout = () => {
   }
 
   // Empty cart state
-  if (cart.length === 0) {
+  if (!cart.items || cart.items.length === 0) {
     return (
-      <Box textAlign="center" mt={4}>
-        <Alert severity="warning" sx={{ mb: 3 }}>
-          Your cart is empty.
-        </Alert>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate("/products")}
-          sx={{ borderRadius: 2, px: 4, py: 1.5, fontSize: "1rem" }}
-        >
-          Continue Shopping
-        </Button>
-      </Box>
+      <EmptyCart/>
     );
   }
-
+ 
   // Main checkout form
   return (
     <Box sx={{ maxWidth: 1200, mx: "auto", p: { xs: 2, md: 4 } }}>
@@ -249,7 +238,7 @@ const Checkout = () => {
 
       <Grid container spacing={3}>
         {/* Left Column - Cart Items and Shipping Info */}
-        <Grid item xs={12} md={8}>
+        <Grid size={{xs:12 , md:8}}>
           {/* Cart Items */}
           <Paper elevation={1} sx={{ mb: 4, borderRadius: 2 }}>
             <CardContent>
@@ -297,7 +286,7 @@ const Checkout = () => {
               <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
                 {formFields.map(({ label, name, type }) => (
-                  <Grid item xs={12} sm={6} key={name}>
+                  <Grid size={{xs:12,sm:6}} key={name}>
                     <TextField
                       fullWidth
                       label={label}

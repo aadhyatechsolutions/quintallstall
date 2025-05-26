@@ -48,8 +48,6 @@ const NavActions = ({ isLargeScreen }) => {
   // const wishlistCount = wishlistItems.length;
   const wishlistCount = wishlist?.items?.length || 0;
 
-  // console.log(wishlistCount);
-
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
