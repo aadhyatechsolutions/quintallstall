@@ -35,6 +35,9 @@ export default function View() {
       console.error("Failed to update status:", err);
     }
   };
+  const handleView = (id) => {
+    navigate(`/features/product/view/${id}`);
+  };
   const handleEdit = (id) => {
     navigate(`/features/product/edit/${id}`);
   };
@@ -80,9 +83,18 @@ export default function View() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      width: 225,
       renderCell: (params) => (
         <Box>
+           <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

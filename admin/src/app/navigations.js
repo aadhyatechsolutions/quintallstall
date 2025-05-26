@@ -81,6 +81,7 @@ const navigations = [
           { name: "List", path: "/features/retailer/list", iconText: "A" },
         ] 
       },
+      { name: "View Products", level: 2, path: "/retailer/view-products", icon: "assignment" },
       { name: "Retailer KYC", level: 2, path: "/retailer/retailer-kyc", icon: "assignment" },
     ]
   },

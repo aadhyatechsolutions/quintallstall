@@ -148,7 +148,7 @@ import {
           severity: "success",
         });
   
-        setTimeout(() => navigate("/features/retailer/view"), 1500); 
+        setTimeout(() => navigate("/features/retailer/list"), 1500); 
       } catch (err) {
         setSnackbar({
           open: true,

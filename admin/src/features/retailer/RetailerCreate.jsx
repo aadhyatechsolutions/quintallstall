@@ -117,7 +117,7 @@ import {
           severity: "success",
         });
   
-        setTimeout(() => navigate("/features/retailer/view"), 1500); // Redirect after success
+        setTimeout(() => navigate("/features/retailer/list"), 1500); // Redirect after success
       } catch (err) {
         setSnackbar({
           open: true,

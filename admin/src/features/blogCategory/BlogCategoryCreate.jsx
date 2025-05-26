@@ -49,7 +49,7 @@ export default function BlogCategoryCreate() {
         message: "Blog category created successfully!",
         severity: "success",
       });
-      setTimeout(() => navigate("/frontend/blog-category/view"), 1500);
+      setTimeout(() => navigate("/frontend/blog-category/list"), 1500);
     } catch (err) {
       setSnackbar({
         open: true,

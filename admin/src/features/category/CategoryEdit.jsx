@@ -92,7 +92,7 @@ export default function EditCategory() {
         severity: "success",
       });
 
-      setTimeout(() => navigate("/features/category/view"), 1500);  // Redirect to category list
+      setTimeout(() => navigate("/features/category/list"), 1500);  // Redirect to category list
     } catch (err) {
       setSnackbar({
         open: true,

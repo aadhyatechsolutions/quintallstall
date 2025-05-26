@@ -84,7 +84,7 @@ export default function VehicleCommissionEdit() {
         message: "Vehicle commission updated successfully!",
         severity: "success",
       });
-      setTimeout(() => navigate("/commissions/vehicle-commission/view"), 1500);
+      setTimeout(() => navigate("/commissions/vehicle-commission/list"), 1500);
     } catch (error) {
       setSnackbar({
         open: true,

@@ -100,7 +100,7 @@ import {
           severity: "success",
         });
   
-        setTimeout(() => navigate("/features/apmc/view"), 1500);  // Redirect to apmc list
+        setTimeout(() => navigate("/features/apmc/list"), 1500);  // Redirect to apmc list
       } catch (err) {
         setSnackbar({
           open: true,

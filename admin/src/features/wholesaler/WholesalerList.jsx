@@ -30,7 +30,9 @@ export default function WholesalerView() {
       deleteUser(id);
     }
   };
-
+  const handleView = (id) => {
+    navigate(`/features/wholesaler/view/${id}`); 
+  };
   const handleEdit = (id) => {
     navigate(`/features/wholesaler/edit/${id}`); 
   };
@@ -55,9 +57,18 @@ export default function WholesalerView() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: 225,
       renderCell: (params) => (
         <Box>
+           <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

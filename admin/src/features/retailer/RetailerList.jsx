@@ -30,7 +30,9 @@ export default function retailerView() {
       deleteUser(id);
     }
   };
-
+  const handleView = (id) => {
+    navigate(`/features/retailer/view/${id}`); 
+  };
   const handleEdit = (id) => {
     navigate(`/features/retailer/edit/${id}`); 
   };
@@ -55,9 +57,18 @@ export default function retailerView() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: 225,
       renderCell: (params) => (
         <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

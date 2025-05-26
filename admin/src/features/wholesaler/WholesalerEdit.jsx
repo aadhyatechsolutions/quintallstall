@@ -149,7 +149,7 @@ export default function EditWholesaler() {
         severity: "success",
       });
 
-      setTimeout(() => navigate("/features/wholesaler/view"), 1500); 
+      setTimeout(() => navigate("/features/wholesaler/list"), 1500); 
     } catch (err) {
       setSnackbar({
         open: true,

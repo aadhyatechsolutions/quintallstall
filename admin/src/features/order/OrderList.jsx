@@ -45,18 +45,21 @@ export default function OrderView() {
   };
 
   
- const handleViewMap = async (row) => {
-    try {
-      
-      navigate("/orders/order-map",{
-        state: {
-          origin: row.pickup_address,
-          destination: row.shipping_address,
-        }
-      });
-    } catch (err) {
-      console.error("Error Viewing map:", err);
-    }
+  const handleViewMap = async (row) => {
+      try {
+        
+        navigate("/orders/order-map",{
+          state: {
+            origin: row.pickup_address,
+            destination: row.shipping_address,
+          }
+        });
+      } catch (err) {
+        console.error("Error Viewing map:", err);
+      }
+  };
+  const handleView = (id) => {
+    navigate(`/orders/view/${id}`); 
   };
 
   const formatAddress = (address) => {
@@ -142,6 +145,7 @@ export default function OrderView() {
       )
     },
     { field: "paid_at", headerName: "Payment Date", width: 150 },
+   
     
   ];
 
@@ -187,7 +191,25 @@ export default function OrderView() {
       },
     )
   }
-  
+  columns.push(
+   {
+      field: "actions",
+      headerName: "Actions",
+      width: 225,
+      renderCell: (params) => (
+        <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
+        </Box>
+      ),
+    })
   const rows = filteredOrders.map((order) => ({
     id: order.id,
     buyer: order.buyer,
@@ -206,7 +228,7 @@ export default function OrderView() {
   if (error) {
     return <div>{error}</div>;
   }
-
+  
   return (
     <Container>
       <Box className="breadcrumb">

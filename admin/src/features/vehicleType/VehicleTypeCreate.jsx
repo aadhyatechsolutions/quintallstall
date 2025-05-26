@@ -49,7 +49,7 @@ export default function VehicleTypeCreate() {
         message: "Vehicle Type created successfully!",
         severity: "success",
       });
-      setTimeout(() => navigate("/comissions/vehicle-type/view"), 1500);
+      setTimeout(() => navigate("/comissions/vehicle-type/list"), 1500);
     } catch (err) {
       setSnackbar({
         open: true,

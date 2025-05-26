@@ -94,7 +94,7 @@ export default function EditSpecialOffer() {
         message: "Special offer updated successfully!",
         severity: "success",
       });
-      setTimeout(() => navigate("/frontend/special-offer/view"), 1500);
+      setTimeout(() => navigate("/frontend/special-offer/list"), 1500);
     } catch (err) {
       setSnackbar({
         open: true,

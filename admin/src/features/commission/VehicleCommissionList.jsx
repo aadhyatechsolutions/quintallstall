@@ -27,7 +27,9 @@ export default function VehicleCommissionView() {
   useEffect(() => {
     fetchVehicleCommissions();
   }, [fetchVehicleCommissions]);
-
+  const handleView = (id) => {
+    navigate(`/commissions/vehicle-commission/view/${id}`);
+  };
   const handleEdit = (id) => {
     navigate(`/commissions/vehicle-commission/edit/${id}`);
   };
@@ -50,9 +52,18 @@ export default function VehicleCommissionView() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: 225,
       renderCell: (params) => (
         <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

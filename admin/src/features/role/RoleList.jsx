@@ -27,7 +27,9 @@ export default function RoleView() {
   const handleDelete = (id) => {
     deleteRole(id);
   };
-
+  const handleView = (id) => {
+    navigate(`/settings/role/view/${id}`);
+  };
   const handleEdit = (id) => {
     navigate(`/settings/role/edit/${id}`);
   };
@@ -62,6 +64,15 @@ export default function RoleView() {
       width: 200,
       renderCell: (params) => (
         <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleView(params.row.id)}
+            style={{ marginRight: 8 }}
+          >
+            View
+          </Button>
           <Button
             variant="contained"
             color="primary"

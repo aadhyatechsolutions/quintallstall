@@ -31,8 +31,8 @@ export default function retailerView() {
     }
   };
 
-  const handleEdit = (id) => {
-    navigate(`/features/retailer/edit/${id}`); 
+  const handleView = (id) => {
+    navigate(`/retailer/retailer-kyc/view/${id}`); 
   };
 
   const columns = [
@@ -65,6 +65,24 @@ export default function retailerView() {
             </a>
             ) : ("N/A"),
     },
+    {
+          field: "actions",
+          headerName: "Actions",
+          width: 225,
+          renderCell: (params) => (
+            <Box>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => handleView(params.row.id)}
+                style={{ marginRight: 8 }}
+              >
+                View
+              </Button>
+            </Box>
+          ),
+        },
   ];
 
   const rows = users.map((user) => ({

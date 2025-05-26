@@ -60,7 +60,7 @@ export default function VehicleCommissionCreate() {
         message: "Vehicle Commission created successfully!",
         severity: "success",
       });
-      setTimeout(() => navigate("/commissions/vehicle-commission/view"), 1500);
+      setTimeout(() => navigate("/commissions/vehicle-commission/list"), 1500);
     } catch (err) {
       setSnackbar({
         open: true,
