@@ -45,9 +45,15 @@ class ReviewController extends Controller
 
 
     // Optional: Show reviews for a specific product
-    public function show($productId)
+    public function show($id)
     {
-        $reviews = Review::where('product_id', $productId)->latest()->get();
+        $review = Review::findOrFail($id);
+        return response()->json(['review' => $review], 200);
+    }
+
+    public function getByProductId($id)
+    {
+        $reviews = Review::where('product_id', $id)->latest()->get();
         return response()->json(['reviews' => $reviews]);
     }
 

@@ -71,8 +71,9 @@ Route::resource('categories', CategoryController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::resource('reviews', ReviewController::class);
+    
 });
-
+Route::get('reviews/product/{id}', [ReviewController::class, 'getByProductId']);
 Route::get('products/role/{slug}', [ProductController::class, 'getProductsByRoleSlug']);
 Route::put('/products/{id}/status', [ProductController::class, 'updateStatus']);
 Route::get('/vehicle/types', [VehicleController::class, 'getVehicleTypes']);

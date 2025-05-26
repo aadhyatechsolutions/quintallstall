@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import { fetchReviews, fetchReviewsByProductId, createReview, updateReview, deleteReview } from './reviewApi'; 
+import { fetchReviews, fetchReviewsByProductId, createReview, updateReview, deleteReview, fetchReviewById } from './reviewApi'; 
 
 const useReviewStore = create((set) => ({
   reviews: [],
+  currentReview: null,
   loading: false,
   error: null,
   
@@ -81,6 +82,15 @@ const useReviewStore = create((set) => ({
       throw err;
     } finally {
       set({ loading: false });
+    }
+  },
+  fetchReviewById: async (id) => {
+    set({ loading: true });
+    try {
+      const data = await fetchReviewById(id);
+      set({ currentReview: data.review, loading: false });
+    } catch (error) {
+      set({ error: error.message, loading: false });
     }
   },
 }));

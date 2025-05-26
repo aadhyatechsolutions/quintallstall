@@ -27,8 +27,8 @@ export default function ReviewView() {
     deleteReview(id);
   };
 
-  const handleEdit = (id) => {
-    navigate(`/features/review/edit/${id}`);
+  const handleView = (id) => {
+    navigate(`/features/product/reviewsView/${id}`);
   };
 
   const columns = [
@@ -43,6 +43,24 @@ export default function ReviewView() {
     { field: "email", headerName: "Email", width: 200 },
     { field: "rating", headerName: "Rating", width: 100 },
     { field: "comment", headerName: "Comment", width: 500 },
+    {
+          field: "actions",
+          headerName: "Actions",
+          width: 75,
+          renderCell: (params) => (
+            <Box>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => handleView(params.row.id)}
+                style={{ marginRight: 8 }}
+              >
+                View
+              </Button>
+            </Box>
+          ),
+        },
   ];
 
   const rows = reviews.map((review) => ({

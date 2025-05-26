@@ -19,6 +19,7 @@ import ProductCreate from "../features/product/ProductCreate";
 import ProductEdit from "../features/product/ProductEdit";
 import ProductView from "../features/product/ProductView";
 import ProductReview from "../features/product/ProductReview";
+import ProductReviewView from "../features/product/ProductReviewView";
 
 import CategoryCreate from "../features/category/CategoryCreate";
 import CategoryList from "../features/category/CategoryList";
@@ -130,7 +131,7 @@ const routes = [
       { path: "/features/product/view/:id", element: <ProductView />,},
       { path: "/features/product/edit/:id", element: <ProductEdit />,},
       { path: "/features/product/reviews", element: <ProductReview />,},
-
+      { path: "/features/product/reviewsView/:id", element: <ProductReviewView />,},
       { path: "/features/category/list", element: <CategoryList /> },
       { path: "/features/category/create", element: <CategoryCreate /> },
       { path: "/features/category/view/:id", element: <CategoryView /> },

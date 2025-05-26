@@ -77,3 +77,8 @@ export const fetchReviewsByRating = async (rating) => {
     throw new Error(error.response?.data?.message || 'Failed to fetch reviews by rating');
   }
 };
+
+export const fetchReviewById = async (id) => {
+  const response = await axiosInstance.get(`/reviews/${id}`);
+  return response.data;
+};
