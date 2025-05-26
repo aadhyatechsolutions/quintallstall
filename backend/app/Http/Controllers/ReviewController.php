@@ -16,23 +16,33 @@ class ReviewController extends Controller
     }
 
     // Store a new review
+   // Store a new review
     public function store(Request $request)
     {
+        $user = Auth::user();
+
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'comment' => 'required|string',
-            'rating' => 'nullable|integer|min:1|max:5',
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string',
         ]);
 
         $review = Review::create([
-            ...$validated,
-            'user_id' => auth()->id()
+            'product_id' => $validated['product_id'],
+            'user_id' => $user->id,
+            'name' => $user->first_name,
+            'email' => $user->email,
+            'rating' => $validated['rating'],
+            'comment' => $validated['comment'],
         ]);
 
-        return response()->json(['review' => $review, 'message' => 'Review submitted successfully'], 201);
+        return response()->json([
+            'review' => $review,
+            'success' => true,
+            'message' => 'Review created successfully',
+        ]);
     }
+
 
     // Optional: Show reviews for a specific product
     public function show($productId)
@@ -61,70 +71,6 @@ class ReviewController extends Controller
         }
 
         $validated = $request->validate([
-            'product_id' => 'nullable|exists:products,id',
-            'name' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255',
-            'comment' => 'nullable|string',
-            'rating' => 'nullable|integer|min:1|max:5', // Update rating
-        ]);
-
-        // Only update fields that are passed in the request
-        $review->update(array_filter($validated)); // `array_filter` to ignore null fields
-
-        return response()->json([
-            'review' => $review, 
-            'success' => true,
-            'message' => 'Review updated successfully'
-        ]);
-    }
-    public function getByUser($productId)
-    {
-        $user = Auth::user();
-
-        if (!$user) {
-            return response()->json(['error' => 'Unauthenticated'], 401);
-        }
-
-        $review = Review::where('product_id', $productId)
-                        ->where('user_id', $user->id)
-                        ->first();
-
-        return response()->json([
-            'review' => $review // will return null if not found
-        ]);
-    }
-    public function createByUser(Request $request)
-    {
-        $user = Auth::user();
-
-        $validated = $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'comment' => 'required|string',
-            'rating' => 'required|integer|min:1|max:5',
-        ]);
-        $review = Review::updateOrCreate(
-            ['product_id' => $validated['product_id'], 'email' => $user->email],
-            [
-                'name' => $user->first_name,
-                'email' => $user->email,
-                'comment' => $validated['comment'],
-                'rating' => $validated['rating'],
-            ]
-        );
-
-        return response()->json(['review' => $review, 'message' => 'Review submitted successfully']);
-    }
-
-    public function updateByUser(Request $request, $id)
-    {
-        $user = Auth::user();
-        $review = Review::where('id', $id)->where('user_id', $user->id)->first();
-
-        if (!$review) {
-            return response()->json(['message' => 'Review not found or unauthorized'], 404);
-        }
-
-        $validated = $request->validate([
             'comment' => 'nullable|string',
             'rating' => 'nullable|integer|min:1|max:5',
         ]);
@@ -135,22 +81,6 @@ class ReviewController extends Controller
             'review' => $review,
             'success' => true,
             'message' => 'Review updated successfully'
-        ]);
-    }
-    public function destroyByUser($id)
-    {
-        $user = Auth::user();
-        $review = Review::where('id', $id)->where('user_id', $user->id)->first();
-
-        if (!$review) {
-            return response()->json(['message' => 'Review not found or unauthorized'], 404);
-        }
-
-        $review->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Review deleted successfully'
         ]);
     }
 }
