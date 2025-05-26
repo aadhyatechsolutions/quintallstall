@@ -9,7 +9,7 @@ import MatxLayout from "./components/MatxLayout/MatxLayout";
 import sessionRoutes from "./views/sessions/session-routes";
 import materialRoutes from "app/views/material-kit/MaterialRoutes";
 
-import AMPCView from "../features/apmc/ApmcView";
+import AMPCList from "../features/apmc/ApmcList";
 import AMPCCreate from "../features/apmc/ApmcCreate";
 import AMPCEdit from "../features/apmc/ApmcEdit";
 
@@ -20,29 +20,29 @@ import ProductView from "../features/product/ProductView";
 import ProductReview from "../features/product/ProductReview";
 
 import CategoryCreate from "../features/category/CategoryCreate";
-import CategoryView from "../features/category/CategoryView";
+import CategoryList from "../features/category/CategoryList";
 import CategoryEdit from "../features/category/CategoryEdit";
 
 import WholeSalerCreate from "../features/wholesaler/WholesalerCreate";
-import WholeSalerView from "../features/wholesaler/WholesalerView";
+import WholeSalerList from "../features/wholesaler/WholesalerList";
 import WholeSalerEdit from "../features/wholesaler/WholesalerEdit";
-import WholeSalerProductView from "../features/wholesaler/WholesalerProductView";
+import WholeSalerProductList from "../features/wholesaler/WholesalerProductList";
 import WholeSalerKYC from "../features/wholesaler/WholesalerKYC";
 
 // import ProductList from "./components/WholeSeller/ProductList";
 
 import RetailerCreate from "../features/retailer/RetailerCreate";
-import RetailerView from "../features/retailer/RetailerView";
+import RetailerList from "../features/retailer/RetailerList";
 import RetailerEdit from "../features/retailer/RetailerEdit";
-import RetailerProductView from "../features/retailer/RetailerProductView";
+import RetailerProductList from "../features/retailer/RetailerProductList";
 import RetailerKYC from "../features/retailer/RetailerKYC";
 
 import DeliveryCreate from "../features/delivery/DeliveryCreate";
-import DeliveryView from "../features/delivery/DeliveryView";
+import DeliveryList from "../features/delivery/DeliveryList";
 import DeliveryEdit from "../features/delivery/DeliveryEdit";
 import DeliveryKYC from "../features/delivery/DeliveryKYC";
 
-import OrderView from "../features/order/OrderView";
+import OrderList from "../features/order/OrderList";
 import AcceptedOrders from "../features/order/AcceptedOrders";
 import DeliveredOrders from "../features/order/DeliveredOrders";
 import OrderMap from "../features/order/OrderMap";
@@ -51,39 +51,39 @@ import Reviews from "./components/Orders/Reviews";
 import WholeSellerReport from "./components/Report/WholeSellerReport";
 
 import VehicleCommissionCreate from "../features/commission/VehicleCommissionCreate";
-import VehicleCommissionView from "../features/commission/VehicleCommissionView";
+import VehicleCommissionList from "../features/commission/VehicleCommissionList";
 import VehicleCommissionEdit from "../features/commission/VehicleCommissionEdit";
 
 import PlatformComission from "../features/commission/PlatformCommission";
 import WageCostCommission from "../features/commission/WageCostCommission";
 
 import VehicleTypeCreate from "../features/vehicleType/VehicleTypeCreate";
-import VehicleTypeView from "../features/vehicleType/VehicleTypeView";
+import VehicleTypeList from "../features/vehicleType/VehicleTypeList";
 import VehicleTypeEdit from "../features/vehicleType/VehicleTypeEdit";
 
 import BlogCreate from "../features/blog/BlogCreate";
 import BlogEdit from "../features/blog/BlogEdit";
-import BlogView from "../features/blog/BlogView";
+import BlogList from "../features/blog/BlogList";
 
 import BlogCategoryCreate from "../features/blogCategory/BlogCategoryCreate";
-import BlogCategoryView from "../features/blogCategory/BlogCategoryView";
+import BlogCategoryList from "../features/blogCategory/BlogCategoryList";
 import BlogCategoryEdit from "../features/blogCategory/BlogCategoryEdit";
 
 import SpecialOfferCreate from "../features/specialOffer/SpecialOfferCreate";
-import SpecialOfferView from "../features/specialOffer/SpecialOfferView";
+import SpecialOfferList from "../features/specialOffer/SpecialOfferList";
 import SpecialOfferEdit from "../features/specialOffer/SpecialOfferEdit";
 
 import OfferCreate from "../features/offer/OfferCreate";
-import OfferView from "../features/offer/OfferView";
+import OfferList from "../features/offer/OfferList";
 
 import CoinCreate from "../features/coin/CoinCreate";
-import CoinView from "../features/coin/CoinView";
+import CoinList from "../features/coin/CoinList";
 import CoinEdit from "../features/coin/CoinEdit";
 
 import ProfileEdit from "../features/profile/ProfileEdit";
 
 // import CoinTypeCreate from "./components/Settings/CoinType/Create";
-// import CoinTypeView from "./components/Settings/CoinType/View";
+// import CoinTypeList from "./components/Settings/CoinType/List";
 // import CoinTypeEdit from "./components/Settings/CoinType/Edit";
 
 // import CoinDetails from "./components/Settings/CoinDetails";
@@ -94,12 +94,12 @@ import WalletSettings from "../features/wallet/WalletSettings";
 import TaxSlab from "../features/tax/TaxSlab";
 import RoleCreate from "../features/role/RoleCreate";
 import RoleEdit from "../features/role/RoleEdit";
-import RoleView from "../features/role/RoleView";
+import RoleList from "../features/role/RoleList";
 
 import StaffCreate from "../features/staff/StaffCreate";
 import StaffEdit from "../features/staff/StaffEdit";
 // import StaffEdit from "./components/Settings/Staff/Edit";
-import StaffView from "../features/staff/StaffView";
+import StaffList from "../features/staff/StaffList";
 
 import RoleGuard from "./auth/RoleGuard";
 
@@ -118,7 +118,7 @@ const routes = [
       ...materialRoutes,
       { path: "/dashboard/default", element:  <Analytics />, auth: authRoles.admin, },
 
-      { path: "/features/apmc/view", element: <AMPCView /> },
+      { path: "/features/apmc/list", element: <AMPCList /> },
       { path: "/features/apmc/create", element: <AMPCCreate /> },
       { path: "/features/apmc/edit/:id", element: <AMPCEdit /> },
 
@@ -128,31 +128,31 @@ const routes = [
       { path: "/features/product/edit/:id", element: <ProductEdit />,},
       { path: "/features/product/reviews", element: <ProductReview />,},
 
-      { path: "/features/category/view", element: <CategoryView /> },
+      { path: "/features/category/list", element: <CategoryList /> },
       { path: "/features/category/create", element: <CategoryCreate /> },
       { path: "/features/category/edit/:id", element: <CategoryEdit /> },
 
       { path: "/features/wholesaler/create", element: <WholeSalerCreate />, },
-      { path: "/features/wholesaler/view", element: <WholeSalerView />, },
+      { path: "/features/wholesaler/list", element: <WholeSalerList />, },
       { path: "/features/wholesaler/edit/:id", element: <WholeSalerEdit />, },
 
-      { path: "/wholesaler/view-products", element: <WholeSalerProductView /> },
+      { path: "/wholesaler/view-products", element: <WholeSalerProductList /> },
       { path: "/wholesaler/wholesaler-kyc", element: <WholeSalerKYC /> },
 
       { path: "/features/retailer/create", element: <RetailerCreate /> },
-      { path: "/features/retailer/view", element: <RetailerView /> },
+      { path: "/features/retailer/list", element: <RetailerList /> },
       { path: "/features/retailer/edit/:id", element: <RetailerEdit /> },
 
-      { path: "/retailer/view-products", element: <RetailerProductView /> },
+      { path: "/retailer/view-products", element: <RetailerProductList /> },
       { path: "/retailer/retailer-kyc", element: <RetailerKYC /> },
 
       { path: "/features/delivery/create", element: <DeliveryCreate /> },
-      { path: "/features/delivery/view", element: <DeliveryView /> },
+      { path: "/features/delivery/list", element: <DeliveryList /> },
       { path: "/features/delivery/edit/:id", element: <DeliveryEdit /> },
 
       { path: "/delivery/delivery-kyc", element: <DeliveryKYC /> },
 
-      { path: "/orders/orders", element: <OrderView /> },
+      { path: "/orders/orders", element: <OrderList /> },
       { path: "/orders/accepted-orders", element: <AcceptedOrders /> },
       { path: "/orders/delivered-orders", element: <DeliveredOrders /> },
       { path: "/orders/order-map", element: <OrderMap /> },
@@ -160,36 +160,36 @@ const routes = [
       { path: "/report/wholeseller-report", element: <WholeSellerReport /> },
 
       { path: "/commissions/vehicle-commission/create", element: <VehicleCommissionCreate />, },
-      { path: "/commissions/vehicle-commission/view", element: <VehicleCommissionView />, },
+      { path: "/commissions/vehicle-commission/list", element: <VehicleCommissionList />, },
       { path: "/commissions/vehicle-commission/edit/:id", element: <VehicleCommissionEdit />, },
 
       { path: "/commissions/platform-commission", element: <PlatformComission />, },
       { path: "/commissions/wage-cost-commission", element: <WageCostCommission />, },
 
       { path: "/comissions/vehicle-type/create", element: <VehicleTypeCreate />, },
-      { path: "/comissions/vehicle-type/view", element: <VehicleTypeView />, },
+      { path: "/comissions/vehicle-type/list", element: <VehicleTypeList />, },
       { path: "/comissions/vehicle-type/edit/:id", element: <VehicleTypeEdit />, },
 
       { path: "/frontend/blogs/create", element: <BlogCreate /> },
        { path: "/frontend/blogs/edit/:id", element: <BlogEdit /> },
-      { path: "/frontend/blogs/view", element: <BlogView /> },
+      { path: "/frontend/blogs/list", element: <BlogList /> },
 
       { path: "/frontend/blog-category/create", element: <BlogCategoryCreate />, },
-      { path: "/frontend/blog-category/view", element: <BlogCategoryView /> },
+      { path: "/frontend/blog-category/list", element: <BlogCategoryList /> },
       { path: "/frontend/blog-category/edit/:id", element: <BlogCategoryEdit />, },
 
       { path: "/frontend/special-offer/create", element: <SpecialOfferCreate />, },
-      { path: "/frontend/special-offer/view", element: <SpecialOfferView /> },
+      { path: "/frontend/special-offer/list", element: <SpecialOfferList /> },
       { path: "/frontend/special-offer/edit/:id", element: <SpecialOfferEdit />, },
 
       { path: "/settings/offer/create", element: <OfferCreate />, },
-      { path: "/settings/offer/view", element: <OfferView />, },
+      { path: "/settings/offer/list", element: <OfferList />, },
       { path: "/settings/coin-settings/create", element: <CoinCreate />, },
-      { path: "/settings/coin-settings/view", element: <CoinView /> },
+      { path: "/settings/coin-settings/list", element: <CoinList /> },
       { path: "/settings/coin-settings/edit/:id", element: <CoinEdit />, },
 
       // { path: "/settings/coin-type/create", element: <CoinTypeCreate /> },
-      // { path: "/settings/coin-type/view", element: <CoinTypeView /> },
+      // { path: "/settings/coin-type/list", element: <CoinTypeList /> },
       // { path: "/settings/coin-type/edit/:id", element: <CoinTypeEdit /> },
 
       { path: "/settings/purchased-coins", element: <PurchasedCoins /> },
@@ -200,11 +200,11 @@ const routes = [
       { path: "/settings/tax-slab", element: <TaxSlab /> },
 
       { path: "/settings/role/create", element: <RoleCreate /> },
-      { path: "/settings/role/view", element: <RoleView /> },
+      { path: "/settings/role/list", element: <RoleList /> },
       { path: "/settings/role/edit/:id", element: <RoleEdit /> },
 
       { path: "/settings/staff/create", element: <StaffCreate /> },
-      { path: "/settings/staff/view", element: <StaffView /> },
+      { path: "/settings/staff/list", element: <StaffList /> },
       { path: "/settings/staff/edit/:id", element: <StaffEdit /> },
 
       { path: "/page-layouts/user-profile", element: <ProfileEdit /> },

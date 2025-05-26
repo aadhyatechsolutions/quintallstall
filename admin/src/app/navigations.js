@@ -23,7 +23,7 @@ const navigations = [
         level: 2,
         children: [
           { name: "Create", path: "/features/apmc/create", iconText: "A"},
-          { name: "View", path: "/features/apmc/view", iconText: "A" },
+          { name: "List", path: "/features/apmc/list", iconText: "A" },
         ] 
       },
       { 
@@ -41,7 +41,7 @@ const navigations = [
         level: 2,
         children: [
           { name: "Create", path: "/features/category/create", iconText: "A" },
-          { name: "View", path: "/features/category/view", iconText: "A" },
+          { name: "List", path: "/features/category/list", iconText: "A" },
         ] 
       },
       { name: "Product Reviews", path: "/features/product/reviews", icon: "assignment"},
@@ -59,7 +59,7 @@ const navigations = [
         level: 2,
         children: [
           { name: "Create", path: "/features/wholesaler/create", iconText: "A" },
-          { name: "View", path: "/features/wholesaler/view", iconText: "A" },
+          { name: "List", path: "/features/wholesaler/list", iconText: "A" },
         ] 
       },
       { name: "View Products", level: 2, path: "/wholesaler/view-products", icon: "assignment" },
@@ -78,7 +78,7 @@ const navigations = [
         level: 2,
         children: [
           { name: "Create", path: "/features/retailer/create", iconText: "A" },
-          { name: "View", path: "/features/retailer/view", iconText: "A" },
+          { name: "List", path: "/features/retailer/list", iconText: "A" },
         ] 
       },
       { name: "Retailer KYC", level: 2, path: "/retailer/retailer-kyc", icon: "assignment" },
@@ -96,7 +96,7 @@ const navigations = [
         level: 2,
         children: [
           { name: "Create", path: "/features/delivery/create", iconText: "A" },
-          { name: "View", path: "/features/delivery/view", iconText: "A" },
+          { name: "List", path: "/features/delivery/list", iconText: "A" },
         ] 
       },
       { name: "Delivery KYC", level: 2, path: "/delivery/delivery-kyc", icon: "assignment" },
@@ -126,7 +126,7 @@ const navigations = [
         level: 2,
         children: [
           { name: "Create", path: "/commissions/vehicle-commission/create", iconText: "A" },
-          { name: "View", path: "/commissions/vehicle-commission/view", iconText: "A" },
+          { name: "List", path: "/commissions/vehicle-commission/list", iconText: "A" },
         ] 
       },
       { name: "Platform Comission", level: 2, path: "/commissions/platform-commission", icon: "assignment"},
@@ -137,7 +137,7 @@ const navigations = [
         level: 2,
         children: [
           { name: "Create", path: "/comissions/vehicle-type/create", iconText: "A" },
-          { name: "View", path: "/comissions/vehicle-type/view", iconText: "A" },
+          { name: "List", path: "/comissions/vehicle-type/list", iconText: "A" },
         ] 
       },
     ]
@@ -154,7 +154,7 @@ const navigations = [
         level: 2,
         children: [
           { name: "Create", path: "/frontend/blogs/create", iconText: "A" },
-          { name: "View", path: "/frontend/blogs/view", iconText: "A" },
+          { name: "List", path: "/frontend/blogs/list", iconText: "A" },
         ] 
       },
       { 
@@ -163,7 +163,7 @@ const navigations = [
         level: 2,
         children: [
           { name: "Create", path: "/frontend/blog-category/create", iconText: "A" },
-          { name: "View", path: "/frontend/blog-category/view", iconText: "A" },
+          { name: "List", path: "/frontend/blog-category/list", iconText: "A" },
         ] 
       },
       { 
@@ -172,7 +172,7 @@ const navigations = [
         level: 2,
         children: [
           { name: "Create", path: "/frontend/special-offer/create", iconText: "A" },
-          { name: "View", path: "/frontend/special-offer/view", iconText: "A" },
+          { name: "List", path: "/frontend/special-offer/list", iconText: "A" },
         ] 
       },
     ]
@@ -190,7 +190,7 @@ const navigations = [
        
         children: [
           { name: "Create", path: "/settings/offer/create", iconText: "A" },
-          { name: "View", path: "/settings/offer/view", iconText: "A" },
+          { name: "List", path: "/settings/offer/list", iconText: "A" },
         ] 
       },
       { 
@@ -200,7 +200,7 @@ const navigations = [
        
         children: [
           { name: "Create", path: "/settings/coin-settings/create", iconText: "A" },
-          { name: "View", path: "/settings/coin-settings/view", iconText: "A" },
+          { name: "List", path: "/settings/coin-settings/list", iconText: "A" },
         ] 
       },
    
@@ -213,7 +213,7 @@ const navigations = [
         
         children: [
           { name: "Create", path: "/settings/role/create", iconText: "A" },
-          { name: "View", path: "/settings/role/view", iconText: "A" },
+          { name: "List", path: "/settings/role/list", iconText: "A" },
         ] 
       },
       { 
@@ -223,7 +223,7 @@ const navigations = [
         
         children: [
           { name: "Create", path: "/settings/staff/create", iconText: "A" },
-          { name: "View", path: "/settings/staff/view", iconText: "A" },
+          { name: "List", path: "/settings/staff/list", iconText: "A" },
         ] 
       },
       
