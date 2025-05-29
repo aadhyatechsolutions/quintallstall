@@ -143,7 +143,12 @@ const AddressForm = ({formData, setFormData, setStep, profileImage }) => {
             variant="outlined"
             onBlur={handleBlur}
             value={values.city}
-            onChange={handleChange}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^[a-zA-Z\s]*$/.test(value)) {
+                handleChange(e);
+              }
+            }}
             helperText={touched.city && errors.city}
             error={Boolean(errors.city && touched.city)}
             sx={{ mb: 3 }}
@@ -158,7 +163,12 @@ const AddressForm = ({formData, setFormData, setStep, profileImage }) => {
             variant="outlined"
             onBlur={handleBlur}
             value={values.state}
-            onChange={handleChange}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^[a-zA-Z\s]*$/.test(value)) {
+                handleChange(e);
+              }
+            }}
             helperText={touched.state && errors.state}
             error={Boolean(errors.state && touched.state)}
             sx={{ mb: 3 }}

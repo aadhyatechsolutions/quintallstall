@@ -139,7 +139,12 @@ export default function CreateApmc() {
                 label="Village"
                 name="village"
                 value={formData.village}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[a-zA-Z\s]*$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 required
               />
             </Grid>
@@ -150,7 +155,12 @@ export default function CreateApmc() {
                 label="Taluka"
                 name="taluka"
                 value={formData.taluka}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[a-zA-Z\s]*$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 required
               />
             </Grid>
@@ -161,7 +171,12 @@ export default function CreateApmc() {
                 label="City"
                 name="city"
                 value={formData.city}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[a-zA-Z\s]*$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 required
               />
             </Grid>
@@ -172,7 +187,12 @@ export default function CreateApmc() {
                 label="State"
                 name="state"
                 value={formData.state}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[a-zA-Z\s]*$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 required
               />
             </Grid>

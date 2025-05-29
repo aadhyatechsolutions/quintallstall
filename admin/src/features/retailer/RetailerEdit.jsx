@@ -281,7 +281,12 @@ import {
                   label="City"
                   name="city"
                   value={formData.city}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^[a-zA-Z\s]*$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   required
                 />
               </Grid>
@@ -292,7 +297,12 @@ import {
                   label="State"
                   name="state"
                   value={formData.state}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^[a-zA-Z\s]*$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   required
                 />
               </Grid>
@@ -364,8 +374,15 @@ import {
                   fullWidth
                   label="IFSC Code"
                   name="ifsc_code"
+                  placeholder="e.g. SBIN0001234"
                   value={formData.ifsc_code}
                   onChange={handleChange}
+                  inputProps={{
+                    maxLength: 11,
+                    inputMode: 'text',
+                    pattern: '^[A-Za-z]{4}[a-zA-Z0-9]{7}$',
+                    style: { textTransform: 'uppercase' },
+                  }}
                   required
                 />
               </Grid>

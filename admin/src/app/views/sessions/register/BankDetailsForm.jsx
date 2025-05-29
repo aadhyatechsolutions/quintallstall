@@ -14,7 +14,7 @@ const BankDetailsForm = ({ formData, setFormData, initialValues, setStep, profil
       .matches(/^\d{0,18}$/, "Bank account number must be 9-18 digits")
       .required("Bank account number is required!"),
     ifscCode: Yup.string()
-      .matches(/^[A-Z]{4}0[A-Z0-9]{0,6}$/, "Invalid IFSC Code format")
+      .matches(/^[A-Za-z]{4}[a-zA-Z0-9]{7}$/, "Invalid IFSC Code format")
       .required("IFSC Code is required!"),
     accountType: Yup.string()
       .required("Account type is required!"),

@@ -171,7 +171,12 @@ import {
                   label="Village"
                   name="village"
                   value={formData.village}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^[a-zA-Z\s]*$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   required
                 />
               </Grid>
@@ -182,7 +187,12 @@ import {
                   label="Taluka"
                   name="taluka"
                   value={formData.taluka}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^[a-zA-Z\s]*$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   required
                 />
               </Grid>
@@ -193,7 +203,12 @@ import {
                   label="City"
                   name="city"
                   value={formData.city}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^[a-zA-Z\s]*$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   required
                 />
               </Grid>
@@ -204,7 +219,12 @@ import {
                   label="State"
                   name="state"
                   value={formData.state}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^[a-zA-Z\s]*$/.test(value)) {
+                      handleChange(e);
+                    }
+                  }}
                   required
                 />
               </Grid>

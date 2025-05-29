@@ -87,13 +87,13 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
             name="vehicleNo"
             label="Vehicle Number"
             variant="outlined"
-            placeholder="e.g. MH 12 AB 1234"
+            placeholder="e.g. GJ01WD1583"
             onBlur={handleBlur}
             value={values.vehicleNo}
             onChange={handleChange}
             inputProps={{
-              maxLength: 13,
-              pattern: '^[A-Z]{2}\\s\\d{2}\\s?[A-Z]{1,2}\\s?\\d{1,4}$',
+              maxLength: 10,
+              pattern: '[A-Za-z]{2}[0-9]{2}[A-Za-z]{2}[0-9]{4}',
               style: { textTransform: 'uppercase' },
             }}
             helperText={touched.vehicleNo && errors.vehicleNo}
