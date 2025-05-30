@@ -342,7 +342,7 @@ export default function CreateWholesaler() {
                 fullWidth
                 label="IFSC Code"
                 name="ifsc_code"
-                placeholder="e.g. SBIN0001234 test"
+                placeholder="e.g. SBIN0001234"
                 value={formData.ifsc_code}
                 onChange={handleChange}
                 inputProps={{
