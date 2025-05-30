@@ -41,13 +41,13 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           # Copy admin build
-          scp -o StrictHostKeyChecking=no -r admin/dist $SSH_USER@$SSH_HOST:$REMOTE_PATH/admin/dist
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -r admin/dist $SSH_USER@$SSH_HOST:$REMOTE_PATH/admin/dist
 
           # Copy storefront build
-          scp -o StrictHostKeyChecking=no -r storefront/dist $SSH_USER@$SSH_HOST:$REMOTE_PATH/storefront/dist
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -r storefront/dist $SSH_USER@$SSH_HOST:$REMOTE_PATH/storefront/dist
 
           # Run migrate commands on live server
-          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
             cd $REMOTE_PATH/backend
             php artisan migrate:refresh --seed
           EOF
