@@ -24,6 +24,8 @@ jobs:
             cd ~/quintallstall
             git pull origin main
 
+            . "$HOME/.nvm/nvm.sh"
+            
             cd admin
             npm install && npm run build
 
