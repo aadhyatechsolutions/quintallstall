@@ -1,1 +1,60 @@
+name: Deploy to Live Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Build Admin
+        run: |
+          cd admin
+          npm install
+          npm run build
+
+      - name: Build Storefront
+        run: |
+          cd storefront
+          npm install
+          npm run build
+
+      - name: Deploy to live server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_PATH: /var/www/satva/quintallstall
+        run: |
+          # Setup SSH
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
+
+          # Add host to known_hosts
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+          # Copy admin build
+          scp -o StrictHostKeyChecking=no -r admin/dist $SSH_USER@$SSH_HOST:$REMOTE_PATH/admin/dist
+
+          # Copy storefront build
+          scp -o StrictHostKeyChecking=no -r storefront/dist $SSH_USER@$SSH_HOST:$REMOTE_PATH/storefront/dist
+
+          # Run migrate commands on live server
+          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+            cd $REMOTE_PATH/backend
+            php artisan migrate:refresh --seed
+          EOF
 
