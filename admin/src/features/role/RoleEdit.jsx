@@ -30,7 +30,6 @@ import {
     "products",
     "orders",
     "wholesaler",
-    "retailer",
     'delivery',
     "commissions",
     "frontend",

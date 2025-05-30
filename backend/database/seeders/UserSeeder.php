@@ -86,24 +86,24 @@ class UserSeeder extends Seeder
             'status' => 'Active',
         ]);
         // Retailer
-        $bob = User::create([
-            'first_name' => 'Bob',
-            'last_name' => 'Johnson',
-            'business_name' => 'Retailer Business',
-            'phone_number' => '3456789012',
-            'email' => 'bob.johnson@retailer.com',
-            'password' => bcrypt('password'),
-            'profile_image' => $getProfileImage('retailer'),
-            'address_id' => Address::inRandomOrder()->first()->id,
-            'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
-        ]);
-        $bob->roles()->attach($retailerRole->id);
-        $bob->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
-        Wallet::create([
-            'user_id' => $bob->id,
-            'amount' => 500.00,
-            'status' => 'Active',
-        ]);
+        // $bob = User::create([
+        //     'first_name' => 'Bob',
+        //     'last_name' => 'Johnson',
+        //     'business_name' => 'Retailer Business',
+        //     'phone_number' => '3456789012',
+        //     'email' => 'bob.johnson@retailer.com',
+        //     'password' => bcrypt('password'),
+        //     'profile_image' => $getProfileImage('retailer'),
+        //     'address_id' => Address::inRandomOrder()->first()->id,
+        //     'bank_account_id' => BankAccount::inRandomOrder()->first()->id,
+        // ]);
+        // $bob->roles()->attach($retailerRole->id);
+        // $bob->apmcs()->attach(Apmc::inRandomOrder()->first()->id);
+        // Wallet::create([
+        //     'user_id' => $bob->id,
+        //     'amount' => 500.00,
+        //     'status' => 'Active',
+        // ]);
         // Regular User
         $charlie = User::create([
             'first_name' => 'Charlie',

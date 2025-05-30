@@ -66,25 +66,25 @@ const navigations = [
       { name: "WholeSeller KYC", level: 2, path: "/wholesaler/wholesaler-kyc", icon: "assignment" },
     ]
   },
-  {
-    name: "Retailer",
-    icon: "account_circle",
-    badge: { color: "secondary" },
+  // {
+  //   name: "Retailer",
+  //   icon: "account_circle",
+  //   badge: { color: "secondary" },
     
-    children: [
-      { 
-        name: "Retailer User", 
-        icon: "apps",
-        level: 2,
-        children: [
-          { name: "Create", path: "/features/retailer/create", iconText: "A" },
-          { name: "List", path: "/features/retailer/list", iconText: "A" },
-        ] 
-      },
-      { name: "View Products", level: 2, path: "/retailer/view-products", icon: "assignment" },
-      { name: "Retailer KYC", level: 2, path: "/retailer/retailer-kyc", icon: "assignment" },
-    ]
-  },
+  //   children: [
+  //     { 
+  //       name: "Retailer User", 
+  //       icon: "apps",
+  //       level: 2,
+  //       children: [
+  //         { name: "Create", path: "/features/retailer/create", iconText: "A" },
+  //         { name: "List", path: "/features/retailer/list", iconText: "A" },
+  //       ] 
+  //     },
+  //     { name: "View Products", level: 2, path: "/retailer/view-products", icon: "assignment" },
+  //     { name: "Retailer KYC", level: 2, path: "/retailer/retailer-kyc", icon: "assignment" },
+  //   ]
+  // },
   {
     name: "Delivery",
     icon: "account_circle",

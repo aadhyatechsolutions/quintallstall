@@ -15,19 +15,19 @@ class ProductSeeder extends Seeder
     public function run()
     {
         $wholesalerRole = Role::where('slug', 'wholesaler')->first();
-        $retailerRole = Role::where('slug', 'retailer')->first();
+        // $retailerRole = Role::where('slug', 'retailer')->first();
 
-        if (!$wholesalerRole || !$retailerRole) {
-            echo "⚠️  Wholesaler or Retailer roles are missing!\n";
+        if (!$wholesalerRole ) {
+            echo "⚠️  Wholesaler roles is missing!\n";
             return;
         }
 
-        $users = User::whereHas('roles', function ($query) use ($wholesalerRole, $retailerRole) {
-            $query->whereIn('roles.id', [$wholesalerRole->id, $retailerRole->id]);
+        $users = User::whereHas('roles', function ($query) use ($wholesalerRole) {
+            $query->whereIn('roles.id', [$wholesalerRole->id]);
         })->get();
 
         if ($users->isEmpty()) {
-            echo "⚠️  No users with wholesaler or retailer roles found!\n";
+            echo "⚠️  No users with wholesaler roles found!\n";
             return;
         }
 
