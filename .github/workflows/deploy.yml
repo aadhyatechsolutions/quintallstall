@@ -39,15 +39,19 @@ jobs:
             echo "🔁 Pulling latest code from main branch..."
             git pull origin main
             
+            export NVM_DIR="\$HOME/.nvm"
+            [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"
+            nvm use 18
+            
             echo "🛠️ Building admin on remote server..."
             cd $REMOTE_PATH/admin
-            /home/mobwave/.nvm/versions/node/v18.20.8/bin/npm install
-            /home/mobwave/.nvm/versions/node/v18.20.8/bin/npm run build
+            npm install
+            npm run build
             
             echo "🛠️ Building storefront on remote server..."
             cd $REMOTE_PATH/storefront
-            /home/mobwave/.nvm/versions/node/v18.20.8/bin/npm install 
-            /home/mobwave/.nvm/versions/node/v18.20.8/bin/npm run build
+            npm install 
+            npm run build
             
             echo "📁 Changing to backend directory..."
             cd $REMOTE_PATH/backend
