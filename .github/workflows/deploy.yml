@@ -6,32 +6,49 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: 🔐 Setup SSH
-        uses: webfactory/ssh-agent@v0.8.0
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          node-version: 16
 
-      - name: 🚀 Run Deploy Script on Server
+      - name: Build Admin
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd ~/quintallstall
-            git pull origin main
+          cd admin
+          \. "$HOME/.nvm/nvm.sh"
+          npm install
+          npm run build
 
-            . "$HOME/.nvm/nvm.sh"
-            
-            cd admin
-            npm install && npm run build
+      - name: Build Storefront
+        run: |
+          cd storefront
+          npm install
+          npm run build
 
-            cd ../storefront
-            npm install && npm run build
+      - name: Deploy to live server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USER: your_ssh_user
+          SSH_HOST: your_server_ip_or_hostname
+          REMOTE_PATH: /var/www/satva/quintallstall
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
-            cd ../backend
+          # Copy admin build
+          scp -r admin/build $SSH_USER@$SSH_HOST:$REMOTE_PATH/admin/build
+
+          # Copy storefront build
+          scp -r storefront/build $SSH_USER@$SSH_HOST:$REMOTE_PATH/storefront/build
+
+          # Run migrate commands on live server
+          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+            cd $REMOTE_PATH/backend
             php artisan migrate:refresh --seed
           EOF
