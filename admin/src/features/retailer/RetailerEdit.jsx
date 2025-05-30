@@ -466,7 +466,7 @@ import {
               </Grid>
   
               {/* Submit Button */}
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}>
                 <Button
                   type="submit"
                   variant="contained"
@@ -474,6 +474,13 @@ import {
                   startIcon={<Icon>save</Icon>}
                 >
                   Save Retailer
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => navigate(-1)}
+                >
+                  Cancel
                 </Button>
               </Grid>
             </Grid>

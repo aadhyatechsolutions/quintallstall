@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Box, Typography, CircularProgress, styled } from "@mui/material";
+import { useParams, useNavigate } from "react-router-dom";
+import { Box, Typography, CircularProgress, styled, Grid, Button } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import useCoinStore from "../../store/coin/coinStore";
 
@@ -15,6 +15,7 @@ const Container = styled("div")(({ theme }) => ({
 
 export default function CoinDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { coins, fetchCoins, loading, error } = useCoinStore();
 
   useEffect(() => {
@@ -51,6 +52,13 @@ export default function CoinDetails() {
             <Typography ><strong>Status:</strong> {coin.status}</Typography>
           </Box>
         )}
+        <Grid item xs={12}>
+          <Box mt={2}>
+            <Button variant="contained" color="primary" onClick={() => navigate(-1)}>
+              Back
+            </Button>
+          </Box>
+        </Grid>
       </SimpleCard>
     </Container>
   );

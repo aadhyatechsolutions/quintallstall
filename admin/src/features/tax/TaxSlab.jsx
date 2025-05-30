@@ -116,11 +116,18 @@ export default function TaxSlab() {
                   />
                 </Grid>
               </Grid>
-
-              <Button color="primary" variant="contained" type="submit" sx={{ mt: 3 }}>
-                <Icon>send</Icon>
-                <span style={{ paddingLeft: 8, textTransform: "capitalize" }}>Submit</span>
-              </Button>
+                <Button color="primary" variant="contained" type="submit" sx={{ mt: 3 }}>
+                  <Icon>send</Icon>
+                  <span style={{ paddingLeft: 8, textTransform: "capitalize" }}>Submit</span>
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  sx={{ mt: 3 , ml: 2}}
+                  onClick={() => navigate(-1)}
+                >
+                  Cancel
+                </Button>
             </form>
           )}
         </SimpleCard>

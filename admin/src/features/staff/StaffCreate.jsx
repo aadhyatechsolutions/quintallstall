@@ -138,9 +138,16 @@ export default function CreateStaff() {
                 </Box>
               )}
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}>
               <Button type="submit" variant="contained" color="primary" startIcon={<Icon>save</Icon>}>
                 Save Staff
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => navigate(-1)}
+              >
+                Cancel
               </Button>
             </Grid>
           </Grid>

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Box, Typography, CircularProgress, styled } from "@mui/material";
+import { useParams, useNavigate } from "react-router-dom";
+import { Box, Typography, CircularProgress, styled, Grid, Button } from "@mui/material";
 import { SimpleCard } from "app/components";
 import useRoleStore from "../../store/role/roleStore";
 
@@ -11,6 +11,7 @@ const Container = styled("div")(({ theme }) => ({
 
 export default function RoleDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { roles, fetchRoles, loading, error } = useRoleStore();
 
   useEffect(() => {
@@ -47,6 +48,13 @@ export default function RoleDetails() {
             <strong>Permissions:</strong> {permissions.length > 0 ? permissions.join(", ") : "None"}
           </Typography>
         </Box>
+        <Grid item xs={12}>
+          <Box mt={2}>
+            <Button variant="contained" color="primary" onClick={() => navigate(-1)}>
+              Back
+            </Button>
+          </Box>
+        </Grid>
       </SimpleCard>
     </Container>
   );

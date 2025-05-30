@@ -125,7 +125,7 @@ export default function VehicleCommissionCreate() {
             </Grid>
 
             {/* Submit Button */}
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}>
               <Button
                 type="submit"
                 variant="contained"
@@ -134,6 +134,13 @@ export default function VehicleCommissionCreate() {
                 disabled={!formData.vehicle_type_id} // disable submit if no vehicle type selected
               >
                 Save Vehicle Commission
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => navigate(-1)}
+              >
+                Cancel
               </Button>
             </Grid>
           </Grid>

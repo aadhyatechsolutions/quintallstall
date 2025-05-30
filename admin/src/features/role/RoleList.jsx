@@ -61,7 +61,7 @@ export default function RoleView() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: 225,
       renderCell: (params) => (
         <Box>
           <Button

@@ -184,7 +184,7 @@ import {
                 </Grid>
               </Grid>
   
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}>
                 <Button
                   type="submit"
                   variant="contained"
@@ -192,6 +192,13 @@ import {
                   startIcon={<Icon>save</Icon>}
                 >
                   Update Role
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => navigate(-1)}
+                >
+                  Cancel
                 </Button>
               </Grid>
             </Grid>

@@ -184,7 +184,7 @@ export default function EditSpecialOffer() {
               )}
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}>
               <Button
                 type="submit"
                 variant="contained"
@@ -192,6 +192,13 @@ export default function EditSpecialOffer() {
                 startIcon={<Icon>save</Icon>}
               >
                 Save Changes
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => navigate(-1)}
+              >
+                Cancel
               </Button>
             </Grid>
           </Grid>

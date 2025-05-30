@@ -141,7 +141,7 @@ export default function CreateCategory() {
               )}
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-start", gap: 2 }}>
               <Button
                 type="submit"
                 variant="contained"
@@ -149,6 +149,13 @@ export default function CreateCategory() {
                 startIcon={<Icon>save</Icon>}
               >
                 Save Category
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => navigate(-1)}
+              >
+                Cancel
               </Button>
             </Grid>
           </Grid>
