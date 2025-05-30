@@ -41,10 +41,10 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           # Copy admin build
-          scp -r admin/build $SSH_USER@$SSH_HOST:$REMOTE_PATH/admin/build
+          scp -r admin/dist $SSH_USER@$SSH_HOST:$REMOTE_PATH/admin/dist
 
           # Copy storefront build
-          scp -r storefront/build $SSH_USER@$SSH_HOST:$REMOTE_PATH/storefront/build
+          scp -r storefront/dist $SSH_USER@$SSH_HOST:$REMOTE_PATH/storefront/dist
 
           # Run migrate commands on live server
           ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
