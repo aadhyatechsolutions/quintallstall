@@ -39,10 +39,13 @@ jobs:
             echo "🔁 Pulling latest code from main branch..."
             git pull origin main
 
+            echo "🔁 use node 18"
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm use 18
+            
             echo "🛠️ Building admin on remote server..."
             cd $REMOTE_PATH/admin
-            source $HOME/.nvm/nvm.sh
-            nvm use 18
             npm install
             npm run build
             
