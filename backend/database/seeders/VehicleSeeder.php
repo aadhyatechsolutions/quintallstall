@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\VehicleType;
+use Carbon\Carbon;
 
 class VehicleSeeder extends Seeder
 {
@@ -32,7 +33,9 @@ class VehicleSeeder extends Seeder
                 'vehicle_type_id' => $vehicleTypes['Mini Truck'],
                 'vehicle_no' => 'DL12345',
                 'permit_number' => 'P1234',
+                'permit_expiry_date' => Carbon::now()->addYear(),
                 'insurance_number' => 'INS12345',
+                'insurance_expiry_date' => Carbon::now()->addMonths(6),
             ]);
 
             Vehicle::create([
@@ -40,7 +43,9 @@ class VehicleSeeder extends Seeder
                 'vehicle_type_id' => $vehicleTypes['Pickup Van'],
                 'vehicle_no' => 'DL67890',
                 'permit_number' => 'P5678',
+                'permit_expiry_date' => Carbon::now()->addYear(),
                 'insurance_number' => 'INS67890',
+                'insurance_expiry_date' => Carbon::now()->addMonths(6),
             ]);
 
             Vehicle::create([
@@ -48,7 +53,9 @@ class VehicleSeeder extends Seeder
                 'vehicle_type_id' => $vehicleTypes['Medium Truck'],
                 'vehicle_no' => 'DL54321',
                 'permit_number' => 'P9876',
+                'permit_expiry_date' => Carbon::now()->addYear(),
                 'insurance_number' => 'INS54321',
+                'insurance_expiry_date' => Carbon::now()->addMonths(6),
             ]);
         }
     }

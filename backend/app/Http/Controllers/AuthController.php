@@ -48,7 +48,9 @@ class AuthController extends Controller
                 'vehicle_type_id' => 'required_if:role,delivery|exists:vehicle_types,id',
                 'vehicle_no' => 'required_if:role,delivery|string',
                 'permit_number' => 'required_if:role,delivery|string',
+                'permit_expiry_date' => 'required_if:role,delivery|date',
                 'insurance_number' => 'required_if:role,delivery|string',
+                'insurance_expiry_date' => 'required_if:role,delivery|date',
                 'role' => 'required|string|exists:roles,slug',
             ];
             $formData = json_decode($request->input('formData'), true);
@@ -107,7 +109,9 @@ class AuthController extends Controller
                     'vehicle_type_id' => $validated['vehicle_type_id'],
                     'vehicle_no' => $validated['vehicle_no'],
                     'permit_number' => $validated['permit_number'],
+                    'permit_expiry_date' => $validated['permit_expiry_date'],
                     'insurance_number' => $validated['insurance_number'],
+                    'insurance_expiry_date' => $validated['insurance_expiry_date'],
                 ]);
             }
 

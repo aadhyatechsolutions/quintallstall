@@ -96,7 +96,9 @@ class UserController extends Controller
                 'vehicle_type_id' => $validated['vehicle']['vehicle_type_id'] ?? '',
                 'vehicle_no' => $validated['vehicle']['vehicle_no'] ?? '',
                 'permit_number' => $validated['vehicle']['permit_number'] ?? '',
+                'permit_expiry_date' => $validated['vehicle']['permit_expiry_date'] ?? null,
                 'insurance_number' => $validated['vehicle']['insurance_number'] ?? '',
+                'insurance_expiry_date' => $validated['vehicle']['insurance_expiry_date'] ?? null,
             ]);            
         }        
 
@@ -151,12 +153,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('roles', 'address', 'bankAccount', 'vehicles', 'apmcs')->findOrFail($id);
+        $user = User::with('roles', 'address', 'bankAccount', 'vehicles','vehicles.vehicleType', 'apmcs')->findOrFail($id);
 
         $role = $user->roles->first()->slug;
 
         if ($role === 'delivery') {            
-            $user->load('vehicles');
+            $user->load('vehicles.vehicleType');
         }
 
         if (in_array($role, ['wholeseller', 'retailer'])) {    
@@ -279,7 +281,9 @@ class UserController extends Controller
                         'vehicle_type' => $validated['vehicle']['vehicle_type'] ?? '',
                         'vehicle_no' => $validated['vehicle']['vehicle_no'] ?? '',
                         'permit_number' => $validated['vehicle']['permit_number'] ?? '',
+                        'permit_expiry_date' => $validated['vehicle']['permit_expiry_date'] ?? null,
                         'insurance_number' => $validated['vehicle']['insurance_number'] ?? '',
+                        'insurance_expiry_date' => $validated['vehicle']['insurance_expiry_date'] ?? null,
                     ]);
                 }
             }

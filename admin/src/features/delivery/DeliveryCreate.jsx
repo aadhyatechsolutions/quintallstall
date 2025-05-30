@@ -65,7 +65,9 @@ import {
       vehicle_type_id: "",
       vehicle_no: "",
       permit_number: "",
+      permit_expiry_date: "",
       insurance_number: "",
+      insurance_expiry_date: "",
     });
   
     const [snackbar, setSnackbar] = useState({
@@ -102,7 +104,7 @@ import {
       for (const key in formData) {
         if (formData.hasOwnProperty(key)) {
           if (
-            ["vehicle_type_id", "vehicle_no", "permit_number", "insurance_number"].includes(key)
+            ["vehicle_type_id", "vehicle_no", "permit_number", "permit_expiry_date", "insurance_number", "insurance_expiry_date"].includes(key)
           ) {
             data.append(`vehicle[${key}]`, formData[key]);
           } else if (key !== "profile_image") {
@@ -435,7 +437,18 @@ import {
                   required
                 />
               </Grid>
-
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Permit Expiry Date"
+                  name="permit_expiry_date"
+                  type="date"
+                  value={formData.permit_expiry_date}
+                  onChange={handleChange}
+                  InputLabelProps={{ shrink: true }}
+                  required
+                />
+              </Grid>      
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
@@ -452,7 +465,18 @@ import {
                   required
                 />
               </Grid>
-
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Insurance Expiry Date"
+                  name="insurance_expiry_date"
+                  type="date"
+                  value={formData.insurance_expiry_date}
+                  onChange={handleChange}
+                  InputLabelProps={{ shrink: true }}
+                  required
+                />
+              </Grid>
               {/* Profile Image Upload */}
               <Grid item xs={12}>
                 <Button

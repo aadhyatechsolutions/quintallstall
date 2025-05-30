@@ -16,7 +16,7 @@ const Container = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: { margin: "16px" },
 }));
 
-export default function DeliveryViewDetails() {
+export default function DeliveryViewDetails({ vehicleTypes }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const { fetchUserById, currentUser } = useUserStore();
@@ -33,28 +33,57 @@ export default function DeliveryViewDetails() {
     </Grid>
   );
 
+  // Helper to format date string
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "—";
+    const d = new Date(dateStr);
+    return isNaN(d) ? "—" : d.toLocaleDateString();
+  };
+
   if (!currentUser) return <div>Loading...</div>;
 
-  const fullName = `${currentUser.first_name || ""} ${currentUser.last_name || ""}`;
-  const address = [
+  const fullName = `${currentUser.first_name || ""} ${currentUser.last_name || ""}`.trim();
+
+  // Construct address display
+  const addressLines = [
     currentUser.address?.street,
     currentUser.address?.city,
     currentUser.address?.state,
-    currentUser.address?.zip,
-  ]
-    .filter(Boolean)
-    .join(", ");
+    currentUser.address?.postal_code || currentUser.address?.zip,
+  ].filter(Boolean);
+  const address = addressLines.length ? addressLines.join(", ") : "—";
+
+  // Find vehicle type name by id
+  const vehicleTypeName = vehicleTypes?.find(
+    (v) => v.id === currentUser.vehicle_type_id
+  )?.name || "—";
 
   return (
     <Container>
       <SimpleCard title="Delivery User Details">
         <Grid container spacing={3}>
+          {/* Personal Info */}
           {renderRow("Full Name", fullName)}
           {renderRow("Business Name", currentUser.business_name)}
           {renderRow("Email", currentUser.email)}
           {renderRow("Phone Number", currentUser.phone_number)}
           {renderRow("Role", currentUser.roles?.map((r) => r.name).join(", "))}
+
+          {/* Address */}
           {renderRow("Address", address)}
+
+          {/* Bank Details */}
+          {renderRow("IFSC Code", currentUser.bank_account.ifsc_code)}
+          {renderRow("Account Type", currentUser.bank_account.account_type)}
+          {renderRow("Branch Name", currentUser.bank_account.branch_name)}
+
+          {/* Vehicle Details */}
+          {renderRow("Vehicle Type", currentUser.vehicles[0].vehicle_type.type)}
+          {renderRow("Vehicle Number", currentUser.vehicles[0].vehicle_no)}
+          {renderRow("Permit Number", currentUser.vehicles[0].permit_number)}
+          {renderRow("Permit Expiry Date", formatDate(currentUser.vehicles[0].permit_expiry_date))}
+          {renderRow("Insurance Number", currentUser.vehicles[0].insurance_number)}
+          {renderRow("Insurance Expiry Date", formatDate(currentUser.vehicles[0].insurance_expiry_date))}
 
           {/* Profile Image */}
           <Grid item xs={12} md={6}>

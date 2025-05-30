@@ -26,7 +26,9 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
     vehicleTypeId: Yup.string().required("Vehicle type is required!"),
     vehicleNo: Yup.string().required("Vehicle number is required!"),
     permitNumber: Yup.string().required("Permit number is required!"),
+    permitExpiryDate: Yup.string().required("Permit expiry date is required!"),
     insuranceNumber: Yup.string().required("Insurance number is required!"),
+    insuranceExpiryDate: Yup.string().required("Insurance expiry date is required!"),
   });
 
   const handleSubmit = async (values) => {
@@ -121,7 +123,21 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
             error={Boolean(errors.permitNumber && touched.permitNumber)}
             sx={{ mb: 3 }}
           />
-
+          <TextField
+            fullWidth
+            size="small"
+            type="date"
+            name="permitExpiryDate"
+            label="Permit Expiry Date"
+            variant="outlined"
+            onBlur={handleBlur}
+            value={values.permitExpiryDate}
+            onChange={handleChange}
+            InputLabelProps={{ shrink: true }}
+            helperText={touched.permitExpiryDate && errors.permitExpiryDate}
+            error={Boolean(errors.permitExpiryDate && touched.permitExpiryDate)}
+            sx={{ mb: 3 }}
+          />
           <TextField
             fullWidth
             size="small"
@@ -142,7 +158,21 @@ const VehicleDetailsForm = ({ formData, setFormData, setStep }) => {
             error={Boolean(errors.insuranceNumber && touched.insuranceNumber)}
             sx={{ mb: 3 }}
           />
-
+          <TextField
+            fullWidth
+            size="small"
+            type="date"
+            name="insuranceExpiryDate"
+            label="Insurance Expiry Date"
+            variant="outlined"
+            onBlur={handleBlur}
+            value={values.insuranceExpiryDate}
+            onChange={handleChange}
+            InputLabelProps={{ shrink: true }}
+            helperText={touched.insuranceExpiryDate && errors.insuranceExpiryDate}
+            error={Boolean(errors.insuranceExpiryDate && touched.insuranceExpiryDate)}
+            sx={{ mb: 3 }}
+          />
           <Grid container spacing={2} justifyContent="space-between">
             <Grid item xs={1}>
               <Button
