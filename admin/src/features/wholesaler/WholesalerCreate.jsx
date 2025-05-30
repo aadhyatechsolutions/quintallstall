@@ -340,9 +340,9 @@ export default function CreateWholesaler() {
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
-                label="IFSC Code test RTS"
+                label="IFSC Code"
                 name="ifsc_code"
-                placeholder="e.g. SBIN0001234"
+                placeholder="e.g. SBIN0001234 test"
                 value={formData.ifsc_code}
                 onChange={handleChange}
                 inputProps={{
