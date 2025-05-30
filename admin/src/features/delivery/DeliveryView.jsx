@@ -78,12 +78,17 @@ export default function DeliveryViewDetails({ vehicleTypes }) {
           {renderRow("Branch Name", currentUser.bank_account.branch_name)}
 
           {/* Vehicle Details */}
-          {renderRow("Vehicle Type", currentUser.vehicles[0].vehicle_type.type)}
-          {renderRow("Vehicle Number", currentUser.vehicles[0].vehicle_no)}
-          {renderRow("Permit Number", currentUser.vehicles[0].permit_number)}
-          {renderRow("Permit Expiry Date", formatDate(currentUser.vehicles[0].permit_expiry_date))}
-          {renderRow("Insurance Number", currentUser.vehicles[0].insurance_number)}
-          {renderRow("Insurance Expiry Date", formatDate(currentUser.vehicles[0].insurance_expiry_date))}
+          {currentUser.vehicles && currentUser.vehicles.length > 0 && (
+            <>
+              {renderRow("Vehicle Type", currentUser.vehicles[0].vehicleType?.type || "—")}
+              {renderRow("Vehicle Number", currentUser.vehicles[0].vehicle_no || "—")}
+              {renderRow("Permit Number", currentUser.vehicles[0].permit_number || "—")}
+              {renderRow("Permit Expiry Date", formatDate(currentUser.vehicles[0].permit_expiry_date) || "—")}
+              {renderRow("Insurance Number", currentUser.vehicles[0].insurance_number || "—")}
+              {renderRow("Insurance Expiry Date", formatDate(currentUser.vehicles[0].insurance_expiry_date) || "—")}
+            </>
+          )}
+
 
           {/* Profile Image */}
           <Grid item xs={12} md={6}>
