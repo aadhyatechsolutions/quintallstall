@@ -41,13 +41,15 @@ jobs:
 
             echo "🛠️ Building admin on remote server..."
             cd $REMOTE_PATH/admin
-            \. "$HOME/.nvm/nvm.sh"
+            source $HOME/.nvm/nvm.sh
+            nvm use 18
             npm install
             npm run build
             
             echo "🛠️ Building storefront on remote server..."
             cd $REMOTE_PATH/storefront
-            \. "$HOME/.nvm/nvm.sh"
+            source $HOME/.nvm/nvm.sh
+            nvm use 18
             npm install 
             npm run build
             
