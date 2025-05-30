@@ -27,6 +27,7 @@ jobs:
       - name: Build Storefront
         run: |
           cd storefront
+          \. "$HOME/.nvm/nvm.sh"
           npm install
           npm run build
 
