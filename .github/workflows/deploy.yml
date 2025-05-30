@@ -15,19 +15,17 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
 
       - name: Build Admin
         run: |
           cd admin
-          \. "$HOME/.nvm/nvm.sh"
           npm install
           npm run build
 
       - name: Build Storefront
         run: |
           cd storefront
-          \. "$HOME/.nvm/nvm.sh"
           npm install
           npm run build
 
