@@ -296,7 +296,13 @@ const Checkout = () => {
                       onChange={(e) => {
                         const { value } = e.target;
 
-                        if (name === "zip") {
+                        if (["name", "city", "state"].includes(name)) {
+                          // Allow only letters and spaces
+                          if (/^[a-zA-Z\s]*$/.test(value)) {
+                            handleInputChange(e);
+                          }
+                        }
+                        else if (name === "zip") {
                           // ZIP Code: Allow only 0–6 digits
                           if (/^\d{0,6}$/.test(value)) {
                             handleInputChange(e);

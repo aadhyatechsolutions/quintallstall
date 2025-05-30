@@ -27,7 +27,13 @@ const ContactForm = () => {
     useSubmitContactForm();
 
   const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    if (name === "name") {
+      // Allow only alphabets and spaces
+      const alphabetOnly = /^[a-zA-Z\s]*$/;
+      if (!alphabetOnly.test(value)) return;
+    }
+    setForm((prev) => ({ ...prev, [e.target.name]:value }));
   };
 
   const handleSubmit = (e) => {
